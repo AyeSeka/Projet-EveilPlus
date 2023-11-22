@@ -46,8 +46,118 @@
           </div>
         </div>
       </nav>
+      <!--PARTIE RECHERCHE-->
+      <section class="main_rech">
+          <div class="main_rech1">
+            <h2>Rechercher un répétiteur</h2>
+          </div> 
+          <div class="main_rech2">
+              <form action="#" method="#" class="main_rech2_min">
+                  <div class="main_rech2_min1">
+                    <div class="main_rech2_min1_container">
+                      <div class="container_champ_rech">
+                         <div class="rech_champ1">
+                             <div class="rech_champ1_L">
+                                <label for="name">Commune: </label>
+                             </div>
+                             <div class="rech_champ1_L">
+
+                              <select name="commune">
+                                <option value="bingerville">bingerville</option>
+                                <option value="cocody">Cocody</option>
+                                <option value="abobo">Abobo</option>
+                                <option value="adjamé">Adjamé</option>
+                                <option value="cocody">Cocody</option>
+                                <option value="koumassi">Koumassi</option>
+                                <option value="plateau">Plateau</option>
+                                <option value="treichville">Treichville</option>
+                                <option value="port-bouet">port-bouet</option>
+                                <option value="yopougon">Yopougon</option>
+                                <option value="marcory">marcory</option>
+                                <option value="vridi">vridi</option>
+                              </select>
+                               <!-- <input type="text" name="Lieu d'habitation " id="Lieu d'habitation " size="15" value="" required/>  -->
+                             </div>   
+                         </div>
+
+                         <div class="rech_champ1">
+                          <div class="rech_champ1_L">
+                             <label for="name">Année d'experience: </label>
+                          </div>
+                          <div class="rech_champ1_L">
+                            <select name="annee_experience">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6 </option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+                            </select>
+                           <!-- <input type="text" name="Année d'experience " id="Année " size="5" value="" required/>-->
+
+                          </div>   
+                         </div>
 
 
+                      </div>
+                      <div class="container_champ_rech">
+                        <div class="rech_champ1">
+                          <div class="rech_champ1_L">
+                             <label for="name">Niveau d'etude : </label>
+                          </div>
+                          <div class="rech_champ1_L">
+                            <select name="diplome" value="<?php echo $diplome; ?>">
+                              <option value="bac">Bac</option>
+                              <option value="bac+1">Bac+1</option>
+                              <option value="bac+2">Bac+2</option>
+                              <option value="bac+3">Bac+3</option>
+                              <option value="bac+4">Bac+4</option>
+                              <option value="bac+5">Bac+5</option>
+                            </select>
+                            <!-- <input type="text" name="Niveau d'etude " id="Niveau d'etude " size="15" value="" required/> -->
+                           </div>   
+                      </div>
+
+                      <div class="rech_champ1">
+                       <div class="rech_champ1_L">
+                          <label for="name">Competence(s): </label>
+                       </div>
+                       <div class="rech_champ1_L">
+                        <select name="competences" value="<?php echo $competences; ?>">
+                          <option value="litterature">Littérature</option>
+                          <option value="sciences">Sciences</option>
+                        </select>
+                         <!-- <input type="text" name="Competence(s)" id="Competence(s) " size="20" value="" required/> -->
+                       </div>   
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!--Bouton-->
+                  <div class="rech_bouton">
+                    <div class="rech_bouton1">
+                          <div class="rech_bouton1_min1">
+                            ANNULER
+                          </div>
+                      <div class="rech_bouton1_min2" type = "submit">
+                        RECHERCHER
+                      </div>
+                
+                    </div>
+                  </div> 
+             </form>
+          </div>
+  
+
+         
+
+      </section>
       <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

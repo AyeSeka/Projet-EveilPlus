@@ -2,3 +2,263 @@
 .logo{
     height: 80px;
 }
+
+/* Page_recherche*/
+
+.main_rech{
+    width: 100%;
+    height: 500px;
+}
+.main_rech1{
+    width: 40%;
+    height: 20%;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: end;
+    /* border: red solid; */
+}
+.main_rech2{
+    width: 100%;
+    height: 80%;
+    /* border: 2px solid green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* background-color: orange; */
+}
+.main_rech2_min{
+    width: 80%;
+    height: 100%;
+    /* border: solid red; */
+}
+.main_rech2_min1{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* border: solid green; */
+}
+.main_rech2_min1_container{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* border: solid blue; */
+    background-color: rgba(255, 166, 0, 0.808);
+}
+.container_champ_rech{
+    width: 100%;
+    height: 30%;
+    /* border: red solid; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.rech_champ1{
+    width: 47%;
+    height: 100%;
+    /* border: rgb(145, 255, 0) solid; */
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 18px;
+    padding-right: 20px;
+}
+
+.rech_bouton{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* border: red solid; */
+   
+
+}
+.rech_bouton1{
+width: 40%;
+height: 50px;
+
+display: flex;
+flex-direction: row;
+justify-content:space-between;
+align-items:center;
+}
+.rech_bouton1_min1{
+    width:35%;
+    height: 100%;
+    border: 2px solid black;
+    background-color: rgb(199, 45, 45);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.rech_bouton1_min2{
+    width:35%;
+    height: 100%;
+    border: 2px solid black;
+    background-color: rgb(34, 219, 34);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+ 
+/* liste repetiteur */
+
+.main.liste{
+    width: 100%;
+    height: 500px;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.main.liste1{
+    width: 90%;
+    height: 60px;
+    
+    display: flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:start;
+}
+.container.liste{
+    width: 80%;
+    height: 315px;
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.container.list{
+    width: 100%;
+    height: 300px;
+   
+    background-color:rgb(245, 232, 208);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.container.list.min{
+    width: 90%;
+    height: 73px;
+    border: 2px solid rgb(245, 232, 208);
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;
+    /* border: 2px solid black; */
+}
+.first.min.list{
+    width: 8%;
+    height: 100%;
+    border-radius: 100px;
+    border: 2px solid black;
+    background-color: rgb(169, 115, 95);
+    
+}
+.two.min.list{
+    width: 8%;
+    height: 100%;
+    border-radius: 100px;
+    border: 2px solid black;
+    background-color: rgb(169, 115, 95);
+}
+.three.min.list{
+    width: 8%;
+    height: 100%;
+    border-radius: 100px;
+    border: 2px solid black;
+    background-color: rgb(169, 115, 95);
+}
+.dispo_repetiteur{
+    background-color: rgb(117, 214, 117);
+}
+.container.list.min2{
+    width: 90%;
+    height: 73px;
+    border: 2px solid rgb(245, 232, 208);
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items: center;  
+}
+.dispo_repetitor{
+    background-color: rgb(195, 120, 120);
+}
+/* .btn_repetiteur{
+    background-color: rgb(235, 51, 51);
+} */
+.rech_btn{
+    width: 50%;
+    height: 125px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid red;
+
+}
+
+button {
+    /* font-size: 16px; */
+    color: #000;
+    background-color:rgb(75, 75, 189);
+    width:100% ;
+   
+  }
+  
+
+
+  /* confirme recherche repetiteur disponible */
+
+.rech_confime{
+width: 100%;
+height: 500px;
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.rech_confirme_min{
+    width: 70%;
+    height: 300px;
+    background-color:rgb(224, 187, 119);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+} 
+.rech_confirme_text{
+    width: 80%;
+    height: 200px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
