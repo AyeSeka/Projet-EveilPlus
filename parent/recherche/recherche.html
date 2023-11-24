@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Rechercher</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="#"><img class="logo" src="../img/logo Eveil+.png" alt="logo eveil+"></a>
+          <a class="navbar-brand" href="#"><img class="logo" src="/img/logo Eveil+.png" alt="logo eveil+"></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -26,11 +26,11 @@
                 <a class="nav-link px-5" href="recherche.html">Recherche</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link px-5" href="../librairie/librairie.html">librairie</a>
+                <a class="nav-link px-5" href="../librairie/librairie.html">Librairie</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link px-3 border rounded dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                   <img src="../img/Moi3.jpg" style="border-radius: 45px;" class=" me-2 " width="25px">Bruce Yapo
+                   <img src="/img/user_img/bruce_yapo.jpg" style="border-radius: 45px;" class=" me-2 " width="25px">Bruce Yapo
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="#">Mon profil</a></li>
@@ -49,7 +49,9 @@
       <!--PARTIE RECHERCHE-->
       <section class="main_rech">
           <div class="main_rech1">
-            <h2>Rechercher un répétiteur</h2>
+            <div class="main_rech1_titre1">
+              <h2>Rechercher un répétiteur</h2>
+            </div>
           </div> 
           <div class="main_rech2">
               <form action="#" method="#" class="main_rech2_min">
@@ -57,35 +59,35 @@
                     <div class="main_rech2_min1_container">
                       <div class="container_champ_rech">
                          <div class="rech_champ1">
-                             <div class="rech_champ1_L">
-                                <label for="name">Commune: </label>
+                             <div>
+                                <label for="name">Lieu d'habitation: </label>
                              </div>
-                             <div class="rech_champ1_L">
+                             <div class="rech_champ1_L1">
 
-                              <select name="commune">
-                                <option value="bingerville">bingerville</option>
-                                <option value="cocody">Cocody</option>
-                                <option value="abobo">Abobo</option>
-                                <option value="adjamé">Adjamé</option>
-                                <option value="cocody">Cocody</option>
-                                <option value="koumassi">Koumassi</option>
-                                <option value="plateau">Plateau</option>
-                                <option value="treichville">Treichville</option>
-                                <option value="port-bouet">port-bouet</option>
-                                <option value="yopougon">Yopougon</option>
-                                <option value="marcory">marcory</option>
-                                <option value="vridi">vridi</option>
-                              </select>
+                              <select name="commune" class="rech_champ1_select">
+                                <option value="#">Choississez votre localisation</option>
+                                <option value="Abobo">Abobo</option>
+                                <option value="Adjame">Adjamé</option>
+                                <option value="Attecoube">Attécoubé</option>
+                                <option value="Cocody">Cocody</option>
+                                <option value="Koumassi">Koumassi</option>
+                                <option value="Marcory">Marcory</option>
+                                <option value="Plateau">Le Plateau </option>
+                                <option value="Treichville">Treichville</option>
+                                <option value="Yopougon">Yopougon</option>
+                                <option value="Port-Bouët">Port-Bouët</option>
+                              </select>      
                                <!-- <input type="text" name="Lieu d'habitation " id="Lieu d'habitation " size="15" value="" required/>  -->
                              </div>   
                          </div>
 
                          <div class="rech_champ1">
-                          <div class="rech_champ1_L">
+                          <div>
                              <label for="name">Année d'experience: </label>
                           </div>
-                          <div class="rech_champ1_L">
-                            <select name="annee_experience">
+                          <div class="rech_champ1_L1">
+                            <select name="annee_experience" class="rech_champ1_select">
+                              <option value="#">Choississez l'expérience</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -106,11 +108,12 @@
                       </div>
                       <div class="container_champ_rech">
                         <div class="rech_champ1">
-                          <div class="rech_champ1_L">
+                          <div>
                              <label for="name">Niveau d'etude : </label>
                           </div>
-                          <div class="rech_champ1_L">
-                            <select name="diplome" value="<?php echo $diplome; ?>">
+                          <div class="rech_champ1_L1">
+                            <select name="diplome" class="rech_champ1_select">
+                              <option value="#">Choississez le niveau scolaire</option>
                               <option value="bac">Bac</option>
                               <option value="bac+1">Bac+1</option>
                               <option value="bac+2">Bac+2</option>
@@ -123,13 +126,15 @@
                       </div>
 
                       <div class="rech_champ1">
-                       <div class="rech_champ1_L">
+                       <div>
                           <label for="name">Competence(s): </label>
                        </div>
-                       <div class="rech_champ1_L">
-                        <select name="competences" value="<?php echo $competences; ?>">
+                       <div class="rech_champ1_L1">
+                        <select name="competences" class="rech_champ1_select">
+                          <option value="#">Choississez votre localisation</option>
                           <option value="litterature">Littérature</option>
                           <option value="sciences">Sciences</option>
+                          <option value="sciences&litterature">Sciences et Litterature</option>
                         </select>
                          <!-- <input type="text" name="Competence(s)" id="Competence(s) " size="20" value="" required/> -->
                        </div>   
@@ -142,22 +147,15 @@
                   <!--Bouton-->
                   <div class="rech_bouton">
                     <div class="rech_bouton1">
-                          <div class="rech_bouton1_min1">
-                            ANNULER
-                          </div>
-                      <div class="rech_bouton1_min2" type = "submit">
-                        RECHERCHER
+                          <input class="rech_bouton1_min1" type ="reset" value="ANNULER">
+                      <div class="rech_bouton1_min2">
+                        <a href="./liste_recherche.html">RECHERCHER</a>
                       </div>
-                
                     </div>
                   </div> 
              </form>
           </div>
-  
-
-         
-
       </section>
-      <script src="../js/bootstrap.bundle.min.js"></script>
+      <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
