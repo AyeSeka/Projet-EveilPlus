@@ -384,6 +384,7 @@ a.active {
 .main_rech{
     width: 100%;
     height: 500px;
+    
 }
 .main_rech1{
     width: 100%;
@@ -459,7 +460,15 @@ a.active {
     justify-content: space-around;
     align-items: center;
     /* border: solid blue; */
-    background-color: #FFF2CC;
+    
+}
+.bg-color{
+  background-color: #FFF2CC;
+  border-radius: 14px;
+  box-shadow: #707070 5px 5px 15px;
+}
+.section-rech{
+  background-color: #eeeeee;
 }
 .container_champ_rech{
     width: 100%;
@@ -595,6 +604,15 @@ align-items:center;
     align-items: center;
     /* border: 2px solid black; */
 }
+.Tab tbody{
+  background-color: #fff;
+}
+.tab-a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #707070;
+  padding: 15px;
+}
 .first.min.list{
     width: 8%;
     height: 100%;
@@ -675,14 +693,14 @@ align-items:center;
 
 }
 
-button {
-    /* font-size: 16px; */
+/* button {
+    font-size: 16px;
     color: #000;
     background-color:rgb(75, 75, 189);
     width:100% ;
    
   }
-  
+   */
 
 
   /* confirme recherche repetiteur disponible */

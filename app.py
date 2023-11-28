@@ -2,42 +2,53 @@ from flask import Flask, render_template, request,  redirect, url_for, flash,jso
 
 app = Flask(__name__)
 
-# PARENT
+# DEBUT PARENT
 @app.route("/")
 def Accueil_parent():
-    return render_template("Partials/Base_parent.html")
+    return render_template("Parents/accueil_parent.html", navbar="Partials/header_parent.html")
 
-# POSTE
+#DEBUT POSTE
 @app.route("/poste")
 def poste():
-    return render_template("Parents/poste.html")
-# POSTE
-# RECHERCHE
+    return render_template("Parents/Postes/poste.html")
+#FIN POSTE
+#DEBUT RECHERCHE
 @app.route("/recherche")
 def recherche():
-    return render_template("Parents/recherche.html")
+    return render_template("Parents/Recherches/recherche.html")
 
 @app.route("/liste_recherche")
 def liste_recherche():
-    return render_template("Parents/liste_recherche.html")
+    return render_template("Parents/Recherches/liste_recherche.html")
 
 @app.route("/liste_repetiteurchoix")
 def liste_repetiteurchoix():
-    return render_template("Parents/liste_repetiteurchoix.html")
+    return render_template("Parents/Recherches/liste_repetiteurchoix.html")
 
-@app.route("/recherche_confirm")
-def recherche_confirm():
-    return render_template("Parents/recherche_confirm.html")
+#FIN RECHERCHE
+# FIN PARENT
 
-# RECHERCHE
-# PARENT
+#DEBUT LIBRAIRIE
+@app.route("/librairie_parent")
+def librairie_parent():
+    return render_template("librairie/librairie_parent.html")
 
-# LIBRAIRIE
-@app.route("/librairie")
-def librairie():
-    return render_template("librairie/librairie.html")
+@app.route("/librairie_repetiteur")
+def librairie_repetiteur():
+    return render_template("librairie/librairie_repetiteur.html")
 
-# LIBRAIRIE
+#FIN LIBRAIRIE
+#DEBUT REPETITEUR
+@app.route("/accueil_repetiteur")
+def accueil_repetiteur():
+    return render_template("Repetiteur/accueil_repetiteur.html")
+
+# DEBUT RECHERCHE_REPETITEUR
+@app.route("/recherche_repetiteur")
+def recherche_repetiteur():
+    return render_template("Repetiteur/recherche_repetiteur.html")
+# DEFIN RECHERCHE_REPETITEUR
+#FIN REPETITEUR
 if __name__ == "__main__":
     app.secret_key= 'admin123'
     app.run(debug=True)
