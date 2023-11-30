@@ -21,9 +21,13 @@ p {
 
 
 .logo {
-  height: 80px;
+  /* height: 80px; */
+  width: 95px;
+  
 }
-
+.logo_Eveil{
+  border-right: #707070 2.4px solid;
+}
 body .container-article {
   max-width: 1100px;
   /* border: 2px solid red; */
@@ -466,6 +470,14 @@ a.active {
   background-color: #FFF2CC;
   border-radius: 14px;
   box-shadow: #707070 5px 5px 15px;
+}
+#cards{
+  background-color: #FFF2CC !important;
+  box-shadow: #707070 5px 5px 15px;
+  border-radius: 12px;
+}
+.list-cards{
+  border-radius: 7px;
 }
 .section-rech{
   background-color: #eeeeee;

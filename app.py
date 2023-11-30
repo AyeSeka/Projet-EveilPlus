@@ -3,7 +3,7 @@ from flask import Flask, render_template, request,  redirect, url_for, flash,jso
 app = Flask(__name__)
 
 # DEBUT PARENT
-@app.route("/")
+@app.route("/accueil_parent")
 def Accueil_parent():
     return render_template("Parents/accueil_parent.html", navbar="Partials/header_parent.html")
 
@@ -46,7 +46,15 @@ def accueil_repetiteur():
 # DEBUT RECHERCHE_REPETITEUR
 @app.route("/recherche_repetiteur")
 def recherche_repetiteur():
-    return render_template("Repetiteur/recherche_repetiteur.html")
+    return render_template("Repetiteur/Recherche/recherche_repetiteur.html")
+
+@app.route("/liste_rech_rep")
+def liste_rech_rep():
+    return render_template("Repetiteur/Recherche/liste_rech_rep.html")
+
+@app.route("/candidature_rep")
+def candidature_rep():
+    return render_template("Repetiteur/Recherche/candidature_rep.html")
 # DEFIN RECHERCHE_REPETITEUR
 #FIN REPETITEUR
 if __name__ == "__main__":
