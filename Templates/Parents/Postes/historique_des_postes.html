@@ -1,0 +1,37 @@
+
+
+{% extends "Partials/Base_parent.html" %}
+
+{% block body %}
+
+
+    
+      <section class="conteneur1_poste">
+        <div class="poste2_hist">
+            <div class="titre_hist"> <h1><u>Historique des postes</u></h1></div>
+            <div class="main_poste_hist">
+                <div class="note_poste_hist">
+                 
+                 <form action="">
+                  <div class="tex_hist">
+                    <div class="rep_post1_hist"><h4>Recherche de répétiteur </h4></div>
+                    <div  class="rep_post2_hist"><P>Nombre d'enfant : </P></div>
+                    <div class="rep_post3_hist"><p>Nombre de jour par semaine : 3 </p></div>
+                    <div class="rep_post4_hist"><p>Niveau enfant : Primaire, Collège et Lycée</p></div>
+                    <div class="rep_post5_hist"><p>Date limite : 15/12/2023</p></div>
+                    <div class="rep_post6_hist"><p>Date de publication : 20/11/2023</p></div>
+                  </div>
+                  <div id="but_poste_sup">
+                    <button class="btn btn" type="button"><a href="{{ url_for('poster_maintenant') }}">SUPRIMER</a></button>
+                  </div>
+
+                 </form>
+                 
+                </div>
+            </div>
+        </div>
+      </section>
+
+    
+
+{% endblock %}

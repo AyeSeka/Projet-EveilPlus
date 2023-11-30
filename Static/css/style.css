@@ -383,6 +383,537 @@ a.active {
   display: none;
 }
 
+/*page poste.html */
+
+
+
+.conteneur1_poste{
+  width: 100%;
+  height: 560px;
+  /* border: 2px solid black ;  */
+  /* display: flex;  */
+  justify-content: center;
+  position: relative;
+  background-color: #eeeeee;
+  
+}
+.poste2{
+  width:90%;
+  height: 85%;
+   /* border: 2px solid red ;  */
+  flex-direction:column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  top: 0;
+  left: 5%
+}
+
+@media screen and (max-width: 1019px) {
+  label{
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 865px) {
+  label{
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 779px) {
+  .conteneur1_poste label{
+    font-size: 1.3rem;
+    /* color: red; */
+  }
+
+  .conteneur1_poste .but_poste{
+    margin-top: 50px;
+  }
+}
+
+
+@media screen and (max-width: 758px) {
+  .conteneur1_poste label{
+    font-size: 1.2rem;
+    /* color: red; */
+  }
+
+  
+}
+
+@media screen and (max-width: 610px) {
+  .conteneur1_poste div.but_poste{
+    /* padding-top: 0px; */
+    margin-top: 60px;
+    
+    
+  } 
+}
+
+@media screen and (max-width: 518px) {
+  .conteneur1_poste .main_poste{
+    height: 60%;
+  }
+  label{
+    
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 860px) {
+h1{
+  font-size: 25px;
+}
+.conteneur1_poste label{
+  font-size: 1.3rem;
+}
+
+}
+
+@media screen and (max-width: 615px) {
+label{
+  font-size: 15px;
+}
+
+h1{
+  font-size: 20px;
+}
+}
+
+
+
+
+@media screen and (max-width: 1000px) {
+  #text{
+    width: 30%;
+  }
+}
+@media screen and (max-width: 905px) {
+  #text{
+    width: 30%; 
+  }
+}
+
+@media screen and (max-width: 850px) {
+  #text{
+    width: 25%; 
+  }
+
+ 
+}
+@media screen and (max-width: 615px) {
+  #text{
+    width: 25%; 
+  }
+}
+@media screen and (max-width:660px) {
+   
+
+  .conteneur1_poste .main_poste{
+    width: 100%;
+    
+     
+  }
+
+  .conteneur1_poste .form_poste3 input{
+    height: 40px;
+  }
+
+  .conteneur1_poste label{
+    font-size: 1.3rem;
+  }
+}
+@media screen and (max-width:605px) {
+   
+
+  .conteneur1_poste .main_poste{
+   
+    height: 70%;
+     /* border: 2px solid blue;   */
+     
+  }
+
+
+  .conteneur1_poste .titre{
+    height: 10%
+  }
+}
+@media screen and (max-width:521px) {
+  .main_poste .but_poste{
+    margin-bottom: 40px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .conteneur1_poste div.but_poste{
+    /* padding-top: 0px; */
+    margin-top: 35px;
+   
+    
+  } 
+}
+@media screen and (max-width: 415px) {
+  .main_poste .rep_post1 p{
+    font-size: 1.3rem;
+    
+  }
+  
+}
+@media screen and (max-width: 415px) {
+  .main_poste .rep_post2 p{
+    font-size: 1.3rem;
+    
+  }
+  
+}
+@media screen and (max-width: 415px) {
+  .main_poste .rep_post1 p{
+    font-size: 1.3rem;
+    
+  }
+}
+@media screen and (max-width: 885px) {
+  .conteneur1_poste .main_poste_hist {
+    width: 100%;
+    /* height: 100%; */
+
+    
+  }
+}
+@media screen and (max-width: 6475px) {
+  .conteneur1_poste .main_poste_hist {
+    /* width: 80%; */
+     height: 100%;
+
+    
+  }
+}
+
+  
+
+
+
+/* Responsive main */
+
+
+
+
+
+
+.titre {
+  height: 20%;
+  width: 70%;
+  /* border: 2px solid black ; */
+  /* display: flex; */
+  position: absolute;
+  top: 0;
+  left: 10%;
+ 
+  /* text-align: center; */
+  
+} 
+
+.main_poste{
+  width: 80%;
+  height:60% ;
+  border-radius: 15px;
+  /* border: 2px solid yellow; */
+  /* margin-top: 20px; */
+  /* text-align: center; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  background-color: #FFF2CC;
+  justify-content: center;
+  box-shadow: #707070 5px 5px 15px;
+  
+   
+  
+}
+.note_poste{
+  font-size: 23Px;
+
+  /* padding-left: 20px; */
+}
+.note_poste2 {
+  padding-left: 10px;
+}
+.main_poste form{
+  width:100%;
+  height: 100%;
+
+
+}
+.form_poste{
+  text-align: justify;
+  padding-left: 15px;
+  margin-top: 10px;
+  width: 100%;
+  height: 40%;
+
+}
+#text{
+width: 20%;
+height: 25px;
+}
+
+#nombre{
+  width: 8%;
+  height: 25px;
+ 
+}
+#Niveau{
+  width: 50px;
+  height: 20px;
+}
+#Primaire{
+  width: 50px;
+  height: 20px;
+}
+#Collège{
+  width: 50px;
+  height: 20px;
+}
+.form_poste2{
+  margin-top: 20px;
+  padding-left: 15px;
+  width: 100%;
+  height: 30%;
+}
+#date{
+  width: 18%;
+  
+  
+}
+.form_poste3{
+  margin-top: 40px;
+  width: 100%;
+  height: 30%;
+}
+
+
+
+.ordre{
+width: 100%;
+height: 20%;
+/* border: 2px solid rgb(222, 36, 36); */
+position:relative;
+top: 0;
+
+
+
+}
+
+.but_poste {
+
+margin-top: 80px;
+/* border-radius: 10px; */
+ margin-bottom: 30px; 
+ /* display: flex;/ */
+justify-content: center;
+justify-content: center;
+display: flex;
+/* border: 2px solid rgb(206, 77, 77); */
+
+}
+.but_poste button{
+border-radius: 10px;
+margin: 10px;
+}
+.vert{
+background-color: forestgreen;
+}
+.rouge{
+background-color: coral;
+} 
+.but_poste a {
+text-decoration: none;
+color: white;
+}
+
+span
+{
+color: darkgreen;
+}
+.rep_post1{
+height: 50%;
+
+padding-top: 20px;
+}
+
+.rep_post2{
+height: 20%;
+padding-top: 20px;
+
+}
+.rep_post3{
+height: 20%;
+padding-top: 20px;
+
+}
+/* historique des postes */
+
+
+.form_poste_hist{
+width: 20%;
+height: 50%;
+}
+
+.poste2_hist{
+width: 50%;
+height: 70%;
+/* border: 2px solid black; */
+flex-direction:column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+}
+.titre_hist{
+width: 70%;
+height: 20%;
+/* border: 2px solid rgb(235, 167, 167); */
+margin-left:100px;
+}
+
+.rep_post2_hist{
+
+margin-top: 10px;
+}
+.rep_post3_hist{
+
+margin-top: 10px;
+}
+.rep_post4_hist{
+
+margin-top: 10px;
+}
+.rep_post5_hist{
+
+margin-top: 10px;
+}
+.rep_post6_hist{
+
+margin-top: 10px;
+}
+#but_poste_sup a{
+text-decoration: none;
+color: white;
+}
+.main_poste_hist{
+height: 80%;
+width: 60%;
+/* border: 2px solid rgb(227, 59, 59); */
+background-color: rgba(225, 190, 124, 0.808);
+/* border-radius: 15px; */
+margin-left:15px;
+margin-top: 15px;box-shadow: #707070 5px 5px 15px;
+background-color: #FFF2CC;
+  
+
+}
+.tex_hist{
+margin-left:15px;
+margin-top: 15px;
+
+}
+#but_poste{
+width: 100%;
+height: 20%;
+/* border: 2px solid rgb(227, 59, 59); */
+justify-content: flex-end;
+display: flex;
+
+
+}
+#but_poste_sup {
+text-align: center;
+display: flex;
+margin-top: 20px;
+justify-content: center;
+
+}
+#but_poste_sup button{
+width: 60%;
+height: 90%;
+border-radius: 10px;
+
+background-color: coral;
+
+}
+/* poster maintenant */
+.main_poste_main{
+width: 80%;
+  height:60% ;
+  border-radius: 15px;
+  /* border: 2px solid yellow; */
+  background-color: rgba(225, 190, 124, 0.808);
+  display: flex;
+  justify-content: center;
+  box-shadow: #707070 5px 5px 15px;
+  background-color: #FFF2CC;
+  
+}
+
+.maintenant{
+width: 100%;
+height: 25%;
+/* border: 2px solid wheat; */
+display: flex;
+justify-content: center; 
+margin: 5px;
+
+}
+.maintenant_2{
+width: 100%;
+height: 33%;
+/* border: 2px solid black; */
+display: flex;
+justify-content: center;
+text-align: center;
+margin: 5px;
+
+
+}
+.main_poste_main form{
+width: 100%;
+height: 100%
+}
+
+
+
+.maintenant_but a{
+text-decoration: none;
+color: white;
+}
+.maintenant_2 p {
+font-size: 1.2rem;
+text-align: center;
+
+}
+.maintenant_but{
+/* border: 2px solid black; */
+justify-content: center;
+width: 100%;
+height: 35%;
+display: flex;
+justify-content: center;
+padding: 10px;
+margin: 5px;
+
+}
+.maintenant_but button{
+height: 70%;
+width: 40%;
+
+
+
+
+
+}
+
+
 /* Page_recherche*/
 
 .main_rech{

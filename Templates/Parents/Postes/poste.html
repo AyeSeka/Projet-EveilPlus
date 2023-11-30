@@ -1,5 +1,52 @@
 {% extends "Partials/Base_parent.html" %}
 {% block body %}
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, ea tempora temporibus debitis officia quibusdam. Est modi porro eos aperiam magnam iure eveniet? Eius temporibus, doloribus ipsum illo iure libero.</p>
+
+      <section class="conteneur1_poste py-5">
+        <div class="poste2">
+            <div class="titre"> <h1><u>Publier mon offres</u></h1></div>
+            <div class="main_poste">
+                <div class="note_poste">
+                 
+                 <form action="">
+                  
+                  <div class="form_poste">
+                    <label for="Je recherche un répétiteur qualifié disponible pouvant enseigner">Je recherche un répétiteur qualifié disponible pouvant enseigner</label>
+                    <input type="number" min="1" max="10" id="nombre" name="nombre"> 
+                    <label for="enfant(s)">enfant(s) ,</label>  
+                    <input type="number" min="1" max="3" id="nombre" name="nombre">
+                    <label for="fois par semaine" >fois par semaine à  </label>
+                    <input type="text" id="text" name="text"> 
+                  </div>
+                  <div class="form_poste2">
+                    <label for="Niveau enfant :">Niveau enfant :</label>
+                    <input type="checkbox" name="Niveau" id="Niveau" >
+                    <label for="Primaire">Primaire,</label> 
+                    <input type="checkbox" name="Primaire" id="Primaire" >
+                    <label for="Collège">Collège</label> 
+                    <input type="checkbox" name="Collège" id="Collège" >
+                    <label for="lycée">lycée</label> 
+                  </div>
+                  <div class="form_poste3">
+                    <label for="Date limite :">Date publication :</label>
+                    <input type="date" id="date" name="date">
+                  </div>
+                  
+                  <div class="but_poste">
+                    <button type="button" class="btn btn-danger" ><a  href="{{ url_for('poste') }}">ANNULER</a>
+                      
+                    </button>  
+                    <button class="btn btn-success" type="button"><a href="{{ url_for('recapitulatif') }}">VALIDER</a></button>
+                  </div>
+                 </form>
+                 
+                
+                 </div>
+                </div>
+            </div>
+        </div>
+        
+      </section>
+
+  
 
 {% endblock %}

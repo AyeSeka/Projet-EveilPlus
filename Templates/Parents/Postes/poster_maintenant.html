@@ -1,0 +1,30 @@
+{% extends "Partials/Base_parent.html" %}
+{% block body %}
+
+<section class="conteneur1_poste">
+    <div class="poste2">
+        <div class="titre"> <h1><u>Historique des postes</u></h1></div>
+        <div class="main_poste_main">
+            <div class="note_poste_main">
+             
+             <form action="">
+              <div class="maintenant">
+                <h2>Aucun poste</h2>
+              </div>
+              <div class="maintenant_2">
+                <p>Votre historique de poste est vide cliquez sur le bouton <br>
+                  ci-dessous pour poster </p>
+              </div>
+              <div class="maintenant_but">
+                <button class="btn btn-success" type="submit"><a href="{{ url_for('poste') }}"></a>Poster maintenant</a></button>
+              </div>
+             </form>
+             
+            </div>
+        </div>
+    </div>
+   
+  </section>
+
+
+{% endblock %}

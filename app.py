@@ -7,10 +7,21 @@ app = Flask(__name__)
 def Accueil_parent():
     return render_template("Parents/accueil_parent.html", navbar="Partials/header_parent.html")
 
-#DEBUT POSTE
 @app.route("/poste")
 def poste():
     return render_template("Parents/Postes/poste.html")
+
+@app.route("/recapitulatif")
+def recapitulatif():
+    return render_template("Parents/Postes/recapitulatif.html")
+
+@app.route("/historique_des_postes")
+def historique_des_postes():
+    return render_template("Parents/Postes/historique_des_postes.html")
+
+@app.route("/poster_maintenant")
+def poster_maintenant():
+    return render_template("Parents/Postes/poster_maintenant.html")
 #FIN POSTE
 #DEBUT RECHERCHE
 @app.route("/recherche")
