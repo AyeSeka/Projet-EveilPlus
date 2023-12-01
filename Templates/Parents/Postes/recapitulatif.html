@@ -2,34 +2,35 @@
 {% extends "Partials/Base_parent.html" %}
 {% block body %}
 
-<section class="conteneur1_poste">
-    <div class="poste2">
-        <div class="titre"> <h1><u>Récapitulatif</u></h1></div>
-        <div class="main_poste">
-            <div class="note_poste">
-             
-             <form action="">
-              <div class="form_poste">
-                <div class="rep_post1"><p>Je recherche un répétiteur qualifié disponible pouvant enseigner   <span>(nmbr)</span> enfant(s), <span>(nmbr)</span> fois par semaine  <span>(lieu d'habitation)</span> </p></div>
-                <div  class="rep_post2"><P>Niveau enfant  :  <span>( primaire , Collège , lycée)</span></P></div>
-                <div class="rep_post3"><p>Date limite :  <span>( 00 / 00 /0000) </span></p></div>
-                
-              </div>
-              <div class="but_poste">
-                <button type="button" class="btn btn-danger" ><a  href="{{ url_for('poste') }}">ANNULER</a>
-                      
-                </button>   
-                <button class="btn btn-success" type="button"><a href="{{ url_for('historique_des_postes') }}">VALIDER</a></button>
-              </div>
-             </form>
-             
+
+
+  <section class="my-5 py-5 section-rech">
+    <div class="container colunm">
+      <div class="main_rech1_titre1 mb-4">
+          <h2>Récapitulatif</h2>
+      </div>
+      <div class="">
+        <form action="{{ url_for('historique_des_postes') }}" method="">
+          <div class="row bg-color">
+            <div class="form_poste">
+              <div class="rep_post1"><p>Je recherche un répétiteur qualifié disponible pouvant enseigner   <span>(nmbr)</span> enfant(s), <span>(nmbr)</span> fois par semaine  <span>(lieu d'habitation)</span> </p></div>
+              <div  class="rep_post2"><P>Niveau enfant  :  <span>( primaire , Collège , lycée)</span></P></div>
+              <div class="rep_post3"><p>Date limite :  <span>( 00 / 00 /0000) </span></p></div> 
+          </div>
+          </div>
+          <div class="row col-5 mt-4 m-auto">
+            <div class="col-md-6 mb-sm-4">
+              <a  href="{{ url_for('poste') }}" class="btn btn-warning text-white">MODIFIER</a>
             </div>
-        </div>
+            <div class="col-md-6">
+              <button class="btn btn-success" type="submit" >VALIDER</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
     </div>  
-   
   </section>
-
-
   
 
 {% endblock %}
