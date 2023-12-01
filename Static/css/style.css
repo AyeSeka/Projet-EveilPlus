@@ -1,6 +1,4 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"); */
-
-/* acceuil */
 * {
   font-family: "Poppins", sans-serif;
 
@@ -9,6 +7,303 @@
   padding: 0;
 }
 
+/****Page Index******/
+.section1_index{
+  width: 100%;
+  height: 500px;
+}
+.section1_index img{
+  width: 100%;
+  height: 100%;
+}
+#Services{
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  /* border: solid black; */
+ 
+}
+.section2_index{
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  /* border: solid black; */
+ 
+}
+.section2_index_min{
+  width: 100%;
+  height: 95%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  /* border: solid red; */
+}
+.section2_index_min_img{
+  /* border: solid black; */
+  width: 45%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.section2_index_min_img img{
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.section2_index_min_img_1{
+  width: 95%;
+  height: 95%;
+  /* border: solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.section2_index_min_img_1_txt{
+  width: 95%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: solid  black; */
+}
+.section2_index_min_img_1_btn{
+  width: 30%;
+  height: 15%;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #6ebca8;
+  border-radius: 10px;
+  border: solid  #6ebca8;
+}
+.section2_index_min_img_1_btn a:hover{
+  color: #6ebca8;
+  background-color: #fff;
+}
+.section2_index_min_img_1_btn1{
+  width: 30%;
+  height: 15%;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10%;
+  background-color: #fdd31d;;
+  border: solid  #fdd31d;
+}
+.section2_index_min_img_1_btn1 a:hover{
+  color: #fdd31d;
+  background-color: #fff;
+}
+.section2_index_min_img_1_btn a, .section2_index_min_img_1_btn1 a{
+  color:#fff;
+  border-radius: 10%;
+  /* border: solid red; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+footer{
+  width: 100%;
+  height: 300px;
+  margin-top: 100px;
+  color:#fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color:#363636;
+}
+.footer_main_index{
+  width: 95%;
+  height: 90%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.footer_main_index1{
+  width: 23%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+}
+.footer_main_index1_titr1{
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+ 
+}
+.footer_main_index1_txt{
+  width: 100%;
+  height: 65%;
+  text-align: center;
+
+}
+.footer_main_index1_txt a{
+  text-decoration: none;
+  color: #fff;
+}
+.footer_main_index1_txt_news{
+  width: 100%;
+  height: 65%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+}
+.footer_form_index{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+.footer_input_index{
+  width: 100%;
+  height: 25%;
+}
+.footer_input_btn{
+  width: 40%;
+  height: 25%;
+  border-radius: 10%;
+  background-color: #6ebca8;
+  color: #fff;
+}
+.footer_input_btn:hover{
+  background-color: #fff;
+  color: #6ebca8;
+}
+
+/****Page_Connexion******/
+.body_page_connx{
+  background-color: #6ebca8;
+}
+.section_connexion_page{
+  width: 100%;
+  height: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.section_connexion_page_container{
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.section_connexion_page_container1{
+  width: 45%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.section_connexion_page_container1 img{
+  width: 100%;
+  height: 100%;
+}
+.form_titr_page_connex{
+  width: 100%;
+  height: 20%;
+}
+.section_connexion_page_container1 form{
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.form_titr_page_connex{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.connx_page_login1{
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.inp_page_connex{
+  width: 100%;
+  height: 30%;
+  padding-left: 2%;
+}
+.btn_form_page_connex{
+  width: 30%;
+  height: 25%;
+  background-color: #6ebca8;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid #6ebca8;
+}
+.btn_form_page_connex a{
+  text-decoration: none;
+  color: #fff;
+}
+.btn_form_page_connex:hover,.btn_form_page_connex a:hover{
+  color: #6ebca8;
+  background-color: #fff;
+}
+.connx_page_login2{
+  width: 100%;
+  height: 20%;
+}
+/**************COMPTE PARENT********************/
+
+/* acceuil */
 
 
 h1,
@@ -715,3 +1010,8 @@ align-items: center;
     justify-content: center;
     align-items:center;
 }
+
+/**************COMPTE REPETITEUR********************/
+
+
+/**************COMPTE PERSONNEL EVEIL********************/

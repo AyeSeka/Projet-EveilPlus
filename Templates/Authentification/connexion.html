@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{url_for('static', filename='/img/logo_Eveil+.png')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/initialize.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+            
+        <title>Eveil+</title>
+    </head>
+    <body class="body_page_connx">
+        <section class="section_connexion_page">
+            <main class="section_connexion_page_container">
+                <div class="section_connexion_page_container1">
+                    <img src="{{url_for('static', filename='/img/img_famille.jpg')}}" alt="enfant et femme">
+                </div>
+                <div class="section_connexion_page_container1">
+                    <div class="form_titr_page_connex"><h2> Se connecter<h3></div>
+                    <form action="#" methode="#">
+                        <div class="connx_page_login1">
+                            <input type="text" class="inp_page_connex" name="identifiant" placeholder="identifiant">
+                            <input type="password" class="inp_page_connex" name="mot de passe" placeholder="mot de passe">
+                            <div class="btn_form_page_connex"><a href="/accueil_parent">CONNEXION</a></div>
+                            <!--<input type="submit" value="CONNEXION" class="btn_form_page_connex">-->
+                        </div>
+                    </form>
+                    <div class="connx_page_login2">
+                        Pas de compte ?
+                         <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Inscrivez vous ici</a>
+                    
+                    <!-- Button trigger modal -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 container" id="staticBackdropLabel">INSCRIPTION</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body container">
+          <p> <i> Je m'inscris en tant que</i></p>
+        </div>
+        <div class="modal-body">
+            <div class="container row m-auto">
+                <div class="col-md-6">
+                    <a href="#" class="btn btn-success"> PARENT</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="#" class="btn btn-warning"> REPETITEUR</a>
+                </div>
+            </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+                    
+                    </div>
+                </div>
+            </main>
+        </section>
+        <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
+        <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
+    </body>
+</html>

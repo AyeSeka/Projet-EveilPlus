@@ -2,8 +2,21 @@ from flask import Flask, render_template, request,  redirect, url_for, flash,jso
 
 app = Flask(__name__)
 
-# PARENT
+
+########### INDEX_PAGE ##############
 @app.route("/")
+def index():
+    return render_template("Authentification/index.html")
+
+########### CONNEXION ##############
+@app.route("/connexion")
+def connexion():
+    return render_template("Authentification/connexion.html")
+
+
+
+# PARENT
+@app.route("/accueil_parent")
 def Accueil_parent():
     return render_template("Partials/Base_parent.html")
 
