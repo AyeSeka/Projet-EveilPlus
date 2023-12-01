@@ -1,166 +1,139 @@
-{% extends "Partials/Base_parent.html" %}
-{% block body %}
-                
-    <section class="main_rech">
-        <section class="my-5 py-5 section-rech">
-            <div class="container colunm">
-                <div class="mb-4 row container-fluid">
-                    <div class="col-md-11 col-sm-10"><h2>Liste des répétiteurs</h2></div>
-                    <div class="col-md-1 col-sm-2"><a href="/recherche" class="btn btn-danger">RETOUR</a></div>
-                </div>  
-                <!-- <button class="btn btn-danger" type="reset">ANNULER</button>     -->
-                <table class="table Tab rounded">
-                    <thead class="table-light">
-                    <th>Nom</th>
-                    <th>Note</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="" class="tab-a">
-                                    <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
-                                    Hugues Codeur   
-                                </a>
-                            </td>
-                            <td>7.5/10</td>
-                            <td>Disponible</td>
-                            <td>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                Choisir
-                            </button>
-                            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
-                            <!-- Modal -->
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/liste_repetiteurchoix" class="btn btn-primary">Confirmer</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="" class="tab-a">
-                                    <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
-                                    Hugues Codeur   
-                                </a>
-                            </td>
-                            <td>7.5/10</td>
-                            <td>Disponible</td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Choisir
-                                </button>
-                                <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
-                                <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                        <a href="/liste_repetiteurchoix" class="btn btn-primary">Confirmer</a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="" class="tab-a">
-                                    <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
-                                    Hugues Codeur   
-                                </a>
-                            </td>
-                            <td>7.5/10</td>
-                            <td>Disponible</td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Choisir
-                                </button>
-                                <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
-                                <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                        <a href="/liste_repetiteurchoix" class="btn btn-primary">Confirmer</a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="" class="tab-a">
-                                    <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
-                                    Hugues Codeur   
-                                </a>
-                            </td>
-                            <td>7.5/10</td>
-                            <td>Disponible</td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Choisir
-                                </button>
-                                <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
-                                <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                        <a href="/liste_repetiteurchoix" class="btn btn-primary">Confirmer</a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+{% extends "Partials/Base_parent.html" %} {% block body %}
+
+<main class="main-search my-5 py-5">
+  <!-- <section class="header-table-search">
+        <div class="items-controller-search">
+          <h5>Show</h5>
+          <select name="" id="itemperpage">
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="08" selected>08</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+          <h5>Per Page</h5>
+        </div>
+        <div class="search-search">
+          <h5>Search</h5>
+          <input type="text" name="" id="search" placeholder="search" />
+        </div>
+      </section> -->
+  <div class="mb-4 row container-fluid">
+    <div class="col-md-11 col-sm-10"><h2>Liste des répétiteurs</h2></div>
+    <div class="col-md-1 col-sm-2">
+      <a href="/recherche" class="btn btn-danger">RETOUR</a>
+    </div>
+  </div>
+  <section class="field-search container-fluid" id="itemperpage">
+    <table>
+      <thead class="">
+        <tr>
+          <!-- <th><input type="checkbox" name="" id="selectAll"></th> -->
+          <!-- <th>S.N</th> -->
+          <th>Name</th>
+          <th>Note</th>
+          <!-- <th>Position</th> -->
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <tr>
+              <td><input type="checkbox"></td>
+              <td>01</td>
+              <td>Tiger Nixon</td>
+              <td>7,5</td>
+              <td>Disponible</td>
+              <td><input type="checkbox"></td>
+              <td><i class="fa fa-edit"></i> | <i class="fa fa-trash"></i></td>
+            </tr> -->
+
+        <!-- * test -->
+
+        {% for repetiteur in repetiteurs %}
+        <tr>
+          <td>
+            <a href="" class="tab-a">
+              <img
+                src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
+                style="border-radius: 45px"
+                class="img-thumbnail"
+                width="45px"
+                alt=""
+              />
+              {{ repetiteur[0] }}
+            </a>
+          </td>
+          <td>10/10</td>
+          <td>Disponible</td>
+          <td>
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              Choisir
+            </button>
+            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="staticBackdrop"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      Modal title
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    Vous êtes sur le point de choisir le répétiteur Hugues
+                    Codeur. Voulez-vous confirmez ?
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                    <a href="/liste_repetiteurchoix" class="btn btn-primary"
+                      >Confirmer</a
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
-    </section>
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="bottom-field-search">
+      <ul class="pagination-search">
+        <li class="prev"><a href="#" id="prev">&#139;</a></li>
+
+        <!-- page number here -->
+        <li class="next"><a href="#" id="next">&#155;</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
 {% endblock %}
