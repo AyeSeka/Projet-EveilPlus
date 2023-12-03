@@ -301,6 +301,139 @@ footer{
   width: 100%;
   height: 20%;
 }
+
+/****Page Inscription parent******/
+.section_inscriptionParent_page_container{
+  width: 80%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.section_inscriptionParent_container1{
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.form_titr_inscriptionParent{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+}
+.section_inscriptionParent_container1 form{
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.inscriptionParent_login1{
+  width: 90%;
+  height: 15%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.inscriptionParent_login1 input,.inscriptionParent_login1 select{
+  width: 45%;
+  height: 100%;
+  padding-left: 10px;
+}
+.btn_form_inscriptionParent{
+  width: 25%;
+  height: 90%;
+  background-color: #6ebca8;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid #6ebca8;
+}
+.btn_form_inscriptionParent a{
+  text-decoration: none;
+  color: #fff;
+}
+.btn_form_inscriptionParent:hover,.btn_form_inscriptionParent a:hover{
+  color: #6ebca8;
+  background-color: #fff;
+}
+.inscriptionParent_login2{
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+/****Page Inscription parent******/
+.section_inscriptionRepetiteur_page_container{
+  width: 80%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.section_inscriptionRepetiteur_container1{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* border: solid red; */
+}
+.section_inscriptionRepetiteur_container1 form{
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.inscriptionRepetiteur_login1{
+  width: 90%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.btn_form_inscriptionRepetiteur{
+  width: 20%;
+  height: 45%;
+  background-color: #6ebca8;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid #6ebca8;
+}
+.btn_form_inscriptionRepetiteur a{
+  text-decoration: none;
+  color: #fff;
+}
+.btn_form_inscriptionRepetiteur:hover,.btn_form_inscriptionRepetiteur a:hover{
+  color: #6ebca8;
+  background-color: #fff;
+}
+.in
 /**************COMPTE PARENT********************/
 
 /* acceuil */

@@ -39,8 +39,7 @@
         </div>
     </nav>
    <section class="section1_index"> <img src="{{url_for('static', filename='/img/i.jpg')}}" alt="image_eveil_enfant" class="logo"></section>
-   <section id="Services">
-      
+   <section id="Services">    
       <div class="section2_index_min">
         <div class="section2_index_min_img">
           <img src="{{url_for('static', filename='/img/why.png')}}" alt="logo_eveilplus" class="logo">
@@ -58,7 +57,34 @@
                   en réprimandant en volupté
               </div>
             </div>
-            <div class="section2_index_min_img_1_btn"><a href="">S'INSCRIRE</a></div>
+            <div class="section2_index_min_img_1_btn">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">S'INSCRIRE</a>
+                 <!-- Modal -->
+                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5 container" id="staticBackdropLabel">INSCRIPTION</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body container">
+                        <p> <i> Je m'inscris en tant que...</i></p>
+                      </div>
+                      <div class="modal-body">
+                          <div class="container row m-auto">
+                              <div class="col-md-6">
+                                  <a href="/inscriptionParent" class="btn btn-success"> PARENT</a>
+                              </div>
+                              <div class="col-md-6">
+                                  <a href="/inscriptionRepetiteur" class="btn btn-warning"> REPETITEUR</a>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -79,7 +105,34 @@
                 en réprimandant en volupté
             </div>
           </div>
-          <div class="section2_index_min_img_1_btn1"><a href="">S'INSCRIRE</a></div>
+          <div class="section2_index_min_img_1_btn1">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">S'INSCRIRE</a>
+             <!-- Modal -->
+             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5 container" id="staticBackdropLabel">INSCRIPTION</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body container">
+                    <p> <i> Je m'inscris en tant que...</i></p>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container row m-auto">
+                          <div class="col-md-6">
+                              <a href="/inscriptionParent" class="btn btn-success"> PARENT</a>
+                          </div>
+                          <div class="col-md-6">
+                              <a href="/inscriptionRepetiteur" class="btn btn-warning"> REPETITEUR</a>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
       <div class="section2_index_min_img">
@@ -106,55 +159,82 @@
               en réprimandant en volupté
           </div>
         </div>
-        <div class="section2_index_min_img_1_btn"><a href="">S'INSCRIRE</a></div>
+        <div class="section2_index_min_img_1_btn">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">S'INSCRIRE</a>
+           <!-- Modal -->
+           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5 container" id="staticBackdropLabel">INSCRIPTION</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body container">
+                  <p> <i> Je m'inscris en tant que...</i></p>
+                </div>
+                <div class="modal-body">
+                    <div class="container row m-auto">
+                        <div class="col-md-6">
+                            <a href="/inscriptionParent" class="btn btn-success"> PARENT</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/inscriptionRepetiteur" class="btn btn-warning"> REPETITEUR</a>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-</section>
-<footer id="Apropos">
-  <div class="footer_main_index">
-    <div class="footer_main_index1">
-      <div class="footer_main_index1_titr1"> 
-        <h4>A propos de nous</h4>
+  </section>
+  <footer id="Apropos">
+    <div class="footer_main_index">
+      <div class="footer_main_index1">
+        <div class="footer_main_index1_titr1"> 
+          <h4>A propos de nous</h4>
+        </div>
+        <div class="footer_main_index1_txt">
+          douleur assis amet, consectetur magna aliqua. 
+          Ut enim ad minim veniam, quisdotempor incididunt r
+        </div>
       </div>
-      <div class="footer_main_index1_txt">
-        douleur assis amet, consectetur magna aliqua. 
-        Ut enim ad minim veniam, quisdotempor incididunt r
+      <div class="footer_main_index1">
+        <div class="footer_main_index1_titr1"> 
+          <h4>Lien Utile</h4>
+        </div>
+        <div class="footer_main_index1_txt">
+          <div><a href="#">Facebook</a></div>
+          <div><a href="#">Linkedln</a></div>
+          <div><a href="#">Instagram</a></div>
+          <div><a href="#"><a href="#">twitter</a></a></div>
+        </div>
+      </div>
+      <div class="footer_main_index1">
+        <div class="footer_main_index1_titr1"> 
+          <h4>Contactez nous</h4>
+        </div>
+        <div class="footer_main_index1_txt">
+          douleur assis amet, consectetur magna aliqua. 
+          Ut enim ad minim veniam, quisdotempor incididunt r
+        </div>
+      </div>
+      <div class="footer_main_index1">
+        <div class="footer_main_index1_titr1"> 
+          <h4>Newletters</h4>
+        </div>
+        <div class="footer_main_index1_txt_news">
+          <form  class="footer_form_index"action ="#" methode="#">
+            <input  class="footer_input_index" type="mail" name="#" placeholder="Entrez votre addresse mail">
+            <input class="footer_input_btn" type="submit" value="S'ABONNER">
+          </form>
+        </div>
       </div>
     </div>
-    <div class="footer_main_index1">
-      <div class="footer_main_index1_titr1"> 
-        <h4>Lien Utile</h4>
-      </div>
-      <div class="footer_main_index1_txt">
-        <div><a href="#">Facebook</a></div>
-        <div><a href="#">Linkedln</a></div>
-        <div><a href="#">Instagram</a></div>
-        <div><a href="#"><a href="#">twitter</a></a></div>
-      </div>
-    </div>
-    <div class="footer_main_index1">
-      <div class="footer_main_index1_titr1"> 
-        <h4>Contactez nous</h4>
-      </div>
-      <div class="footer_main_index1_txt">
-        douleur assis amet, consectetur magna aliqua. 
-        Ut enim ad minim veniam, quisdotempor incididunt r
-      </div>
-    </div>
-    <div class="footer_main_index1">
-      <div class="footer_main_index1_titr1"> 
-        <h4>Newletters</h4>
-      </div>
-      <div class="footer_main_index1_txt_news">
-        <form  class="footer_form_index"action ="#" methode="#">
-          <input  class="footer_input_index" type="mail" name="#" placeholder="Entrez votre addresse mail">
-          <input class="footer_input_btn" type="submit" value="S'ABONNER">
-        </form>
-      </div>
-    </div>
-  </div>
-</footer>
+  </footer>
       
 
 

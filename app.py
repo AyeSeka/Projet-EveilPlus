@@ -13,6 +13,15 @@ def index():
 def connexion():
     return render_template("Authentification/connexion.html")
 
+########### Inscription Parent ##############
+@app.route("/inscriptionParent")
+def inscriptionParent():
+    return render_template("Authentification/inscriptionParent.html")
+
+########### Inscription Repetiteur ##############
+@app.route("/inscriptionRepetiteur")
+def inscriptionRepetiteur():
+    return render_template("Authentification/inscriptionRepetiteur.html")
 
 
 # PARENT
@@ -36,6 +45,7 @@ def historique_des_postes():
 @app.route("/poster_maintenant")
 def poster_maintenant():
     return render_template("Parents/Postes/poster_maintenant.html")
+
 #FIN POSTE
 #DEBUT RECHERCHE
 @app.route("/recherche")
@@ -49,6 +59,10 @@ def liste_recherche():
 @app.route("/liste_repetiteurchoix")
 def liste_repetiteurchoix():
     return render_template("Parents/Recherches/liste_repetiteurchoix.html")
+
+@app.route("/profil_repetiteur")
+def profil_repetiteur():
+    return render_template("Parents/Recherches/profil_repetiteur.html")
 
 #FIN RECHERCHE
 # FIN PARENT
