@@ -48,13 +48,18 @@ def poster_maintenant():
 # ! Back-End Recherche
 # ? Fonction pour récupérer les options depuis la base de données
 def get_options_from_db(column_name, table_name):
-    conn = pyodbc.connect(
-        'Driver={SQL Server};'
-        'Server=HP\\SQLEXPRESS;'
-        'Database=eveil+;'
-        'user=HP\\goliy;'
+    # conn = pyodbc.connect(
+    #     'Driver={SQL Server};'
+    #     'Server=HP\\SQLEXPRESS;'
+    #     'Database=eveil+;'
+    #     'user=HP\\goliy;'
 
-    )
+    # )
+    conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Database=eveil_plus;" 
+                       "Trusted_Connection=yes")
+    
     cursor = conn.cursor()
 
     # if table_name == "SpecialiteCompetence":
@@ -104,12 +109,16 @@ def recherche():
 # ? Liste Recherche
 @app.route("/liste_recherche", methods=["GET", "POST"])
 def liste_recherche():
-    conn = pyodbc.connect(
-        'Driver={SQL Server};'
-        'Server=HP\\SQLEXPRESS;'
-        'Database=eveil+;'
-        'user=HP\\goliy;'
-    )
+    # conn = pyodbc.connect(
+    #     'Driver={SQL Server};'
+    #     'Server=HP\\SQLEXPRESS;'
+    #     'Database=eveil+;'
+    #     'user=HP\\goliy;'
+    # )
+    conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Database=eveil_plus;" 
+                       "Trusted_Connection=yes")
     cursor = conn.cursor()
     # Récupérez les données du formulaire
     habitation = request.form.get("habitation")
@@ -145,6 +154,12 @@ def liste_recherche():
 def liste_repetiteurchoix():
     return render_template("Parents/Recherches/liste_repetiteurchoix.html")
 
+# Debut profil Parent
+@app.route("/profil_parent")
+def profil_parent():
+    return render_template("Parents/Profil_Parent/profil_parent.html")
+
+# fin profil Parent
 # FIN RECHERCHE
 # FIN PARENT
 

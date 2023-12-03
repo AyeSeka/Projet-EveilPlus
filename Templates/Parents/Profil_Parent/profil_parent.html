@@ -1,0 +1,54 @@
+{% extends "Partials/Base_parent.html" %}
+{% block body %}
+    <section class="my-5 py-5 section-rech">
+        <div class="container colunm">
+            <div class="main_rech1_titre1 mb-4">
+                <h2>Mon profil</h2>
+            </div>
+            <div class="row">
+                
+                <div class="col-md-3">
+                    <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="img-thumbnail img-fluid" alt="...">
+                </div>
+                <div class="col-md-9">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+                        <tr> 
+                            <td><b>Nom</b></td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr> 
+                            <td><b>Prenoms</b></td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <td><b>E-mail</b></td>
+                            <td>@twitter</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ville</b></td>
+                            <td>@twitter</td>
+                        </tr>
+                        <tr>
+                            <td><b>Telephone</b></td>
+                            <td>@twitter</td>
+                        </tr>
+                        <tr>
+                            <td><b>Telephone</b></td>
+                            <td>@twitter</td>
+                        </tr>
+                        <tr>
+                            <td><b>Telephone</b></td>
+                            <td>@twitter</td>
+                        </tr>
+                        
+                        </tbody>
+                    </table>
+                    <div class="col-md-6">
+                        <a  href="" class="btn btn-warning text-white">MODIFIER</a>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </section>
+{% endblock %}
