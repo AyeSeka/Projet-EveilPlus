@@ -1,91 +1,122 @@
-{% extends "Partials/Base_parent.html" %}
-{% block body %}
-      <!--PARTIE RECHERCHE-->
-      <section class="my-5 py-5 section-rech">
-        <div class="container colunm">
-          <div class="main_rech1_titre1 mb-4">
-              <h2>Rechercher un répétiteur</h2>
-          </div>
-          <div class="">
-            <form action="/liste_recherche" method="">
-              <div class="row bg-color">
-                <div class="col-md-7 py-4">
-                  <div class="row mb-4">
-                    <div class="col-md-4">
-                      <label for="habitation" class="form-label">Lieu d'habitation:</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input class="form-control" list="datalistOptions" id="habitation" placeholder="Selectionnez le lieu d'habitation...">
-                        <datalist id="datalistOptions">
-                          <option value="San Francisco">
-                          <option value="New York">
-                          <option value="Seattle">
-                          <option value="Los Angeles">
-                          <option value="Chicago">
-                        </datalist>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-4">
-                      <label for="Niveaux" class="form-label">Niveau d'etude:</label>
-                    </div>
-                    <div class="col-md-8">
-                        <input class="form-control" list="datalistOptions" id="Niveaux" placeholder="Selectionnez le niveau d'etude ...">
-                        <datalist id="datalistOptions">
-                          <option value="San Francisco">
-                          <option value="New York">
-                          <option value="Seattle">
-                          <option value="Los Angeles">
-                          <option value="Chicago">
-                        </datalist>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-5 py-4">
-                  <div class="row mb-4">
-                    <div class="col-md-6">
-                      <label for="experience" class="form-label">Année d'experience:</label>
-                    </div>
-                    <div class="col-md-6">
-                        <input class="form-control" list="datalistOptions" id="experience" placeholder="Selectionnez...">
-                        <datalist id="datalistOptions">
-                          <option value="San Francisco">
-                          <option value="New York">
-                          <option value="Seattle">
-                          <option value="Los Angeles">
-                          <option value="Chicago">
-                        </datalist>
-                    </div>
-                  </div>
-                  <div class="row mb-4">
-                    <div class="col-md-6">
-                      <label for="Competence" class="form-label">Compétence(s):</label>
-                    </div>
-                    <div class="col-md-6">
-                        <input class="form-control" list="datalistOptions" id="Competence" placeholder="Selectionnez...">
-                        <datalist id="datalistOptions">
-                          <option value="San Francisco">
-                          <option value="New York">
-                          <option value="Seattle">
-                          <option value="Los Angeles">
-                          <option value="Chicago">
-                        </datalist>
-                    </div>
-                  </div>
-                </div>
+{% extends "Partials/Base_parent.html" %} {% block body %}
+<!--PARTIE RECHERCHE-->
+<section class="my-5 py-5 section-rech">
+  <div class="container colunm">
+    <div class="main_rech1_titre1 mb-4">
+      <h2>Rechercher un répétiteur</h2>
+    </div>
+    <div class="">
+      <form action="/liste_recherche" method="POST">
+        <div class="row bg-color">
+          <div class="col-md-7 py-4">
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <label for="habitation" class="form-label"
+                  >Lieu d'habitation:</label
+                >
               </div>
-              <div class="row col-5 mt-4 m-auto">
-                <div class="col-md-6 mb-sm-4">
-                  <button class="btn btn-danger" type="reset">ANNULER</button>
-                </div>
-                <div class="col-md-6">
-                  <button class="btn btn-success" type="submit" >RECHERCHER</button>
-                </div>
-              </div>
-            </form>
+              <div class="col-md-6">
+                <input
+                  class="form-control"
+                  name="habitation"
+                  list="1"
+                  id="habitation"
+                  placeholder="Selectionnez le lieu d'habitation..."
+                />
 
+                <datalist id="1">
+                  {% for habitation in datalist_habitation %}
+                  <option value="{{ habitation[0] }}">
+                    {{ habitation[0] }}
+                  </option>
+                  {% endfor %}
+                </datalist>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <label for="Niveaus" class="form-label">Niveau d'etude:</label>
+              </div>
+              <div class="col-md-6">
+                <input
+                  class="form-control"
+                  name="niveau"
+                  list="2"
+                  id="Niveaus"
+                  placeholder="Selectionnez le lieu d'habitation..."
+                />
+                <datalist id="2">
+                  {% for niveau in datalist_niveau %}
+                  <option value="{{ niveau[0] }}">{{ niveau[0] }}</option>
+                  {% endfor %}
+                </datalist>
+              </div>
+            </div>
           </div>
-        </div>  
-      </section>
+
+          <div class="col-md-5 py-4">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="experience" class="form-label"
+                  >Année d'experience:</label
+                >
+              </div>
+              <div class="col-md-6">
+                <input
+                  class="form-control"
+                  name="experience"
+                  list="3"
+                  id="experience"
+                  placeholder="Selectionnez le lieu d'habitation..."
+                />
+                <datalist id="3">
+                  <!-- <option value="1">
+                  <option value="2">
+                  <option value="3">
+                  <option value="4">
+                  <option value="5">
+                  <option value="6">
+                  <option value="7">
+                  <option value="8">
+                  <option value="9">
+                  <option value="10"> -->
+
+                  {% for experience in datalist_experience %}
+                  <option value="{{ experience[0] }}">
+                    {{ experience[0]}}
+                  </option>
+                  {% endfor %}
+                </datalist>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <!-- <label for="Competence" class="form-label">Compétence(s):</label> -->
+                <label for="specialite">Spécialité:</label>
+              </div>
+              <div class="col-md-6">
+                <select class="form-select" id="specialite" name="specialite">
+                  {% for competence in datalist_competence %}
+                  <option value="{{ competence[0] }}">
+                    {{ competence[1]}}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-5 mt-4 m-auto">
+          <div class="col-md-6 mb-sm-4">
+            <button class="btn btn-danger" type="reset">ANNULER</button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-success" type="submit">RECHERCHER</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 {% endblock %}
