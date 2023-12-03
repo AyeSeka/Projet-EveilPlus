@@ -53,9 +53,9 @@ def poster_maintenant():
 
 #FIN POSTE
 #DEBUT RECHERCHE
-@app.route("/recherche")
-def recherche():
-    return render_template("Parents/Recherches/recherche.html")
+# @app.route("/recherche")
+# def recherche():
+#     return render_template("Parents/Recherches/recherche.html")
 # FIN POSTE
 # DEBUT RECHERCHE
 
