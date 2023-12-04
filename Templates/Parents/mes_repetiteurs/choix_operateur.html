@@ -1,0 +1,65 @@
+{% extends "Partials/Base_parent.html" %} {% block body %}
+
+<section class="mes-operateurs">
+  <h2>Choisir un opérateur</h2>
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="inlineRadioOptions"
+      id="inlineRadio1"
+      value="option1"
+    />
+    <label class="form-check-label" for="inlineRadio1">1</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="inlineRadioOptions"
+      id="inlineRadio2"
+      value="option2"
+    />
+    <label class="form-check-label" for="inlineRadio2">2</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="inlineRadioOptions"
+      id="inlineRadio3"
+      value="option3"
+      disabled
+    />
+    <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
+  </div>
+  <div class="div-choix-operateur">
+    <div class="choix-operateur">
+      <img
+        src="{{url_for('static', filename='/img/orange-logo.jpg')}}"
+        alt=""
+        height="100%"
+        width="100%"
+      />
+    </div>
+    <a href="#">
+      <div class="choix-operateur">
+        <img
+          src="{{url_for('static', filename='/img/mtn-logo.jpg')}}"
+          alt=""
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </a>
+    <div class="choix-operateur">
+      <img
+        src="{{url_for('static', filename='/img/moov-logo.jpg')}}"
+        alt=""
+        height="100%"
+        width="100%"
+      />
+    </div>
+  </div>
+</section>
+{% endblock %}

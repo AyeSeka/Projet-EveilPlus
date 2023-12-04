@@ -1,0 +1,95 @@
+{% extends "Partials/Base_parent.html" %} {% block body %}
+
+<section class="div-form-paiement">
+  <div class="form-paiement">
+    <div class="parent-form">
+      <h2>Paiement Mensuel</h2>
+      <div class="formulaire-paiement">
+        <form action="" class="form-paiement-choix">
+          <div class="div-label">
+            <label for="name">Nom:</label>
+          </div>
+          <div class="div-label">
+            <input type="text" id="name" placeholder="Nome" />
+          </div>
+          <div class="div-label">
+            <label for="operateur">Operateur:</label>
+          </div>
+          <div class="operateur">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadio1"
+                value="option1"
+              />
+              <label class="form-check-label" for="inlineRadio1">
+                <img
+                  src="{{url_for('static', filename='/img/orange-logo.jpg')}}"
+                  alt=""
+                  height="40px"
+                  width="40px"
+                />
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadio2"
+                value="option2"
+              />
+              <label class="form-check-label" for="inlineRadio2">
+                <img
+                  src="{{url_for('static', filename='/img/mtn-logo.jpg')}}"
+                  alt=""
+                  height="40px"
+                  width="40px"
+                />
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadio3"
+                value="option3"
+              />
+              <label class="form-check-label" for="inlineRadio3">
+                <img
+                  src="{{url_for('static', filename='/img/moov-logo.jpg')}}"
+                  alt=""
+                  height="40px"
+                  width="40px"
+                />
+              </label>
+            </div>
+          </div>
+          <!-- <div class="div-label">
+            <input type="text" id="operateur" placeholder="Operateur" />
+          </div> -->
+          <div class="div-label">
+            <label for="numero">Numéro:</label>
+          </div>
+          <div class="div-label">
+            <input type="text" id="numero" placeholder="Numero" />
+          </div>
+          <div class="div-label">
+            <label for="montant">Montant:</label>
+          </div>
+          <div class="div-label">
+            <input type="text" id="montant" placeholder="Montant" />
+          </div>
+          <div class="div-label div-button">
+            <button class="button-paiement btn-danger">ANNULER</button>
+            <button class="button-paiement btn-success">VALIDER</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

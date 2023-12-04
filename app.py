@@ -151,9 +151,9 @@ def liste_recherche():
             join SpecialiteCompetence s ON (r.id_repetiteur = s.id_repetiteur)
             join Competence c ON (c.id_competence = s.id_competence)
             WHERE 
-            adresse_repetiteur = ? AND
-            niveau_repetiteur = ? AND
-            annee_experience = ? AND
+            adresse_repetiteur = ? OR
+            niveau_repetiteur = ? OR
+            annee_experience = ? OR
             c.id_competence = ? 
             """
     # r.id_repetiteur = s.id_repetiteur AND
@@ -169,6 +169,7 @@ def liste_recherche():
 def liste_repetiteurchoix():
     return render_template("Parents/Recherches/liste_repetiteurchoix.html")
 
+<<<<<<< HEAD
 # Debut profil Parent
 @app.route("/profil_parent")
 def profil_parent():
@@ -182,10 +183,36 @@ def profil_repetiteur():
 #FIN RECHERCHE
 # FIN RECHERCHE
 # FIN PARENT
+=======
+>>>>>>> fc5d120c515c2168166ec88230fd61e67da3053b
 
-# DEBUT LIBRAIRIE
+# ! MES REPETITEURS
+# ? Mes Repetiteurs
+@app.route("/mes_repetiteurs")
+def mes_repetiteurs():
+    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html")
 
 
+# ? Attribuer Note
+@app.route("/attribuer_note")
+def attribuer_note():
+    return render_template("Parents/mes_repetiteurs/attribuer_note.html")
+
+
+# ? Choix Operateur
+@app.route("/choix_operateur")
+def choix_operateur():
+    return render_template("Parents/mes_repetiteurs/choix_operateur.html")
+
+# ? Choix Operateur
+
+
+@app.route("/form_paiement")
+def form_paiement():
+    return render_template("Parents/mes_repetiteurs/form_paiement.html")
+
+
+# ! BACK-END LIBRAIRIE
 @app.route("/librairie_parent")
 def librairie_parent():
     return render_template("librairie/librairie_parent.html")

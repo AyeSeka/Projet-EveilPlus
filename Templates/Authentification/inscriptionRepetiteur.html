@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
     <head>
@@ -70,3 +71,77 @@
         <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
     </body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{url_for('static', filename='/img/logo_Eveil+.png')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/initialize.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+            
+        <title>Eveil+</title>
+    </head>
+    <body class="body_page_connx">
+        <section class="section_connexion_page">
+            <main class="section_inscriptionRepetiteur_page_container">
+                <div class="section_inscriptionRepetiteur_container1">
+                    <div class="form_titr_inscriptionParent"><h2> Inscription Répétiteur<h3></div>
+                    <form action="#" methode="#">
+                        <div class="inscriptionParent_login1">
+                            <input type="text"  name="nom" placeholder="Votre Nom">
+                            <input type="text"  name="prenom" placeholder="Votre Prenom">
+                        </div>
+                        <div class="inscriptionParent_login1">
+                            <input type="text"  name="habitataion" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau">
+                            <input type="email"  name="mail" placeholder="Votre email">
+                         </div>
+                         <div class="inscriptionParent_login1">
+                            <input type="number"  name="age" placeholder="Votre âge">
+                            <input type="number"  name="experience" placeholder="Vos années d'expériences">
+                         </div>
+                         <div class="inscriptionParent_login1">
+                            <select>
+                                <option>--Votre niveau scolaire--</option>
+                                <option>BAC</option>
+                                <option>BAC+1</option>
+                                <option>BAC+2</option>
+                                <option>BAC+3</option>
+                                <option>BAC+4</option>
+                                <option>BAC+5</option>
+                            </select>
+                            <select>
+                                <option>--Vos compétences--</option>
+                                <option>Sciences</option>
+                                <option>Litterature</option>
+                                <option>Sciences et Litterature</option>
+                            </select>
+                        
+                         </div>
+                         <div class="inscriptionParent_login1">
+                            <input type="password" name="mot de passe" placeholder="Mot de passe">
+                            <input type="password" name="confirm_password" placeholder="Confirmer votre mot de passe">
+                         </div>
+                         <div class="inscriptionRepetiteur_login1">
+                            <div>
+                                <label for="my_checkbox">Je suis disponible</label>
+                                <input type="checkbox" id="my_checkbox" name="my_checkbox_name" value="my_checkbox_value">
+                            </div>
+                            <div class="btn_form_inscriptionRepetiteur"><a href="/accueil_repetiteur">VALIDER</a></div>
+                            <!--<input type="submit" value="CONNEXION" class="btn_form_page_connex">-->
+                         </div>
+                    </form>
+                    <div class="inscriptionParent_login2">
+                        Déja un compte ? <a href="/connexion"> Connecter vous ici</a>
+                    </div>
+                </div>
+            </main>
+        </section>
+        <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
+        <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
+    </body>
+</html>
+>>>>>>> fc5d120c515c2168166ec88230fd61e67da3053b
