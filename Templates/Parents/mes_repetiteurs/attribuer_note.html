@@ -1,0 +1,35 @@
+{% extends "Partials/Base_parent.html" %} {% block body %}
+
+<section class="mes-repetiteurs">
+  <div class="div-repetiteur">
+    <div class="div-repetiteur-profil">
+      <!-- <div class="div-repetiteur-profil-picture"></div> -->
+      <div>
+        <img
+          src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
+          alt=""
+          class="circle"
+        />
+        <!-- <div class="txt">TEXT</div> -->
+      </div>
+      <h4 class="div-repetiteur-profil-name">Gnaba Charles</h4>
+    </div>
+    <div class="div-repetiteur-button">
+      <select class="div-repetiteur-button-button">
+        <!-- <option value="">--Noter votre répétiteur</option> -->
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      <button class="div-repetiteur-button-button">Valider</button>
+    </div>
+  </div>
+</section>
+{% endblock %}

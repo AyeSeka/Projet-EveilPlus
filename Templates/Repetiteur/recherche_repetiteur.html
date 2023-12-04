@@ -1,0 +1,91 @@
+{% extends "Partials/Base_repetiteut.html" %}
+{% block body %}
+    <!--PARTIE RECHERCHE-->
+    <section class="my-5 py-5 section-rech">
+        <div class="container colunm">
+          <div class="main_rech1_titre1 mb-4">
+              <h2>Rechercher une offre</h2>
+          </div>
+          <div class="">
+            <form action="/liste_recherche" method="">
+              <div class="row bg-color">
+                <div class="col-md-7 py-4">
+                  <div class="row mb-4">
+                    <div class="col-md-4">
+                      <label for="habitation" class="form-label">Lieu d'habitation:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input class="form-control" list="datalistOptions" id="habitation" placeholder="Selectionnez le lieu d'habitation...">
+                        <datalist id="datalistOptions">
+                          <option value="San Francisco">
+                          <option value="New York">
+                          <option value="Seattle">
+                          <option value="Los Angeles">
+                          <option value="Chicago">
+                        </datalist>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label class="form-label">Niveau:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                            <label class="form-check-label" for="inlineCheckbox1">Primaire</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                            <label class="form-check-label" for="inlineCheckbox2">Collège</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                            <label class="form-check-label" for="inlineCheckbox3">Lycée</label>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+
+                <div class="col-md-5 py-4">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                        <label for="Seance" class="form-label">Séance(s):</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-select" id="Seance" aria-label="Default select example">
+                                <option selected>---Selectionnez le nombre de séance---</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                  <div class="row mb-4">
+                    <div class="col-md-4">
+                      <label for="nombre" class="form-label">Nombre enfant:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-select" id="nombre" aria-label="Default select example">
+                            <option selected>---Selectionnez le nombre d'enfant---</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row col-5 mt-4 m-auto">
+                <div class="col-md-6 mb-sm-4">
+                  <button class="btn btn-danger" type="reset">ANNULER</button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-success" type="submit" >RECHERCHER</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>  
+      </section>
+{% endblock %}
