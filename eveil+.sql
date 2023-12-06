@@ -1,5 +1,5 @@
-CREATE DATABASE eveil+;
-USE eveil+;
+CREATE DATABASE eveil_plus;
+USE eveil_plus;
 
 CREATE TABLE Repetiteur (
     id_repetiteur INT PRIMARY KEY IDENTITY(1,1),

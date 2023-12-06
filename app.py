@@ -169,20 +169,31 @@ def liste_recherche():
 def liste_repetiteurchoix():
     return render_template("Parents/Recherches/liste_repetiteurchoix.html")
 
-# Debut profil Parent
+# Debut profil
 @app.route("/profil_parent")
 def profil_parent():
-    return render_template("Parents/Profil_Parent/profil_parent.html")
+    return render_template("Profil/profil_parent.html")
 
-# fin profil Parent
 @app.route("/profil_repetiteur")
 def profil_repetiteur():
-    return render_template("Parents/Recherches/profil_repetiteur.html")
+    return render_template("Profil/profil_repetiteur.html")
+
+# fin profil
 
 #FIN RECHERCHE
 # FIN RECHERCHE
 # FIN PARENT
+# DEBUT COMMANDE
 
+# Panier
+@app.route("/panier_parent")
+def panier_parent():
+    return render_template("Panier/panier_parent.html")
+
+@app.route("/panier_rep")
+def panier_rep():
+    return render_template("Panier/panier_rep.html")
+# FIN COMMANDE
 # DEBUT LIBRAIRIE
 
 
