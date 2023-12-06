@@ -2072,7 +2072,7 @@ font-size: 0.6rem;
   flex-wrap: wrap;
 }
 
-.form-check{
+.form-check-paiement{
   display: flex;
   align-items: center;
   padding-right: 30px;
@@ -2080,7 +2080,7 @@ font-size: 0.6rem;
 }
 
 
-.form-check-input{
+.form-check-input-paiement{
   margin-right: 10px;
 }
 

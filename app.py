@@ -71,7 +71,7 @@ def get_options_from_db(column_name, table_name):
 
     # )
     conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Server=GEEK_MACHINE\SQLEXPRESS;" 
                        "Database=eveil_plus;" 
                        "Trusted_Connection=yes")
     
@@ -130,8 +130,12 @@ def liste_recherche():
     #     'Database=eveil+;'
     #     'user=HP\\goliy;'
     # )
+    # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
+    #                    "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+    #                    "Database=eveil_plus;" 
+    #                    "Trusted_Connection=yes")
     conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Server=GEEK_MACHINE\SQLEXPRESS;" 
                        "Database=eveil_plus;" 
                        "Trusted_Connection=yes")
     cursor = conn.cursor()
@@ -169,7 +173,6 @@ def liste_recherche():
 def liste_repetiteurchoix():
     return render_template("Parents/Recherches/liste_repetiteurchoix.html")
 
-<<<<<<< HEAD
 # Debut profil Parent
 @app.route("/profil_parent")
 def profil_parent():
@@ -183,8 +186,6 @@ def profil_repetiteur():
 #FIN RECHERCHE
 # FIN RECHERCHE
 # FIN PARENT
-=======
->>>>>>> fc5d120c515c2168166ec88230fd61e67da3053b
 
 # ! MES REPETITEURS
 # ? Mes Repetiteurs
@@ -247,6 +248,9 @@ def liste_rech_rep():
 def candidature_rep():
     return render_template("Repetiteur/Recherche/candidature_rep.html")
 
+@app.route("/info_repetiteur")
+def info_repetiteur():
+    return render_template("Repetiteur/info_repetiteur.html")
 
 # DEFIN RECHERCHE_REPETITEUR
 # FIN REPETITEUR
