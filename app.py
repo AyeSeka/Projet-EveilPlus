@@ -71,7 +71,7 @@ def get_options_from_db(column_name, table_name):
 
     # )
     conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Server=GEEK_MACHINE\SQLEXPRESS;" 
                        "Database=eveil_plus;" 
                        "Trusted_Connection=yes")
     
@@ -130,8 +130,12 @@ def liste_recherche():
     #     'Database=eveil+;'
     #     'user=HP\\goliy;'
     # )
+    # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
+    #                    "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+    #                    "Database=eveil_plus;" 
+    #                    "Trusted_Connection=yes")
     conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Server=GEEK_MACHINE\SQLEXPRESS;" 
                        "Database=eveil_plus;" 
                        "Trusted_Connection=yes")
     cursor = conn.cursor()
@@ -151,9 +155,9 @@ def liste_recherche():
             join SpecialiteCompetence s ON (r.id_repetiteur = s.id_repetiteur)
             join Competence c ON (c.id_competence = s.id_competence)
             WHERE 
-            adresse_repetiteur = ? AND
-            niveau_repetiteur = ? AND
-            annee_experience = ? AND
+            adresse_repetiteur = ? OR
+            niveau_repetiteur = ? OR
+            annee_experience = ? OR
             c.id_competence = ? 
             """
     # r.id_repetiteur = s.id_repetiteur AND
@@ -195,8 +199,33 @@ def panier_rep():
     return render_template("Panier/panier_rep.html")
 # FIN COMMANDE
 # DEBUT LIBRAIRIE
+# ! MES REPETITEURS
+# ? Mes Repetiteurs
+@app.route("/mes_repetiteurs")
+def mes_repetiteurs():
+    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html")
 
 
+# ? Attribuer Note
+@app.route("/attribuer_note")
+def attribuer_note():
+    return render_template("Parents/mes_repetiteurs/attribuer_note.html")
+
+
+# ? Choix Operateur
+@app.route("/choix_operateur")
+def choix_operateur():
+    return render_template("Parents/mes_repetiteurs/choix_operateur.html")
+
+# ? Choix Operateur
+
+
+@app.route("/form_paiement")
+def form_paiement():
+    return render_template("Parents/mes_repetiteurs/form_paiement.html")
+
+
+# ! BACK-END LIBRAIRIE
 @app.route("/librairie_parent")
 def librairie_parent():
     return render_template("librairie/librairie_parent.html")
@@ -231,6 +260,9 @@ def liste_rech_rep():
 def candidature_rep():
     return render_template("Repetiteur/Recherche/candidature_rep.html")
 
+@app.route("/info_repetiteur")
+def info_repetiteur():
+    return render_template("Repetiteur/info_repetiteur.html")
 
 # DEFIN RECHERCHE_REPETITEUR
 # FIN REPETITEUR
