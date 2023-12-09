@@ -278,21 +278,21 @@ footer{
   padding-left: 2%;
 }
 .btn_form_page_connex{
-  width: 30%;
+  width: 40%;
   height: 25%;
-  background-color: #6ebca8;
+  /* background-color: #6ebca8; */
   color: #fff;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid #6ebca8;
+  /* border: solid #6ebca8; */
 }
-.btn_form_page_connex a{
+/* .btn_form_page_connex a{
   text-decoration: none;
   color: #fff;
-}
+} */
 .btn_form_page_connex:hover,.btn_form_page_connex a:hover{
   color: #6ebca8;
   background-color: #fff;
@@ -352,19 +352,19 @@ footer{
 .btn_form_inscriptionParent{
   width: 25%;
   height: 90%;
-  background-color: #6ebca8;
+  /* background-color: #6ebca8; */
   color: #fff;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid #6ebca8;
+  /* border: solid #6ebca8; */
 }
-.btn_form_inscriptionParent a{
+/* .btn_form_inscriptionParent a{
   text-decoration: none;
   color: #fff;
-}
+} */
 .btn_form_inscriptionParent:hover,.btn_form_inscriptionParent a:hover{
   color: #6ebca8;
   background-color: #fff;

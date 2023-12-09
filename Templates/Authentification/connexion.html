@@ -13,17 +13,29 @@
     </head>
     <body class="body_page_connx">
         <section class="section_connexion_page">
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                {%endfor%}
+            {%endif%}
+        {% endwith %}
             <main class="section_connexion_page_container">
                 <div class="section_connexion_page_container1">
                     <img src="{{url_for('static', filename='/img/img_famille.jpg')}}" alt="enfant et femme">
                 </div>
                 <div class="section_connexion_page_container1">
                     <div class="form_titr_page_connex"><h2> Se connecter<h3></div>
-                    <form action="#" methode="#">
+                    <form action="/accueil_parent" methode="">
                         <div class="connx_page_login1">
-                            <input type="text" class="inp_page_connex" name="identifiant" placeholder="identifiant">
-                            <input type="password" class="inp_page_connex" name="mot de passe" placeholder="mot de passe">
-                            <div class="btn_form_page_connex"><a href="/accueil_parent">CONNEXION</a></div>
+                            <input type="text" class="inp_page_connex" placeholder="identifiant">
+                            <input type="password" class="inp_page_connex" placeholder="mot de passe">
+                            
+                            <div class="btn_form_page_connex">
+                                <button type="submit" class="btn btn-secondary w-100" style="background-color: #6ebca8; border:none;">VALIDER</button>
+                            </div>
+
+                            <!-- <div class="btn_form_page_connex"><a href="/accueil_parent">CONNEXION</a></div> -->
                             <!--<input type="submit" value="CONNEXION" class="btn_form_page_connex">-->
                         </div>
                     </form>
@@ -60,6 +72,20 @@
                 </div>
             </main>
         </section>
+
+        <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+        <script>
+            // Sélectionnez l'élément contenant le message flash
+            const flashMessage = document.getElementById('flash-message');
+            
+            // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+            const delay = 3000; // 3 secondes
+            
+            // Utilisez setTimeout pour masquer le message après le délai
+            setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, delay);
+        </script>
         <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
         <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
     </body>

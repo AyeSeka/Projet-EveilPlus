@@ -1,9 +1,27 @@
 import pyodbc
 from flask import Flask, render_template, request,  redirect, url_for, flash, jsonify
-
+from flask_bcrypt import Bcrypt
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
+                       "Database=eveil_plus;" 
+                       "Trusted_Connection=yes")
+
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
+#                        "Server=GEEK_MACHINE\SQLEXPRESS;" 
+#                        "Database=eveil_plus;" 
+#                        "Trusted_Connection=yes")
 
 
+# conn = pyodbc.connect(
+    #     'Driver={SQL Server};'
+    #     'Server=HP\\SQLEXPRESS;'
+    #     'Database=eveil+;'
+    #     'user=HP\\goliy;'
+
+    # )
 ########### INDEX_PAGE ##############
 @app.route("/")
 def index():
@@ -16,9 +34,39 @@ def connexion():
     return render_template("Authentification/connexion.html")
 
 ########### Inscription Parent ##############
-@app.route("/inscriptionParent")
+@app.route("/inscriptionParent", methods=['GET','POST'])
 def inscriptionParent():
     return render_template("Authentification/inscriptionParent.html")
+
+
+@app.route("/Succes_inscription_parent", methods=['GET','POST'])
+def Succes_inscription_parent():
+    if request.method == 'POST':
+        E_mail = request.form["E_mail"]
+        mot_de_passe = request.form["mot_de_passe"]
+        confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomParent = request.form["NomParent"]
+        PrenomParent = request.form["PrenomParent"]
+        LieuHabitation = request.form["LieuHabitation"]
+        TelephoneParent1 = request.form["TelephoneParent1"]
+        TelephonePparent2 = request.form["TelephonePparent2"]
+        cursor = conn.cursor()
+        cursor.execute(f"INSERT INTO users (E_mail, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{E_mail}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
+    # Commit des modifications
+        conn.commit()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users" )
+    listId = cursor.fetchall()
+    # Commit des modifications
+    conn.commit()
+    cursor.execute(f"INSERT INTO Utilisateurs (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
+
+    # Commit des modifications
+    conn.commit()
+    flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+    return redirect(url_for('inscriptionParent'))
+
 
 ########### Inscription Repetiteur ##############
 @app.route("/inscriptionRepetiteur")
@@ -29,7 +77,7 @@ def inscriptionRepetiteur():
 # DEBUT PARENT
 @app.route("/accueil_parent")
 def Accueil_parent():
-    return render_template("Parents/accueil_parent.html", navbar="Partials/header_parent.html")
+    return render_template("Parents/accueil_parent.html")
 
 
 @app.route("/poste")
@@ -62,20 +110,12 @@ def poster_maintenant():
 
 # ! Back-End Recherche
 # ? Fonction pour récupérer les options depuis la base de données
-def get_options_from_db(column_name, table_name):
-    # conn = pyodbc.connect(
-    #     'Driver={SQL Server};'
-    #     'Server=HP\\SQLEXPRESS;'
-    #     'Database=eveil+;'
-    #     'user=HP\\goliy;'
 
-    # )
-    conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-                       "Server=GEEK_MACHINE\SQLEXPRESS;" 
-                       "Database=eveil_plus;" 
-                       "Trusted_Connection=yes")
+# def get_options_from_db(column_name, table_name):
     
-    cursor = conn.cursor()
+    
+    
+#     cursor = conn.cursor()
 
     # if table_name == "SpecialiteCompetence":
     #     Si la table est specialite_matiere, on doit joindre avec la table Matiere pour obtenir le nom de la matière
@@ -87,86 +127,71 @@ def get_options_from_db(column_name, table_name):
     #     Pour les autres tables, la requête reste la même sans jointure avec la table Matiere
     #     query = f"SELECT * FROM {table_name}"
 
-    query = f"SELECT DISTINCT {column_name} FROM {table_name}"
-    # options = cursor.execute(query)
-    options = cursor.execute(query).fetchall()
 
-    return options
+
+    # query = f"SELECT DISTINCT {column_name} FROM {table_name}"
+    # # options = cursor.execute(query)
+    # options = cursor.execute(query).fetchall()
+
+    # return options
 
 
 # ? Recherche
 @app.route("/recherche", methods=["GET"])
 def recherche():
-    #     conn = pyodbc.connect(
-    #     'Driver={SQL Server};'
-    #     'Server=HP\\SQLEXPRESS;'
-    #     'Database=eveil+;'
-    #     'user=HP\\goliy;'
+    # datalist_habitation = get_options_from_db(
+    #     "adresse_repetiteur", "Repetiteur")
+    # datalist_niveau = get_options_from_db("niveau_repetiteur", "Repetiteur")
+    # datalist_experience = get_options_from_db("annee_experience", "Repetiteur")
+    # datalist_competence = get_options_from_db(
+    #     "*", "Competence")
 
-    # )
-    # cursor = conn.cursor()
-    datalist_habitation = get_options_from_db(
-        "adresse_repetiteur", "Repetiteur")
-    datalist_niveau = get_options_from_db("niveau_repetiteur", "Repetiteur")
-    datalist_experience = get_options_from_db("annee_experience", "Repetiteur")
-    datalist_competence = get_options_from_db(
-        "*", "Competence")
     # print(datalist_habitation)
     # print(datalist_niveau)
     # print(datalist_experience)
-    print(datalist_competence)
+
+    # print(datalist_competence)
+
     # for specialite in datalist_specialite:
     #     print(specialite[3])
 
-    return render_template("Parents/Recherches/recherche.html", datalist_habitation=datalist_habitation, datalist_niveau=datalist_niveau, datalist_experience=datalist_experience, datalist_competence=datalist_competence)
+    return render_template("Parents/Recherches/recherche.html")
+    # return render_template("Parents/Recherches/recherche.html", datalist_habitation=datalist_habitation, datalist_niveau=datalist_niveau, datalist_experience=datalist_experience, datalist_competence=datalist_competence)
 
 
 # ? Liste Recherche
 @app.route("/liste_recherche", methods=["GET", "POST"])
 def liste_recherche():
-    # conn = pyodbc.connect(
-    #     'Driver={SQL Server};'
-    #     'Server=HP\\SQLEXPRESS;'
-    #     'Database=eveil+;'
-    #     'user=HP\\goliy;'
-    # )
-    # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-    #                    "Server=DESKTOP-QQGKONI\SQLEXPRESS;" 
-    #                    "Database=eveil_plus;" 
-    #                    "Trusted_Connection=yes")
-    conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};" 
-                       "Server=GEEK_MACHINE\SQLEXPRESS;" 
-                       "Database=eveil_plus;" 
-                       "Trusted_Connection=yes")
-    cursor = conn.cursor()
-    # Récupérez les données du formulaire
-    habitation = request.form.get("habitation")
-    niveau = request.form.get("niveau")
-    experience = request.form.get("experience")
-    specialite = request.form.get("specialite")
+    # cursor = conn.cursor()
+    # # Récupérez les données du formulaire
+    # habitation = request.form.get("habitation")
+    # niveau = request.form.get("niveau")
+    # experience = request.form.get("experience")
+    # specialite = request.form.get("specialite")
 
-    print(habitation)
-    print(niveau)
-    print(experience)
-    print(specialite)
+    # print(habitation)
+    # print(niveau)
+    # print(experience)
+    # print(specialite)
 
-    query = """SELECT  (r.nom_repetiteur), r.annee_experience
-            FROM Repetiteur r
-            join SpecialiteCompetence s ON (r.id_repetiteur = s.id_repetiteur)
-            join Competence c ON (c.id_competence = s.id_competence)
-            WHERE 
-            adresse_repetiteur = ? OR
-            niveau_repetiteur = ? OR
-            annee_experience = ? OR
-            c.id_competence = ? 
-            """
+    # query = """SELECT  (r.nom_repetiteur), r.annee_experience
+    #         FROM Repetiteur r
+    #         join SpecialiteCompetence s ON (r.id_repetiteur = s.id_repetiteur)
+    #         join Competence c ON (c.id_competence = s.id_competence)
+    #         WHERE 
+    #         adresse_repetiteur = ? OR
+    #         niveau_repetiteur = ? OR
+    #         annee_experience = ? OR
+    #         c.id_competence = ? 
+    #         """
     # r.id_repetiteur = s.id_repetiteur AND
     # m.id_matiere = s.id_matiere
-    cursor.execute(query, (habitation, niveau, experience, specialite))
-    repetiteurs = cursor.fetchall()
-    print(repetiteurs)
+    # cursor.execute(query, (habitation, niveau, experience, specialite))
+    # repetiteurs = cursor.fetchall()
+    # print(repetiteurs)
 
-    return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs)
+    return render_template("Parents/Recherches/liste_recherche.html")
+    # return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs)
 
 
 @app.route("/liste_repetiteurchoix")

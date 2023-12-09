@@ -2,79 +2,72 @@ CREATE DATABASE eveil_plus;
 USE eveil_plus;
 
 CREATE TABLE Repetiteur (
-    id_repetiteur INT PRIMARY KEY IDENTITY(1,1),
-    nom_repetiteur VARCHAR(30) NOT NULL,
-    prenom_repetiteur VARCHAR(55) NOT NULL,
-    date_naissance date NOT NULL,
-    lieu_habitation_rep VARCHAR(55)NOT NULL,
-    email_repetiteur VARCHAR(30) UNIQUE,
-	mot_de_passe VARCHAR(255) not null,
-	confirm_mot_de_passe VARCHAR(255),
-    annee_experience INT NOT NULL,
-    niveau_repetiteur VARCHAR(10) NOT NULL,
-    EstActif BIT ,
-    path_photo_repetiteur VARCHAR(255),
+    IdRepetiteur INT PRIMARY KEY IDENTITY(1,1),
+    NomRepetiteur VARCHAR(30) NOT NULL,
+    PrenomRepetiteur VARCHAR(55) NOT NULL,
+    DateNaissance date NOT NULL,
+    lieu_hab_rep VARCHAR(55)NOT NULL,
+    AnneeExperience INT NOT NULL,
+    NiveauRepetiteur VARCHAR(10) NOT NULL,
+    EstActif BIT
 );
+ALTER TABLE Repetiteur   
+ADD IdCompetence int,
+FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
+	IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser);
 
-CREATE TABLE Parent (
-    id_parent INT PRIMARY KEY IDENTITY(1,1),
-    nom_parent VARCHAR(20),
-    prenom_parent VARCHAR(55),
-	Email VARCHAR(30) not null unique,
-	mot_de_passe VARCHAR(255) not null,
-	confirm_mot_de_passe VARCHAR(255),
-    lieu_habitation VARCHAR(55),
-    telephone_parent1 VARCHAR(15),
-	telephone_parent2 VARCHAR(15),
-    path_photo_parent VARCHAR(255),
-    
+CREATE TABLE Parent(
+	IdParent int primary key IDENTITY(1,1),
+	NomParent varchar(20) NULL,
+	PrenomParent varchar(55) NULL,
+	LieuHabitation varchar(55) NULL,
+	TelephoneParent1 varchar(15) NULL,
+	TelephonePparent2 varchar(15) NULL,
+	);
+ALTER TABLE Parent   
+ADD IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
-);
 create table users(
-	id_user INT PRIMARY KEY IDENTITY(1,1),
+	IdUser INT PRIMARY KEY IDENTITY(1,1),
 	Email VARCHAR(30) not null unique,
 	mot_de_passe VARCHAR(255) not null,
-	Roles VARCHAR(30) not null
+	confirm_mot_de_passe varchar(255) NULL,
+	Roles VARCHAR(30) not null,
+	path_PhotoProfil VARCHAR(255)
 )
 
+
+
 CREATE TABLE Competence (
-    id_competence INT PRIMARY KEY IDENTITY(1,1),
-    nom_competence VARCHAR(55) NOT NULL
+    IdCompetence INT PRIMARY KEY IDENTITY(1,1),
+    NomCompetence VARCHAR(55) NOT NULL
 );
-
---CREATE TABLE SpecialiteCompetence (
---	id_specialite_matiere INT PRIMARY KEY IDENTITY(1,1),
---	id_repetiteur INT,
---	id_competence INT,
---	FOREIGN KEY (id_repetiteur) REFERENCES Repetiteur(id_repetiteur),
---	FOREIGN KEY (id_competence) REFERENCES Competence(id_competence),
-
---);
-
-
-drop table Parent;
 
 
 CREATE TABLE Personnel_Eveil (
-    id_eveil INT PRIMARY KEY IDENTITY(1,1),
-    nom_eveil VARCHAR(255),
-    prenom_eveil VARCHAR(255),
-    email_eveil VARCHAR(255) UNIQUE,
-	mot_de_passe VARCHAR(255) not null,
-	confirm_mot_de_passe VARCHAR(255),
-    telephone VARCHAR(15),
-    adresse VARCHAR(55),
-    path_photo_eveil VARCHAR(255),
+    IdPersoEveil INT PRIMARY KEY IDENTITY(1,1),
+    NomPersoEveil VARCHAR(25),
+    PrenomPersoEveil VARCHAR(55),
+    Telephone VARCHAR(15),
+    Adresse VARCHAR(55)
 );
+ALTER TABLE Personnel_Eveil   
+ADD IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
 CREATE TABLE Produits (
     IdProduits INT PRIMARY KEY IDENTITY(1,1),
     NomProduits VARCHAR(55) not null,
     DesciptionProduits VARCHAR(55) not null,
     Prix FLOAT not null,
-    path_photo_Produits VARCHAR(255),
+	IdCategorie int,
+	FOREIGN KEY(IdCategorie) REFERENCES CategorieProduits(IdCategorie),
+    path_photo_Produits VARCHAR(255)
     
 );
+
 
 CREATE TABLE CategorieProduits (
     IdCategorie INT PRIMARY KEY IDENTITY(1,1),
@@ -87,17 +80,17 @@ CREATE TABLE Commande (
     Montant FLOAT,
 );
 
-CREATE TABLE Paiement_Repetiteur (
-    id_paiement_repetiteur INT PRIMARY KEY IDENTITY(1,1),
-    date_paiement_repetiteur DATETIME,
-    montant_paiement_repetiteur FLOAT,
-);
+--CREATE TABLE Paiement_Repetiteur (
+--    id_paiement_repetiteur INT PRIMARY KEY IDENTITY(1,1),
+--    date_paiement_repetiteur DATETIME,
+--    montant_paiement_repetiteur FLOAT,
+--);
 
 
 
 CREATE TABLE Stock (
-    id_stock INT PRIMARY KEY IDENTITY(1,1),
-    quantite_stock INT,
+    IdStock INT PRIMARY KEY IDENTITY(1,1),
+    QuantiteStock INT,
 	
 );
 
@@ -109,9 +102,44 @@ CREATE TABLE Vente (
 
 CREATE TABLE Poste (
     IdPoste INT PRIMARY KEY IDENTITY(1,1),
-    NbresJours INT not null,
 	NbreEnfant INT not null,
+    NbresJours INT not null,
 	lieu_habitation VARCHAR(55) not null,
+	NiveauEnfant varchar(25) NOT NULL,
 	DateLimte datetime,
 	DatePublication datetime
 );
+
+ALTER TABLE Poste
+ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
+
+CREATE TABLE ContratPar_Rep (
+	IdContrat int PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	StatutContrat bit NULL,
+	DateDebutContrat date NULL,
+	
+);
+
+ALTER TABLE ContratPar_Rep 
+ADD IdParent int,
+FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
+	IdRepetiteur int,
+FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur);
+
+
+CREATE TABLE NiveauEtudeEleve(
+	IdNiveauEtudeint int PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	NomNiveauEtude varchar(55) NOT NULL,
+	);
+
+
+CREATE TABLE NoteRepetiteur (
+	IdNote int primary key IDENTITY(1,1) NOT NULL,
+	NoteRepetiteur int NOT NULL,
+) 
+
+ALTER TABLE NoteRepetiteur 
+ADD IdRepetiteur int,
+FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur),
+	IdParent int,
+FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
