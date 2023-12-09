@@ -16,50 +16,51 @@
             <main class="section_inscriptionRepetiteur_page_container">
                 <div class="section_inscriptionRepetiteur_container1">
                     <div class="form_titr_inscriptionParent"><h2> Inscription Répétiteur<h3></div>
-                    <form action="#" methode="#">
+                    <form action="{{url_for('Succes_inscription_repetiteur')}}" method="post">
                         <div class="inscriptionParent_login1">
-                            <input type="text"  name="nom" placeholder="Votre Nom">
-                            <input type="text"  name="prenom" placeholder="Votre Prenom">
+                            <input type="text"  name="NomRepetiteur" placeholder="Votre Nom">
+                            <input type="text"  name="PrenomRepetiteur" placeholder="Votre Prenom">
                         </div>
                         <div class="inscriptionParent_login1">
-                            <input type="text"  name="habitataion" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau">
-                            <input type="email"  name="mail" placeholder="Votre email">
+                            <input type="text"  name="lieu_hab_rep" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau">
+                            <input type="email"  name="Email" placeholder="Votre email">
                          </div>
                          <div class="inscriptionParent_login1">
-                            <input type="number"  name="age" placeholder="Votre âge">
-                            <input type="number"  name="experience" placeholder="Vos années d'expériences">
+                            <input type="date"  name="DateNaissance" >
+                            <input type="number"  name="AnneeExperience" placeholder="Votre année d'expérience">
                             <input type="hidden" name="Roles" value="Repetiteur">
                          </div>
                          <div class="inscriptionParent_login1">
-                            <select>
-                                <option>--Votre niveau scolaire--</option>
-                                <option>BAC</option>
-                                <option>BAC+1</option>
-                                <option>BAC+2</option>
-                                <option>BAC+3</option>
-                                <option>BAC+4</option>
-                                <option>BAC+5</option>
+                            <select name="NiveauRepetiteur">
+                                <option>--Sélectionnez votre niveau d'étude--</option>
+                                <option value="BAC">BAC</option>
+                                <option value="BAC+1">BAC+1</option>
+                                <option value="BAC+2">BAC+2</option>
+                                <option value="BAC+3">BAC+3</option>
+                                <option value="BAC+4">BAC+4</option>
+                                <option value="BAC+5">BAC+5</option>
                             </select>
-                            <select>
-                                <option>--Vos compétences--</option>
-                                <option>Sciences</option>
-                                <option>Litterature</option>
-                                <option>Sciences et Litterature</option>
+                            <select name="IdCompetence">
+                                    <option>--Vos compétences--</option>
+                                {% for Competence in Competence %}
+                                    <option value="{{Competence.IdCompetence}}">{{Competence.NomCompetence}}</option>
+                                {%endfor%}
                             </select>
                         
                          </div>
                          <div class="inscriptionParent_login1">
-                            <input type="password" name="mot de passe" placeholder="Mot de passe">
-                            <input type="password" name="confirm_password" placeholder="Confirmer votre mot de passe">
+                            <input type="password" name="mot_de_passe" placeholder="Mot de passe">
+                            <input type="password" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe">
                          </div>
-                         <div class="inscriptionRepetiteur_login1">
+                         <!-- <div class="inscriptionRepetiteur_login1">
                             <div>
                                 <label for="my_checkbox">Je suis disponible</label>
                                 <input type="checkbox" id="my_checkbox" name="my_checkbox_name" value="my_checkbox_value">
                             </div>
                             <div class="btn_form_inscriptionRepetiteur"><a href="/accueil_repetiteur">VALIDER</a></div>
-                            <!--<input type="submit" value="CONNEXION" class="btn_form_page_connex">-->
-                         </div>
+                            <input type="submit" value="CONNEXION" class="btn_form_page_connex">
+                         </div> -->
+                         <input type="submit" value="VALIDER" class="btn btn-secondary" style="background-color: #6ebca8; border:none; width: 80%">
                     </form>
                     <div class="inscriptionParent_login2">
                         Déja un compte ? <a href="/connexion"> Connecter vous ici</a>

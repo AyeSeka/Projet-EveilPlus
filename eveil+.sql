@@ -1,6 +1,5 @@
 CREATE DATABASE eveil_plus;
 USE eveil_plus;
-
 CREATE TABLE Repetiteur (
     IdRepetiteur INT PRIMARY KEY IDENTITY(1,1),
     NomRepetiteur VARCHAR(30) NOT NULL,
@@ -11,6 +10,17 @@ CREATE TABLE Repetiteur (
     NiveauRepetiteur VARCHAR(10) NOT NULL,
     EstActif BIT
 );
+
+
+CREATE TABLE Competence (
+    IdCompetence INT PRIMARY KEY IDENTITY(1,1),
+    NomCompetence VARCHAR(55) NOT NULL
+);
+
+insert into Competence (NomCompetence) values ('Sciences'),
+												('Litterature'),
+												('Sciences et Litterature')
+
 ALTER TABLE Repetiteur   
 ADD IdCompetence int,
 FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
@@ -39,11 +49,6 @@ create table users(
 )
 
 
-
-CREATE TABLE Competence (
-    IdCompetence INT PRIMARY KEY IDENTITY(1,1),
-    NomCompetence VARCHAR(55) NOT NULL
-);
 
 
 CREATE TABLE Personnel_Eveil (

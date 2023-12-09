@@ -42,7 +42,7 @@ def inscriptionParent():
 @app.route("/Succes_inscription_parent", methods=['GET','POST'])
 def Succes_inscription_parent():
     if request.method == 'POST':
-        E_mail = request.form["E_mail"]
+        Email = request.form["Email"]
         mot_de_passe = request.form["mot_de_passe"]
         confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
         Roles = request.form["Roles"]
@@ -52,27 +52,50 @@ def Succes_inscription_parent():
         TelephoneParent1 = request.form["TelephoneParent1"]
         TelephonePparent2 = request.form["TelephonePparent2"]
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (E_mail, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{E_mail}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
-    # Commit des modifications
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
+        cursor.execute("SELECT SCOPE_IDENTITY()")
+        listId = cursor.fetchone()
+        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
+        # Commit des modifications
         conn.commit()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users" )
-    listId = cursor.fetchall()
-    # Commit des modifications
-    conn.commit()
-    cursor.execute(f"INSERT INTO Utilisateurs (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
-
-    # Commit des modifications
-    conn.commit()
-    flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-    return redirect(url_for('inscriptionParent'))
+        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+        return redirect(url_for('connexion'))
+    return render_template("Authentification/inscriptionParent.html")
 
 
 ########### Inscription Repetiteur ##############
-@app.route("/inscriptionRepetiteur")
+@app.route("/inscriptionRepetiteur", methods=['GET','POST'])
 def inscriptionRepetiteur():
-    return render_template("Authentification/inscriptionRepetiteur.html")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from Competence")
+    Competence = cursor.fetchall()
+    conn.commit()
+    return render_template("Authentification/inscriptionRepetiteur.html", Competence=Competence)
 
+@app.route("/Succes_inscription_repetiteur", methods=['GET','POST'])
+def Succes_inscription_repetiteur():
+    if request.method == 'POST':
+        Email = request.form["Email"]
+        mot_de_passe = request.form["mot_de_passe"]
+        confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomRepetiteur = request.form["NomRepetiteur"]
+        PrenomRepetiteur = request.form["PrenomRepetiteur"]
+        lieu_hab_rep = request.form["lieu_hab_rep"]
+        DateNaissance = request.form["DateNaissance"]
+        AnneeExperience = request.form["AnneeExperience"]
+        NiveauRepetiteur = request.form["NiveauRepetiteur"]
+        IdCompetence = request.form["IdCompetence"]
+        cursor = conn.cursor()
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
+        cursor.execute("SELECT SCOPE_IDENTITY()")
+        listId = cursor.fetchone()
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{IdCompetence}','{listId[0]}')")
+        # Commit des modifications
+        conn.commit()
+        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+        return redirect(url_for('connexion'))
+    return render_template("Authentification/inscriptionRepetiteur.html")
 # PARENT
 # DEBUT PARENT
 @app.route("/accueil_parent")

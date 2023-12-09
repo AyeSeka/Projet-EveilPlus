@@ -13,18 +13,19 @@
     </head>
     <body class="body_page_connx">
         <section class="section_connexion_page">
-            {% with messages=get_flashed_messages(with_categories=true) %}
+            
+            <main class="section_connexion_page_container">
+                <div class="section_connexion_page_container1">
+                    <img src="{{url_for('static', filename='/img/img_famille.jpg')}}" alt="enfant et femme">
+                </div>
+                <div class="section_connexion_page_container1">
+                    {% with messages=get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
                     <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
                 {%endfor%}
             {%endif%}
         {% endwith %}
-            <main class="section_connexion_page_container">
-                <div class="section_connexion_page_container1">
-                    <img src="{{url_for('static', filename='/img/img_famille.jpg')}}" alt="enfant et femme">
-                </div>
-                <div class="section_connexion_page_container1">
                     <div class="form_titr_page_connex"><h2> Se connecter<h3></div>
                     <form action="/accueil_parent" methode="">
                         <div class="connx_page_login1">
