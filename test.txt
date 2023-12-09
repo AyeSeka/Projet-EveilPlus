@@ -1,0 +1,38 @@
+//CODE HTML
+<h1>Bouton On/Off</h1>
+    <form method="post" action="/changer_etat">
+        {% if bouton_etat %}
+            <div class="form-check form-switch">
+            <button type="submit" class="btn btn-danger">indisponible</button>
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+        </div>
+        {% else %}
+            <div class="form-check form-switch">
+            <button type="submit" class="btn btn-success">disponible</button>
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+        </div>
+        {% endif %}
+    </form>
+
+
+//CODE PYTHON (FLASK)
+
+# Variable pour stocker l'état du bouton
+
+@app.route('/')
+def index1():
+    cursor = connx.cursor()
+    cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = 2')
+    bouton_etat = cursor.fetchone()[0]
+    connx.commit()
+    return render_template('Authentification/index1.html', bouton_etat=bouton_etat)
+
+@app.route('/changer_etat', methods=['POST'])
+def changer_etat():
+    cursor = connx.cursor()
+    cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = 2')
+    bouton_etat = cursor.fetchone()[0]
+    nouveau_etat = not bouton_etat
+    cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = 2', nouveau_etat)
+    connx.commit()
+    return render_template('Authentification/index1.html', bouton_etat=nouveau_etat)

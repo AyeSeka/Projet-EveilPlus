@@ -22,6 +22,7 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
     #     'user=HP\\goliy;'
 
     # )
+
 ########### INDEX_PAGE ##############
 @app.route("/")
 def index():
@@ -85,12 +86,13 @@ def Succes_inscription_repetiteur():
         DateNaissance = request.form["DateNaissance"]
         AnneeExperience = request.form["AnneeExperience"]
         NiveauRepetiteur = request.form["NiveauRepetiteur"]
+        EstActif = request.form["EstActif"]
         IdCompetence = request.form["IdCompetence"]
         cursor = conn.cursor()
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{IdCompetence}','{listId[0]}')")
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur,EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -289,8 +291,23 @@ def librairie_repetiteur():
 
 @app.route("/accueil_repetiteur")
 def accueil_repetiteur():
+    # cursor = conn.cursor()
+    # cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = 1')
+    # bouton_etat = cursor.fetchone()[0]
+    # conn.commit()
+    # return render_template("Repetiteur/accueil_repetiteur.html", bouton_etat=bouton_etat)
     return render_template("Repetiteur/accueil_repetiteur.html")
 
+# # bouton disponibilité
+# @app.route('/changer_etat', methods=['POST'])
+# def changer_etat():
+#     cursor = conn.cursor()
+#     cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = 1')
+#     bouton_etat = cursor.fetchone()[0]
+#     nouveau_etat = not bouton_etat
+#     cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = 1', nouveau_etat)
+#     conn.commit()
+#     return render_template('Authentification/index1.html', bouton_etat=nouveau_etat)
 # DEBUT RECHERCHE_REPETITEUR
 
 
