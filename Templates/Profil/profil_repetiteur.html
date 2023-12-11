@@ -6,7 +6,6 @@
                 <h2>Mon profil</h2>
             </div>
             <div class="row">
-                
                 <div class="col-md-3">
                     <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="img-thumbnail img-fluid" alt="...">
                 </div>
@@ -15,34 +14,41 @@
                         <tbody>
                         <tr> 
                             <td><b>Nom</b></td>
-                            <td>@mdo</td>
+                            <td>
+                                {{usersRepetiteur.NomRepetiteur}}
+                            </td>
                         </tr>
                         <tr> 
                             <td><b>Prenoms</b></td>
-                            <td>@fat</td>
+                            <td> {{usersRepetiteur.PrenomRepetiteur}}</td>
                         </tr>
                         <tr>
                             <td><b>E-mail</b></td>
-                            <td>@twitter</td>
+                            <td> {{usersRepetiteur.Email}}</td>
                         </tr>
                         <tr>
-                            <td><b>Ville</b></td>
-                            <td>@twitter</td>
+                            <td><b>Lieu d'habition</b></td>
+                            <td>{{usersRepetiteur.lieu_hab_rep}}</td>
                         </tr>
                         <tr>
-                            <td><b>Telephone</b></td>
-                            <td>@twitter</td>
+                            <td><b> Date de naissance</b></td>
+                            <td> {{usersRepetiteur.DateNaissance}}</td>
                         </tr>
                         <tr>
-                            <td><b>Telephone</b></td>
-                            <td>@twitter</td>
+                            <td><b>Niveau</b></td>
+                            <td>{{usersRepetiteur.NiveauRepetiteur}}</td>
                         </tr>
                         <tr>
-                            <td><b>Telephone</b></td>
-                            <td>@twitter</td>
+                            <td><b>Année d'experience</b></td>
+                            <td>{{usersRepetiteur.AnneeExperience}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Compétence</b></td>
+                            <td>{{usersRepetiteur.NomCompetence}}</td>
                         </tr>
                         
                         </tbody>
+                        
                     </table>
                     <div class="col-md-6">
                         <a  href="" class="btn btn-warning text-white">MODIFIER</a>

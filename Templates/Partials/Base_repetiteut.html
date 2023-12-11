@@ -14,12 +14,30 @@
 </head>
 <body>
     {% include './Partials/header_repetiteur.html' %}
-
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+        {%endfor%}
+    {%endif%}
+{% endwith %}
     {% block body %}
                 
     {% endblock %}
 
-
+    <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+    <script>
+        // Sélectionnez l'élément contenant le message flash
+        const flashMessage = document.getElementById('flash-message');
+        
+        // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+        const delay = 3000; // 3 secondes
+        
+        // Utilisez setTimeout pour masquer le message après le délai
+        setTimeout(function() {
+            flashMessage.style.display = 'none';
+        }, delay);
+    </script>
     <!-- <script src="/js/bootstrap.bundle.min.js"></script> -->
     <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
     <script src="{{url_for('static', filename='/js/index.js')}}" ></script>

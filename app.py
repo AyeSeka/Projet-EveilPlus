@@ -1,6 +1,7 @@
 import pyodbc
-from flask import Flask, render_template, request,  redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request,  redirect, url_for, flash, session
 from flask_bcrypt import Bcrypt
+from flask_login import current_user, login_required
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
@@ -30,9 +31,51 @@ def index():
 
 
 ########### CONNEXION ##############
-@app.route("/connexion")
+@app.route("/connexion", methods=['GET','POST'])
 def connexion():
     return render_template("Authentification/connexion.html")
+
+
+@app.route("/success_connexion", methods=['GET','POST'])
+def success_connexion():
+    
+    Email = request.form["Email"]
+    mot_de_passe = request.form["mot_de_passe"]
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM users WHERE Email = '{Email}'")
+    users = cursor.fetchone()
+    
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser")
+    usersParent = cursor.fetchone()
+    
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    usersRepetiteur = cursor.fetchone()
+    
+    cursor.commit()
+    if users is not None:
+        session['IdUser'] = users.IdUser
+        session['IdRepetiteur'] = usersRepetiteur.IdRepetiteur
+        print(session['IdUser'])
+        # Vérification du mot de passe haché
+        if bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Parent':
+            # Authentification réussie
+            flash(f"Succès! Bienvenue {usersParent[2]} {usersParent[1]}, nous somme heureux de vous revoit", 'success')
+            return redirect(url_for('Accueil_parent'))
+        elif users and bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Repetiteur':
+            
+            
+            flash(f"Succès! Bienvenue {usersRepetiteur[2]} {usersRepetiteur[1]}, nous somme heureux de vous revoit", 'success')
+            return redirect(url_for('accueil_repetiteur'))
+        else:
+            flash('connexion échoué! Vous avez certainement entré un e-mail ou mot de passe incorrect', 'danger')
+            return redirect(url_for('connexion'))
+    
+    else:
+        # Utilisateur non trouvé
+        flash('Utilisateur non trouvé! Vous avez certainement entré un e-mail ou mot de passe incorrect', 'danger')
+        return redirect(url_for('connexion'))
+
+    # return render_template("Authentification/connexion.html")
 
 ########### Inscription Parent ##############
 @app.route("/inscriptionParent", methods=['GET','POST'])
@@ -52,8 +95,9 @@ def Succes_inscription_parent():
         LieuHabitation = request.form["LieuHabitation"]
         TelephoneParent1 = request.form["TelephoneParent1"]
         TelephonePparent2 = request.form["TelephonePparent2"]
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{confirm_mot_de_passe}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
         cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
@@ -88,8 +132,9 @@ def Succes_inscription_repetiteur():
         NiveauRepetiteur = request.form["NiveauRepetiteur"]
         EstActif = request.form["EstActif"]
         IdCompetence = request.form["IdCompetence"]
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe}','{confirm_mot_de_passe}','{Roles}')")
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{confirm_mot_de_passe}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
         cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur,EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
@@ -226,11 +271,21 @@ def liste_repetiteurchoix():
 # Debut profil
 @app.route("/profil_parent")
 def profil_parent():
-    return render_template("Profil/profil_parent.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Profil/profil_parent.html",usersParent=usersParent)
 
 @app.route("/profil_repetiteur")
 def profil_repetiteur():
-    return render_template("Profil/profil_repetiteur.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Profil/profil_repetiteur.html", usersRepetiteur=usersRepetiteur)
 
 # fin profil
 
@@ -291,23 +346,29 @@ def librairie_repetiteur():
 
 @app.route("/accueil_repetiteur")
 def accueil_repetiteur():
-    # cursor = conn.cursor()
-    # cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = 1')
-    # bouton_etat = cursor.fetchone()[0]
-    # conn.commit()
-    # return render_template("Repetiteur/accueil_repetiteur.html", bouton_etat=bouton_etat)
-    return render_template("Repetiteur/accueil_repetiteur.html")
+    IdRepetiteur = session.get('IdRepetiteur')
+    cursor = conn.cursor()
+    # cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = ?',IdRepetiteur)
+    bouton_etat = cursor.fetchone()[0]
+    conn.commit()
+    return render_template("Repetiteur/accueil_repetiteur.html", bouton_etat=bouton_etat)
+    # return render_template("Repetiteur/accueil_repetiteur.html")
 
 # # bouton disponibilité
-# @app.route('/changer_etat', methods=['POST'])
-# def changer_etat():
-#     cursor = conn.cursor()
-#     cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = 1')
-#     bouton_etat = cursor.fetchone()[0]
-#     nouveau_etat = not bouton_etat
-#     cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = 1', nouveau_etat)
-#     conn.commit()
-#     return render_template('Authentification/index1.html', bouton_etat=nouveau_etat)
+@app.route('/changer_etat', methods=['POST'])
+def changer_etat():
+    IdRepetiteur = session.get('IdRepetiteur')
+    cursor = conn.cursor()
+    # cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+
+    cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur =?',IdRepetiteur)
+    bouton_etat = cursor.fetchone()[0]
+    nouveau_etat = not bouton_etat
+    cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = ?', nouveau_etat,IdRepetiteur)
+    conn.commit()
+    # return render_template('Authentification/index1.html', bouton_etat=nouveau_etat)
+    return redirect(url_for('accueil_repetiteur'))
 # DEBUT RECHERCHE_REPETITEUR
 
 
