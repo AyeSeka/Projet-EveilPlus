@@ -285,8 +285,26 @@ def profil_repetiteur():
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
     cursor.commit()
-    return render_template("Profil/profil_repetiteur.html", usersRepetiteur=usersRepetiteur)
 
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    bouton_etat = cursor.fetchone()[0]
+    conn.commit()
+    return render_template("Profil/profil_repetiteur.html", usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat)
+
+# # bouton disponibilité
+@app.route('/changer_etat', methods=['POST'])
+def changer_etat():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+
+    bouton_etat = cursor.fetchone()[0]
+    nouveau_etat = not bouton_etat
+    a=cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdUser = ?', nouveau_etat,IdUser)
+    conn.commit()
+    return redirect(url_for('profil_repetiteur'))
+    
 # fin profil
 
 #FIN RECHERCHE
@@ -301,7 +319,12 @@ def panier_parent():
 
 @app.route("/panier_rep")
 def panier_rep():
-    return render_template("Panier/panier_rep.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Panier/panier_rep.html", usersRepetiteur=usersRepetiteur)
 # FIN COMMANDE
 # DEBUT LIBRAIRIE
 # ! MES REPETITEURS
@@ -338,7 +361,12 @@ def librairie_parent():
 
 @app.route("/librairie_repetiteur")
 def librairie_repetiteur():
-    return render_template("librairie/librairie_repetiteur.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("librairie/librairie_repetiteur.html",usersRepetiteur=usersRepetiteur)
 
 # FIN LIBRAIRIE
 # DEBUT REPETITEUR
@@ -346,52 +374,64 @@ def librairie_repetiteur():
 
 @app.route("/accueil_repetiteur")
 def accueil_repetiteur():
-    IdRepetiteur = session.get('IdRepetiteur')
+    IdUser = session.get('IdUser')
     cursor = conn.cursor()
-    # cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
-    cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur = ?',IdRepetiteur)
-    bouton_etat = cursor.fetchone()[0]
-    conn.commit()
-    return render_template("Repetiteur/accueil_repetiteur.html", bouton_etat=bouton_etat)
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Repetiteur/accueil_repetiteur.html",usersRepetiteur=usersRepetiteur)
     # return render_template("Repetiteur/accueil_repetiteur.html")
-
-# # bouton disponibilité
-@app.route('/changer_etat', methods=['POST'])
-def changer_etat():
-    IdRepetiteur = session.get('IdRepetiteur')
-    cursor = conn.cursor()
-    # cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
-
-    cursor.execute('SELECT EstActif FROM Repetiteur WHERE IdRepetiteur =?',IdRepetiteur)
-    bouton_etat = cursor.fetchone()[0]
-    nouveau_etat = not bouton_etat
-    cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = ?', nouveau_etat,IdRepetiteur)
-    conn.commit()
-    # return render_template('Authentification/index1.html', bouton_etat=nouveau_etat)
-    return redirect(url_for('accueil_repetiteur'))
 # DEBUT RECHERCHE_REPETITEUR
 
 
 @app.route("/recherche_repetiteur")
 def recherche_repetiteur():
-    return render_template("Repetiteur/Recherche/recherche_repetiteur.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Repetiteur/Recherche/recherche_repetiteur.html",usersRepetiteur=usersRepetiteur)
 
 
 @app.route("/liste_rech_rep")
 def liste_rech_rep():
-    return render_template("Repetiteur/Recherche/liste_rech_rep.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Repetiteur/Recherche/liste_rech_rep.html",usersRepetiteur=usersRepetiteur)
 
 
 @app.route("/candidature_rep")
 def candidature_rep():
-    return render_template("Repetiteur/Recherche/candidature_rep.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Repetiteur/Recherche/candidature_rep.html",usersRepetiteur=usersRepetiteur)
 
 @app.route("/info_repetiteur")
 def info_repetiteur():
-    return render_template("Repetiteur/info_repetiteur.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    return render_template("Repetiteur/info_repetiteur.html",usersRepetiteur=usersRepetiteur)
 
 # DEFIN RECHERCHE_REPETITEUR
 # FIN REPETITEUR
+
+@app.route('/deconnexion')
+def deconnexion():
+    # Supprimer l'ID de l'utilisateur de la session lors de la déconnexion
+    session.pop('IdUser', None)
+    flash("Vous avez été déconnecté.")
+    return redirect(url_for('index'))
+
 if __name__ == "__main__":
     app.secret_key = 'admin123'
     app.run(debug=True)

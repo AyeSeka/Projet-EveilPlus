@@ -2,9 +2,19 @@
 {% block body %}
     <section class="my-5 py-5 section-rech">
         <div class="container colunm">
-            <div class="main_rech1_titre1 mb-4">
-                <h2>Mon profil</h2>
-            </div>
+            <div class="mb-4 row container-fluid">
+                <div class="col-md-11 col-sm-10"><h2>Mon profil</h2></div>
+                <div class="col-md-1 col-sm-2">
+                    <form method="post" action="/changer_etat">
+                        {% if bouton_etat %}
+                            <button type="submit" class="btn btn-success">disponible</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-danger">indisponible</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div> 
+           
             <div class="row">
                 <div class="col-md-3">
                     <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="img-thumbnail img-fluid" alt="...">
