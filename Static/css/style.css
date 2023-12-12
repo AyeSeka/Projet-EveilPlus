@@ -320,7 +320,6 @@ footer{
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  
 }
 .form_titr_inscriptionParent{
   display: flex;
@@ -2172,4 +2171,29 @@ font-size: 0.6rem;
 
 .card{
   border: none !important;
+}
+
+.uplaod{
+  width: 95%;
+  position: relative; 
+}
+.uplaod .round{
+  position: absolute;
+  bottom: -3%;
+  right: 25%;
+  background-color: #e2e2e29f;
+  padding: 20px;
+  /* line-height: 33px; */
+  text-align: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.uplaod .round input[type='file']{
+  position: absolute;
+  transform: scale(2);
+  opacity: 0;
+}
+.round input[type='file']::-webkit-file-upload-button{
+  cursor: pointer;
 }

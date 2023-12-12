@@ -1,7 +1,8 @@
 import pyodbc
 from flask import Flask, render_template, request,  redirect, url_for, flash, session
 from flask_bcrypt import Bcrypt
-from flask_login import current_user, login_required
+from functools import wraps
+# from flask_login import current_user, login_required
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
@@ -25,6 +26,16 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
     # )
 
 ########### INDEX_PAGE ##############
+# ! Mécanisme de protection pour obligier le user à se connecter
+# ? Utiliser le décorateur @login_required
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Veuillez vous connecter pour accéder à cette page.', 'danger')
+            return redirect(url_for('connexion'))
+        return f(*args, **kwargs)
+    return decorated_function
 @app.route("/")
 def index():
     return render_template("Authentification/index.html")
@@ -54,10 +65,12 @@ def success_connexion():
     cursor.commit()
     if users is not None:
         session['IdUser'] = users.IdUser
-        session['IdRepetiteur'] = usersRepetiteur.IdRepetiteur
-        print(session['IdUser'])
+        # session['IdRepetiteur'] = usersRepetiteur.IdRepetiteur
+        # print(session['IdUser'])
         # Vérification du mot de passe haché
         if bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Parent':
+            session['user_id'] = users[0]
+
             # Authentification réussie
             flash(f"Succès! Bienvenue {usersParent[2]} {usersParent[1]}, nous somme heureux de vous revoit", 'success')
             return redirect(url_for('Accueil_parent'))
@@ -65,6 +78,8 @@ def success_connexion():
             
             
             flash(f"Succès! Bienvenue {usersRepetiteur[2]} {usersRepetiteur[1]}, nous somme heureux de vous revoit", 'success')
+            session['user_id'] = users[0]
+
             return redirect(url_for('accueil_repetiteur'))
         else:
             flash('connexion échoué! Vous avez certainement entré un e-mail ou mot de passe incorrect', 'danger')
@@ -146,28 +161,54 @@ def Succes_inscription_repetiteur():
 # PARENT
 # DEBUT PARENT
 @app.route("/accueil_parent")
+@login_required
 def Accueil_parent():
-    return render_template("Parents/accueil_parent.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/accueil_parent.html",usersParent=usersParent)
 
 
 @app.route("/poste")
 def poste():
-    return render_template("Parents/Postes/poste.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/Postes/poste.html",usersParent=usersParent)
 
 
 @app.route("/recapitulatif")
 def recapitulatif():
-    return render_template("Parents/Postes/recapitulatif.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/Postes/recapitulatif.html",usersParent=usersParent)
 
 
 @app.route("/historique_des_postes")
 def historique_des_postes():
-    return render_template("Parents/Postes/historique_des_postes.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/Postes/historique_des_postes.html",usersParent=usersParent)
 
 
 @app.route("/poster_maintenant")
 def poster_maintenant():
-    return render_template("Parents/Postes/poster_maintenant.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/Postes/poster_maintenant.html",usersParent=usersParent)
 
 #FIN POSTE
 #DEBUT RECHERCHE
@@ -187,32 +228,37 @@ def poster_maintenant():
     
 #     cursor = conn.cursor()
 
-    # if table_name == "SpecialiteCompetence":
-    #     Si la table est specialite_matiere, on doit joindre avec la table Matiere pour obtenir le nom de la matière
-    #     query = f"SELECT {table_name}.*, Competence.nom_competence " \
-    #         f"FROM {table_name} " \
-    #         f"JOIN Competence ON {
-    #             table_name}.id_competence = Competence.id_competence"
-    # else:
-    #     Pour les autres tables, la requête reste la même sans jointure avec la table Matiere
-    #     query = f"SELECT * FROM {table_name}"
+#     if table_name == "Competence":
+#         # Si la table est specialite_matiere, on doit joindre avec la table Matiere pour obtenir le nom de la matière
+#         query = f"SELECT {table_name}.*, Competence.NomCompetence " \
+#             f"FROM {table_name} " \
+#             f"JOIN Competence ON {
+#                 table_name}.IdCompetence = Competence.IdCompetence"
+#     else:
+#         # Pour les autres tables, la requête reste la même sans jointure avec la table Matiere
+#         query = f"SELECT * FROM {table_name}"
 
 
 
-    # query = f"SELECT DISTINCT {column_name} FROM {table_name}"
-    # # options = cursor.execute(query)
-    # options = cursor.execute(query).fetchall()
+#     query = f"SELECT DISTINCT {column_name} FROM {table_name}"
+#     # options = cursor.execute(query)
+#     options = cursor.execute(query).fetchall()
 
-    # return options
+#     return options
 
 
 # ? Recherche
 @app.route("/recherche", methods=["GET"])
 def recherche():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
     # datalist_habitation = get_options_from_db(
-    #     "adresse_repetiteur", "Repetiteur")
-    # datalist_niveau = get_options_from_db("niveau_repetiteur", "Repetiteur")
-    # datalist_experience = get_options_from_db("annee_experience", "Repetiteur")
+    #     "lieu_hab_rep", "Repetiteur")
+    # datalist_niveau = get_options_from_db("NiveauRepetiteur", "Repetiteur")
+    # datalist_experience = get_options_from_db("AnneeExperience", "Repetiteur")
     # datalist_competence = get_options_from_db(
     #     "*", "Competence")
 
@@ -225,13 +271,18 @@ def recherche():
     # for specialite in datalist_specialite:
     #     print(specialite[3])
 
-    return render_template("Parents/Recherches/recherche.html")
-    # return render_template("Parents/Recherches/recherche.html", datalist_habitation=datalist_habitation, datalist_niveau=datalist_niveau, datalist_experience=datalist_experience, datalist_competence=datalist_competence)
+    return render_template("Parents/Recherches/recherche.html",usersParent=usersParent)
+    # return render_template("Parents/Recherches/recherche.html", datalist_habitation=datalist_habitation, datalist_niveau=datalist_niveau, datalist_experience=datalist_experience, datalist_competence=datalist_competence, usersParent=usersParent)
 
 
 # ? Liste Recherche
 @app.route("/liste_recherche", methods=["GET", "POST"])
 def liste_recherche():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
     # cursor = conn.cursor()
     # # Récupérez les données du formulaire
     # habitation = request.form.get("habitation")
@@ -239,34 +290,39 @@ def liste_recherche():
     # experience = request.form.get("experience")
     # specialite = request.form.get("specialite")
 
-    # print(habitation)
-    # print(niveau)
-    # print(experience)
-    # print(specialite)
+    # # print(habitation)
+    # # print(niveau)
+    # # print(experience)
+    # # print(specialite)
 
-    # query = """SELECT  (r.nom_repetiteur), r.annee_experience
+    # query = """SELECT  (r.NomRepetiteur), r.AnneeExperience
     #         FROM Repetiteur r
-    #         join SpecialiteCompetence s ON (r.id_repetiteur = s.id_repetiteur)
-    #         join Competence c ON (c.id_competence = s.id_competence)
+    #         join Competence c ON (r.IdRepetiteur = c.IdRepetiteur)
+           
     #         WHERE 
-    #         adresse_repetiteur = ? OR
-    #         niveau_repetiteur = ? OR
-    #         annee_experience = ? OR
-    #         c.id_competence = ? 
+    #         lieu_hab_rep = ? OR
+    #         NiveauRepetiteur = ? OR
+    #         AnneeExperience = ? OR
+    #         c.Competence = ? 
     #         """
-    # r.id_repetiteur = s.id_repetiteur AND
-    # m.id_matiere = s.id_matiere
+    # # r.IdRepetiteur = c.IdRepetiteur AND
+    
     # cursor.execute(query, (habitation, niveau, experience, specialite))
     # repetiteurs = cursor.fetchall()
-    # print(repetiteurs)
+    # # print(repetiteurs)
 
-    return render_template("Parents/Recherches/liste_recherche.html")
+    return render_template("Parents/Recherches/liste_recherche.html",usersParent=usersParent)
     # return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs)
 
 
 @app.route("/liste_repetiteurchoix")
 def liste_repetiteurchoix():
-    return render_template("Parents/Recherches/liste_repetiteurchoix.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/Recherches/liste_repetiteurchoix.html",usersParent=usersParent)
 
 # Debut profil
 @app.route("/profil_parent")
@@ -279,6 +335,7 @@ def profil_parent():
     return render_template("Profil/profil_parent.html",usersParent=usersParent)
 
 @app.route("/profil_repetiteur")
+@login_required
 def profil_repetiteur():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
@@ -315,7 +372,12 @@ def changer_etat():
 # Panier
 @app.route("/panier_parent")
 def panier_parent():
-    return render_template("Panier/panier_parent.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Panier/panier_parent.html",usersParent=usersParent)
 
 @app.route("/panier_rep")
 def panier_rep():
@@ -331,32 +393,57 @@ def panier_rep():
 # ? Mes Repetiteurs
 @app.route("/mes_repetiteurs")
 def mes_repetiteurs():
-    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html",usersParent=usersParent)
 
 
 # ? Attribuer Note
 @app.route("/attribuer_note")
 def attribuer_note():
-    return render_template("Parents/mes_repetiteurs/attribuer_note.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/mes_repetiteurs/attribuer_note.html",usersParent=usersParent)
 
 
 # ? Choix Operateur
 @app.route("/choix_operateur")
 def choix_operateur():
-    return render_template("Parents/mes_repetiteurs/choix_operateur.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/mes_repetiteurs/choix_operateur.html",usersParent=usersParent)
 
 # ? Choix Operateur
 
 
 @app.route("/form_paiement")
 def form_paiement():
-    return render_template("Parents/mes_repetiteurs/form_paiement.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/mes_repetiteurs/form_paiement.html",usersParent=usersParent)
 
 
 # ! BACK-END LIBRAIRIE
 @app.route("/librairie_parent")
 def librairie_parent():
-    return render_template("librairie/librairie_parent.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("librairie/librairie_parent.html",usersParent=usersParent)
 
 
 @app.route("/librairie_repetiteur")
@@ -373,6 +460,7 @@ def librairie_repetiteur():
 
 
 @app.route("/accueil_repetiteur")
+@login_required
 def accueil_repetiteur():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
@@ -428,7 +516,7 @@ def info_repetiteur():
 @app.route('/deconnexion')
 def deconnexion():
     # Supprimer l'ID de l'utilisateur de la session lors de la déconnexion
-    session.pop('IdUser', None)
+    session.pop('user_id', None)
     flash("Vous avez été déconnecté.")
     return redirect(url_for('index'))
 
