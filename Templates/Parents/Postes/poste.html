@@ -6,7 +6,7 @@
       <h2>Publier mon offres</h2>
     </div>
     <div class="">
-      <form action="{{ url_for('recapitulatif') }}" method="">
+      <form action="{{ url_for('recapitulatif') }}" method="POST">
         <div class="row col-md-8 px-2 m-auto bg-color">
           <div class="col-md-12 p-2">
             <div class="row mb-4">
@@ -14,7 +14,7 @@
                 <label class="form-label">Je recherche un répétiteur qualifié, disponible pouvant enseigner</label>
               </div>
               <div class="col-md-2">
-                <select class="form-select" id="Seance" aria-label="Default select example">
+                <select class="form-select" id="Seance" aria-label="Default select example" name="seance">
                   <option selected>0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -34,7 +34,7 @@
               </div>
               <div class="row mt-3">
                 <div class="col-md-2">
-                  <select class="form-select" aria-label="Default select example">
+                  <select class="form-select" aria-label="Default select example" name="enfant">
                     <option selected>0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-6">
                   <input class="form-control" list="datalist" id="habitation"
-                    placeholder="Selectionnez le lieu d'habitation...">
+                    placeholder="Selectionnez le lieu d'habitation..." name="habitation">
                   <datalist id="datalist">
                     {% for lieu in lieu_repetiteur %}
                     <option value="{{ lieu[0] }}">
@@ -62,18 +62,12 @@
                 <label class="form-label">Niveau:</label>
               </div>
               <div class="col-md-9">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="{{niveauEtudiant[0][1]}}">
-                  <label class="form-check-label" for="inlineCheckbox1">{{niveauEtudiant[0][1]}}</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="{{niveauEtudiant[1][1]}}">
-                  <label class="form-check-label" for="inlineCheckbox2">{{niveauEtudiant[1][1]}}</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="{{niveauEtudiant[2][1]}}">
-                  <label class="form-check-label" for="inlineCheckbox3">{{niveauEtudiant[2][1]}}</label>
-                </div>
+                {% for niveau in niveauEtudiant %}
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ loop.index }}"
+                  value="{{ niveau[1] }}" name="niveau[]">
+                <label class="form-check-label" for="inlineCheckbox{{ loop.index }}">{{ niveau[1] }}</label>
+                {% endfor %}
+
               </div>
             </div>
 
@@ -82,7 +76,7 @@
                 <label for="Date" class="form-label">Date limite:</label>
               </div>
               <div class="col-md-7">
-                <input type="date" class="form-control" id="Date">
+                <input type="date" class="form-control" id="Date" name="date_limite">
               </div>
             </div>
           </div>
@@ -93,7 +87,7 @@
             <button class="btn btn-danger" type="reset">ANNULER</button>
           </div>
           <div class="col-md-6">
-            <button class="btn btn-success" type="submit">RECHERCHER</button>
+            <button class="btn btn-success" type="submit">POSTER</button>
           </div>
         </div>
       </form>

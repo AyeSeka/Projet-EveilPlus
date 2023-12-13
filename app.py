@@ -1,3 +1,4 @@
+import datetime
 import pyodbc
 from flask import Flask, render_template, request,  redirect, url_for, flash, session
 from flask_bcrypt import Bcrypt
@@ -192,9 +193,41 @@ def Accueil_parent():
     return render_template("Parents/accueil_parent.html", usersParent=usersParent)
 
 
-@app.route("/poste")
+data_recap = {}
+
+
+@app.route("/poste", methods=["GET", "POST"])
 @login_required
 def poste():
+    # if request.method == "POST":
+    # Récupérer les données du formulaire
+    # habitation = request.form.get("habitation")
+    # niveau = request.form.get("niveau")
+    # enfant = request.form.get("enfant")
+    # seance = request.form.get("seance")
+    # date_limite = request.form.get("date_limite")
+
+    # Stocker les données dans la carte temporaire
+    # Stocker les informations dans la session
+    # session['data_recap'] = {
+    #     'habitation': habitation,
+    #     'niveau': niveau,
+    #     'enfant': enfant,
+    #     'seance': seance,
+    #     'date_limite': date_limite
+    # }
+    # data_recap = {
+    #     "habitation": habitation,
+    #     "niveau": niveau,
+    #     "enfant": enfant,
+    #     "seance": seance,
+    #     "date_limite": date_limite,
+    # }
+
+    # print(data_recap)
+
+    # return redirect(url_for("recapitulatif"))
+
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
     cursor.execute(
@@ -217,16 +250,55 @@ def poste():
     return render_template("Parents/Postes/poste.html", usersParent=usersParent, niveauEtudiant=niveauEtudiant, lieu_repetiteur=lieu_repetiteur)
 
 
-@app.route("/recapitulatif")
+@app.route("/recapitulatif", methods=["GET", "POST"])
 @login_required
 def recapitulatif():
     IdUser = session.get('IdUser')
+
+    if request.method == "POST":
+        # Récupérer les données du formulaire
+        habitation = request.form.get("habitation")
+        niveau = ', '.join(request.form.getlist("niveau[]"))
+        enfant = request.form.get("enfant")
+        seance = request.form.get("seance")
+        date_limite = request.form.get("date_limite")
+
+        # Stocker les données dans la carte temporaire
+        # Stocker les informations dans la session
+        # session['data_recap'] = {
+        #     'habitation': habitation,
+        #     'niveau': niveau,
+        #     'enfant': enfant,
+        #     'seance': seance,
+        #     'date_limite': date_limite
+        # }
+        data_recap = {
+            "habitation": habitation,
+            "niveau": niveau,
+            "enfant": enfant,
+            "seance": seance,
+            "date_limite": date_limite,
+        }
+
+        # Obtenez la date actuelle au format YYYY-MM-DD HH:MM:SS
+        date_publication = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        cursor = conn.cursor()
+        cursor.execute(f"INSERT INTO users (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimite, DatePublication, IdParent) VALUES ('{
+                       data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{date_publication}','{IdUser}')")
+
+        # return redirect(url_for("recapitulatif"))
+
+    # Récupérer les informations depuis la session
+    # data_recap = session.get('data_recap', {})
+    print(IdUser)
+    print(data_recap)
     cursor = conn.cursor()
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
-    return render_template("Parents/Postes/recapitulatif.html", usersParent=usersParent)
+    return render_template("Parents/Postes/recapitulatif.html", usersParent=usersParent, data_recap=data_recap)
 
 
 @app.route("/historique_des_postes")
