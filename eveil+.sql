@@ -110,9 +110,9 @@ CREATE TABLE Poste (
 	NbreEnfant INT not null,
     NbresJours INT not null,
 	lieu_habitation VARCHAR(55) not null,
-	NiveauEnfant varchar(25) NOT NULL,
-	DateLimte datetime,
-	DatePublication datetime
+	NiveauEnfant varchar(90) NOT NULL,
+	DateLimte Date NOT NULL,
+	DatePublication datetime NOT NULL
 );
 
 ALTER TABLE Poste
@@ -148,3 +148,7 @@ ADD IdRepetiteur int,
 FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur),
 	IdParent int,
 FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
+
+insert into NiveauEtudeEleve (NomNiveauEtude) values ('Primaire'),
+												('Collège'),
+												('Lycée')

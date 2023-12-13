@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import pyodbc
 from flask import Flask, render_template, request,  redirect, url_for, flash, session
 from flask_bcrypt import Bcrypt
@@ -265,14 +265,14 @@ def recapitulatif():
 
         # Stocker les données dans la carte temporaire
         # Stocker les informations dans la session
-        # session['data_recap'] = {
-        #     'habitation': habitation,
-        #     'niveau': niveau,
-        #     'enfant': enfant,
-        #     'seance': seance,
-        #     'date_limite': date_limite
-        # }
         data_recap = {
+            'habitation': habitation,
+            'niveau': niveau,
+            'enfant': enfant,
+            'seance': seance,
+            'date_limite': date_limite
+        }
+        session['data_recap'] = {
             "habitation": habitation,
             "niveau": niveau,
             "enfant": enfant,
@@ -280,17 +280,10 @@ def recapitulatif():
             "date_limite": date_limite,
         }
 
-        # Obtenez la date actuelle au format YYYY-MM-DD HH:MM:SS
-        date_publication = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimite, DatePublication, IdParent) VALUES ('{
-                       data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{date_publication}','{IdUser}')")
-
-        # return redirect(url_for("recapitulatif"))
+        # return redirect(url_for("historique_des_postes"))
 
     # Récupérer les informations depuis la session
-    # data_recap = session.get('data_recap', {})
+
     print(IdUser)
     print(data_recap)
     cursor = conn.cursor()
@@ -299,6 +292,24 @@ def recapitulatif():
     usersParent = cursor.fetchone()
     cursor.commit()
     return render_template("Parents/Postes/recapitulatif.html", usersParent=usersParent, data_recap=data_recap)
+
+
+@app.route("/recapitulatif_validation", methods=["POST"])
+def recapitulatif_validation():
+    IdUser = session.get('IdUser')
+    data_recap = session.get('data_recap', {})
+    print(data_recap)
+    # Obtenez la date actuelle au format YYYY-MM-DD HH:MM:SS
+    date_publication = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # print(date_publication)
+
+    cursor = conn.cursor()
+    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{
+                   data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap["date_limite"]}','{date_publication}','{IdUser}')")
+
+    conn.commit()
+    return redirect(url_for("historique_des_postes"))
 
 
 @app.route("/historique_des_postes")
@@ -310,7 +321,14 @@ def historique_des_postes():
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
-    return render_template("Parents/Postes/historique_des_postes.html", usersParent=usersParent)
+    cursor.execute(
+        "SELECT * FROM Poste PO JOIN Parent PA ON PO.IdParent=PA.IdParent WHERE PA.IdParent = ?", IdUser)
+    poste_data = cursor.fetchall()
+    print(poste_data[0])
+    print(poste_data[0][5])
+    # print(date_seule)
+
+    return render_template("Parents/Postes/historique_des_postes.html", usersParent=usersParent, poste_data=poste_data)
 
 
 @app.route("/poster_maintenant")

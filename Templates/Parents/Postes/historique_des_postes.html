@@ -1,32 +1,40 @@
-
-
 {% extends "Partials/Base_parent.html" %}
 
 {% block body %}
 
 
-  <section class="my-5 py-5 section-rech">
-    <div class="container colunm">
-      <div class="mb-4 row container-fluid">
-        <div class="col-md-11 col-sm-10"><h2>Liste des Postes</h2></div>
-        <div class="col-md-1 col-sm-2"><a href="{{ url_for('poste') }}" class="btn btn-danger">RETOUR</a></div>
-      </div>    
+<section class="my-5 py-5 section-rech">
+  <div class="container colunm">
+    <div class="mb-4 row container-fluid">
+      <div class="col-md-11 col-sm-10">
+        <h2>Liste des Postes</h2>
+      </div>
+      <div class="col-md-1 col-sm-2"><a href="{{ url_for('poste') }}" class="btn btn-danger">RETOUR</a></div>
+    </div>
+
+
+    <div class="row d-flex justify-content-between table-responsive" style="height: 450px;">
+
+
+      {% for poste in poste_data %}
       <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
+          <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
         </div>
         <ul class="list-group list-group-flush liste-cards">
-            <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-            <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-            <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-            <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-            <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
+          <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>{{poste.NbreEnfant}} </b></i></li>
+          <li class="list-group-item"><i>Nombre de séance : <b>{{poste.NbresJours}}</b></i>/semaine</li>
+          <li class="list-group-item"><i>Niveau : <b>{{poste.NiveauEnfant}}</b></i></li>
+          <li class="list-group-item"><i>Niveau : <b>{{poste.lieu_habitation}}</b></i></li>
+          <li class="list-group-item"><i>Date limite : <b>{{poste.DateLimte}}</b></i></li>
+          <li class="list-group-item"><i>Date de publication : <b>{{poste.DatePublication}}</b></i></li>
         </ul>
         <div class="card-body">
           <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              <b>SUPRIMER</b>
+            <b>SUPRIMER</b>
           </a>
-          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -41,14 +49,17 @@
                   <!-- <button type="button" class="btn btn-primary">Understood</button> -->
                   <a href="{{ url_for('poster_maintenant') }}" class="btn btn-danger">SUPRIMER</a>
                 </div>
-              </div> 
+              </div>
             </div>
           </div>
-        </div>   
-      </div> 
+        </div>
+      </div>
+      {% endfor %}
     </div>
-  </section>
 
-    
+  </div>
+</section>
+
+
 
 {% endblock %}
