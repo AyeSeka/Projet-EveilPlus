@@ -61,11 +61,17 @@
                 width="45px"
                 alt=""
               />
-              {{ repetiteur[0] }}
+              {{repetiteur.PrenomRepetiteur }} {{repetiteur.NomRepetiteur }}
             </a>
           </td>
           <td>10/10</td>
-          <td>Disponible</td>
+          <td>
+            {% if etat_repetiteur %} 
+                <span class="btn btn-success">Disponible</span>
+            {% else %} 
+                <span class="btn btn-danger">Indisponible</span>
+            {% endif %}
+          </td>
           <td>
             <!-- Button trigger modal -->
             <button

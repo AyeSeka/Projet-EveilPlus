@@ -1,5 +1,15 @@
 CREATE DATABASE eveil_plus;
 USE eveil_plus;
+
+create table users(
+	IdUser INT PRIMARY KEY IDENTITY(1,1),
+	Email VARCHAR(30) not null unique,
+	mot_de_passe VARCHAR(255) not null,
+	confirm_mot_de_passe varchar(255) NULL,
+	Roles VARCHAR(30) not null,
+	path_PhotoProfil VARCHAR(255)
+)
+
 CREATE TABLE Repetiteur (
     IdRepetiteur INT PRIMARY KEY IDENTITY(1,1),
     NomRepetiteur VARCHAR(30) NOT NULL,
@@ -11,21 +21,21 @@ CREATE TABLE Repetiteur (
     EstActif BIT
 );
 
-
 CREATE TABLE Competence (
     IdCompetence INT PRIMARY KEY IDENTITY(1,1),
     NomCompetence VARCHAR(55) NOT NULL
 );
-
-insert into Competence (NomCompetence) values ('Sciences'),
-												('Litterature'),
-												('Sciences et Litterature')
-
 ALTER TABLE Repetiteur   
 ADD IdCompetence int,
 FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
 	IdUser int,
 FOREIGN KEY(IdUser) REFERENCES users(IdUser);
+
+
+insert into Competence (NomCompetence) values ('Sciences'),
+												('Litterature'),
+												('Sciences et Litterature')
+
 
 CREATE TABLE Parent(
 	IdParent int primary key IDENTITY(1,1),
@@ -39,18 +49,6 @@ ALTER TABLE Parent
 ADD IdUser int,
 FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
-create table users(
-	IdUser INT PRIMARY KEY IDENTITY(1,1),
-	Email VARCHAR(30) not null unique,
-	mot_de_passe VARCHAR(255) not null,
-	confirm_mot_de_passe varchar(255) NULL,
-	Roles VARCHAR(30) not null,
-	path_PhotoProfil VARCHAR(255)
-)
-
-
-
-
 CREATE TABLE Personnel_Eveil (
     IdPersoEveil INT PRIMARY KEY IDENTITY(1,1),
     NomPersoEveil VARCHAR(25),
@@ -62,6 +60,11 @@ ALTER TABLE Personnel_Eveil
 ADD IdUser int,
 FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
+CREATE TABLE CategorieProduits (
+    IdCategorie INT PRIMARY KEY IDENTITY(1,1),
+    NomCategorie VARCHAR(30)
+);
+
 CREATE TABLE Produits (
     IdProduits INT PRIMARY KEY IDENTITY(1,1),
     NomProduits VARCHAR(55) not null,
@@ -71,12 +74,6 @@ CREATE TABLE Produits (
 	FOREIGN KEY(IdCategorie) REFERENCES CategorieProduits(IdCategorie),
     path_photo_Produits VARCHAR(255)
     
-);
-
-
-CREATE TABLE CategorieProduits (
-    IdCategorie INT PRIMARY KEY IDENTITY(1,1),
-    NomCategorie VARCHAR(30)
 );
 
 CREATE TABLE Commande (
@@ -112,11 +109,15 @@ CREATE TABLE Poste (
 	lieu_habitation VARCHAR(55) not null,
 	NiveauEnfant varchar(90) NOT NULL,
 	DateLimte Date NOT NULL,
-	DatePublication datetime NOT NULL
+	DatePublication  VARCHAR(35)
 );
+
 
 ALTER TABLE Poste
 ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
+
+
+
 
 CREATE TABLE ContratPar_Rep (
 	IdContrat int PRIMARY KEY IDENTITY(1,1) NOT NULL,

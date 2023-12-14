@@ -7,10 +7,10 @@ from functools import wraps
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 #                        "Server=GEEK_MACHINE\SQLEXPRESS;"
@@ -18,13 +18,13 @@ bcrypt = Bcrypt(app)
 #                        "Trusted_Connection=yes")
 
 
-conn = pyodbc.connect(
-    'Driver={SQL Server};'
-    'Server=HP\\SQLEXPRESS;'
-    'Database=eveil_plus;'
-    'user=HP\\goliy;'
+# conn = pyodbc.connect(
+#     'Driver={SQL Server};'
+#     'Server=HP\\SQLEXPRESS;'
+#     'Database=eveil_plus;'
+#     'user=HP\\goliy;'
 
-)
+# )
 
 ########### INDEX_PAGE ##############
 # ! Mécanisme de protection pour obligier le user à se connecter
@@ -60,13 +60,11 @@ def success_connexion():
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM users WHERE Email = '{Email}'")
     users = cursor.fetchone()
-
-    cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser")
+    
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser")
     usersParent = cursor.fetchone()
 
-    cursor.execute(
-        "SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
     usersRepetiteur = cursor.fetchone()
 
     cursor.commit()
@@ -77,15 +75,12 @@ def success_connexion():
         # Vérification du mot de passe haché
         if bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Parent':
             session['user_id'] = users[0]
-
             # Authentification réussie
-            flash(f"Succès! Bienvenue {usersParent[2]} {
-                  usersParent[1]}, nous somme heureux de vous revoit", 'success')
+            flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
             return redirect(url_for('Accueil_parent'))
         elif users and bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Repetiteur':
 
-            flash(f"Succès! Bienvenue {usersRepetiteur[2]} {
-                  usersRepetiteur[1]}, nous somme heureux de vous revoit", 'success')
+            flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
             session['user_id'] = users[0]
 
             return redirect(url_for('accueil_repetiteur'))
@@ -121,15 +116,16 @@ def Succes_inscription_parent():
         LieuHabitation = request.form["LieuHabitation"]
         TelephoneParent1 = request.form["TelephoneParent1"]
         TelephonePparent2 = request.form["TelephonePparent2"]
-        mot_de_passe_hache = bcrypt.generate_password_hash(
-            mot_de_passe).decode('utf-8')
+        if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('inscriptionParent'))
+
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{
-                       Email}','{mot_de_passe_hache}','{confirm_mot_de_passe}','{Roles}')")
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{
-                       NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
+        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -162,15 +158,17 @@ def Succes_inscription_repetiteur():
         NiveauRepetiteur = request.form["NiveauRepetiteur"]
         EstActif = request.form["EstActif"]
         IdCompetence = request.form["IdCompetence"]
-        mot_de_passe_hache = bcrypt.generate_password_hash(
-            mot_de_passe).decode('utf-8')
+        # Vérifier si tous les champs sont remplis
+        if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('inscriptionRepetiteur'))
+
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, confirm_mot_de_passe, Roles) VALUES ('{
-                       Email}','{mot_de_passe_hache}','{confirm_mot_de_passe}','{Roles}')")
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur,EstActif, IdCompetence, IdUser) VALUES ('{
-                       NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur,EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -186,8 +184,7 @@ def Succes_inscription_repetiteur():
 def Accueil_parent():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
     return render_template("Parents/accueil_parent.html", usersParent=usersParent)
@@ -283,12 +280,11 @@ def recapitulatif():
         # return redirect(url_for("historique_des_postes"))
 
     # Récupérer les informations depuis la session
-
+    
     print(IdUser)
     print(data_recap)
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
     return render_template("Parents/Postes/recapitulatif.html", usersParent=usersParent, data_recap=data_recap)
@@ -305,8 +301,7 @@ def recapitulatif_validation():
     # print(date_publication)
 
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{
-                   data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap["date_limite"]}','{date_publication}','{IdUser}')")
+    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{IdUser}')")
 
     conn.commit()
     return redirect(url_for("historique_des_postes"))
@@ -362,8 +357,7 @@ def get_options_from_db(column_name, table_name):
         # Si la table est specialite_matiere, on doit joindre avec la table Matiere pour obtenir le nom de la matière
         query = f"SELECT {table_name}.*, Competence.NomCompetence " \
             f"FROM {table_name} " \
-            f"JOIN Competence ON {
-                table_name}.IdCompetence = Competence.IdCompetence"
+            f"JOIN Competence ON {table_name}.IdCompetence = Competence.IdCompetence"
     else:
         # Pour les autres tables, la requête reste la même sans jointure avec la table Matiere
         query = f"SELECT * FROM {table_name}"
@@ -392,11 +386,11 @@ def recherche():
     datalist_competence = get_options_from_db(
         "*", "Competence")
 
-    print(datalist_habitation)
-    print(datalist_niveau)
-    print(datalist_experience)
+    # print(datalist_habitation)
+    # print(datalist_niveau)
+    # print(datalist_experience)
 
-    print(datalist_competence)
+    # print(datalist_competence)
 
     # for specialite in datalist_specialite:
     #     print(specialite[3])
@@ -427,9 +421,7 @@ def liste_recherche():
     # print(experience)
     # print(specialite)
 
-    query = """SELECT  (r.NomRepetiteur), r.AnneeExperience
-            FROM Repetiteur r
-            join Competence c ON (r.IdCompetence = c.IdCompetence)
+    query = """SELECT  * FROM Repetiteur r join Competence c ON (r.IdCompetence = c.IdCompetence)
             
 
             WHERE
@@ -442,12 +434,11 @@ def liste_recherche():
 
     cursor.execute(query, (habitation, niveau, experience, specialite))
     repetiteurs = cursor.fetchall()
-    print(repetiteurs)
-
+    etat_repetiteur = repetiteurs[0][7]
     cursor.commit()
 
     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-    return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs, usersParent=usersParent)
+    return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs, usersParent=usersParent,etat_repetiteur=etat_repetiteur)
 
 
 @app.route("/liste_repetiteurchoix")
