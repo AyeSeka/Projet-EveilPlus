@@ -238,11 +238,11 @@ def poste():
     cursor.execute("SELECT lieu_hab_rep from Repetiteur")
     lieu_repetiteur = cursor.fetchall()
 
-    for lieu in lieu_repetiteur:
-        print(lieu[0])
-    print(lieu_repetiteur)
+    # for lieu in lieu_repetiteur:
+    #     print(lieu[0])
+    # print(lieu_repetiteur)
 
-    print(niveauEtudiant)
+    # print(niveauEtudiant)
     conn.commit()
     return render_template("Parents/Postes/poste.html", usersParent=usersParent, niveauEtudiant=niveauEtudiant, lieu_repetiteur=lieu_repetiteur)
 
@@ -277,12 +277,11 @@ def recapitulatif():
             "date_limite": date_limite,
         }
 
-        # return redirect(url_for("historique_des_postes"))
-
+        
     # Récupérer les informations depuis la session
     
-    print(IdUser)
-    print(data_recap)
+    # print(IdUser)
+    # print(data_recap)
     cursor = conn.cursor()
     cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
@@ -294,14 +293,16 @@ def recapitulatif():
 def recapitulatif_validation():
     IdUser = session.get('IdUser')
     data_recap = session.get('data_recap', {})
-    print(data_recap)
+    # print(data_recap)
     # Obtenez la date actuelle au format YYYY-MM-DD HH:MM:SS
     date_publication = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # print(date_publication)
 
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{IdUser}')")
+    cursor.execute("SELECT P.IdParent FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{usersParent[0]}')")
 
     conn.commit()
     return redirect(url_for("historique_des_postes"))
@@ -317,10 +318,10 @@ def historique_des_postes():
     usersParent = cursor.fetchone()
     cursor.commit()
     cursor.execute(
-        "SELECT * FROM Poste PO JOIN Parent PA ON PO.IdParent=PA.IdParent WHERE PA.IdParent = ?", IdUser)
+        "SELECT * FROM Poste PO JOIN Parent PA ON PO.IdParent=PA.IdParent WHERE PA.IdParent = ?", usersParent[0])
     poste_data = cursor.fetchall()
-    print(poste_data[0])
-    print(poste_data[0][5])
+    # print(poste_data[0])
+    # print(poste_data[0][5])
     # print(date_seule)
 
     return render_template("Parents/Postes/historique_des_postes.html", usersParent=usersParent, poste_data=poste_data)
