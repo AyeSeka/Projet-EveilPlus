@@ -1,0 +1,102 @@
+{% extends "Partials/Base_parent.html" %}
+{% block body %}
+
+{% if poste_data %} 
+      <section class="my-5 py-5 section-rech">
+        <div class="container colunm">
+            <div class="mb-4 row container-fluid">
+              <div class="col-md-11 col-sm-10">
+                <h2>Historique des postes</h2>
+              </div>
+              <!--<div class="col-md-1 col-sm-2"><a href="{{ url_for('poste') }}" class="btn btn-danger">RETOUR</a></div>-->
+            </div>
+
+            <div class="container">
+          <div class="row d-flex justify-content-between table-responsive" style="height: 450px;">
+
+            
+            {% for poste in poste_data %}
+            
+            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
+              
+                <div class="card-body">
+                  <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
+                </div>
+                <ul class="list-group list-group-flush liste-cards">
+                  <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>{{poste.NbreEnfant}} </b></i></li>
+                  <li class="list-group-item"><i>Nombre de séance : <b>{{poste.NbresJours}}</b></i>/semaine</li>
+                  <li class="list-group-item"><i>Niveau : <b>{{poste.NiveauEnfant}}</b></i></li>
+                  <li class="list-group-item"><i>Lieu d'habitation : <b>{{poste.lieu_habitation}}</b></i></li>
+                  <li class="list-group-item"><i>Date limite : <b>{{poste.DateLimte}}</b></i></li>
+                  <li class="list-group-item"><i>Date de publication : <b>{{poste.DatePublication}}</b></i></li>
+                </ul>
+                <div class="card-body">
+                  <a href="#" data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop" class="btn btn-danger">
+                    <b>SUPRIMER</b>
+                  </a>
+                  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Êtes-vous sûre de vouloir Supprimer le poste Publié le {{poste.DatePublication}} ?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                          <a href="{{url_for('Supprimer_poste', IdHistPoste= poste.IdHistoriquePoste)}}" class="btn btn-danger" >
+                            <b>SUPRIMER</b>
+                          </a>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+            </div>
+            
+            {% endfor %}
+            
+          </div>
+        </div>
+        </div>
+      </section>
+{% else %} 
+        <section class="my-5 py-5 section-rech">
+        <div class="poste2">
+          <div class="mb-4 row container-fluid">
+            <div class="col-md-11 col-sm-10">
+              <h2>Historique des postes</h2>
+            </div>
+            <!--<div class="col-md-1 col-sm-2"><a href="{{ url_for('poste') }}" class="btn btn-danger">RETOUR</a></div>-->
+          </div>
+            <div class="main_poste_main">
+                <div class="note_poste_main">
+                
+        
+                  <div class="maintenant">
+                    <h2>Aucun poste</h2>
+                  </div>
+                  <div class="maintenant_2">
+                    <p>Votre historique de poste est vide cliquez sur le bouton <br>
+                      ci-dessous pour poster </p>
+                  </div>
+                  <div class="maintenant_but">
+                  <a href="{{ url_for('poste') }} " class="btn btn-success">Poster maintenant</a>
+                  </div>
+                
+                
+                </div>
+            </div>
+        </div>
+
+      </section>
+{% endif %}
+
+{% endblock %}

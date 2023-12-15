@@ -7,10 +7,10 @@ var tr = tbody.querySelectorAll("tr");
 var emptyBox = [];
 var index = 1;
 var itemPerPage = 4;
-// console.log(tbody);
-// console.log(pageUl);
-// console.log(itemPerPage);
-// console.log(tr);
+console.log(tbody);
+console.log(pageUl);
+console.log(itemPerPage);
+console.log(tr);
 
 for (let i = 0; i < tr.length; i++) {
   emptyBox.push(tr[i]);

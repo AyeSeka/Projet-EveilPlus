@@ -36,3 +36,10 @@ def changer_etat():
     cursor.execute('UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = 2', nouveau_etat)
     connx.commit()
     return render_template('Authentification/index1.html', bouton_etat=nouveau_etat)
+
+Status disponible ou pas:
+ {% if etat_repetiteur %} 
+                <span class="btn btn-success">Disponible</span>
+            {% else %} 
+                <span class="btn btn-danger">Indisponible</span>
+            {% endif %}

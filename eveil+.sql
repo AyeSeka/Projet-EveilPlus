@@ -111,8 +111,14 @@ CREATE TABLE Poste (
 	DateLimte Date NOT NULL,
 	DatePublication  VARCHAR(35)
 );
+select * from Poste 
+        SELECT PO.* FROM Poste PO JOIN Parent PA ON PO.IdParent=PA.IdParent WHERE PA.PrenomParent = 'bbb'
 
-
+CREATE TABLE HistoriquePoste (
+    IdHistoriquePoste INT PRIMARY KEY IDENTITY(1,1),
+	IdPoste INT,
+	FOREIGN KEY(IdPoste) REFERENCES Poste(IdPoste)
+);
 ALTER TABLE Poste
 ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
 
