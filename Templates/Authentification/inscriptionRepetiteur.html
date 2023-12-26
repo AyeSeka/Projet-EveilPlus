@@ -41,39 +41,27 @@
                     <div class="form_titr_inscriptionParent"><h2> Inscription Répétiteur<h3></div>
                     <form action="{{url_for('Succes_inscription_repetiteur')}}" method="post">
                         <div class="inscriptionParent_login1">
-                            <input type="text"  name="NomRepetiteur" placeholder="Votre Nom">
-                            <input type="text"  name="PrenomRepetiteur" placeholder="Votre Prenom">
+                            <input type="text" class="input"  name="NomRepetiteur" placeholder="Votre Nom">
+                            <input type="text" class="input" name="PrenomRepetiteur" placeholder="Votre Prenom">
                         </div>
                         <div class="inscriptionParent_login1">
-                            <input type="text"  name="lieu_hab_rep" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau">
-                            <input type="email"  name="Email" placeholder="Votre email">
-                         </div>
-                         <div class="inscriptionParent_login1">
-                            <input type="date"  name="DateNaissance" >
-                            <input type="number"  name="AnneeExperience" placeholder="Votre année d'expérience">
+                            <!-- <input type="text"  name="lieu_hab_rep" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau"> -->
+                            <input type="email" class="input" name="Email" placeholder="Votre email">
                             <input type="hidden" name="Roles" value="Repetiteur">
-                         </div>
-                         <div class="inscriptionParent_login1">
-                            <select name="NiveauRepetiteur">
-                                <option>--Sélectionnez votre niveau d'étude--</option>
-                                <option value="BAC">BAC</option>
-                                <option value="BAC+1">BAC+1</option>
-                                <option value="BAC+2">BAC+2</option>
-                                <option value="BAC+3">BAC+3</option>
-                                <option value="BAC+4">BAC+4</option>
-                                <option value="BAC+5">BAC+5</option>
-                            </select>
-                            <select name="IdCompetence">
-                                    <option>--Vos compétences--</option>
-                                {% for Competence in Competence %}
-                                    <option value="{{Competence.IdCompetence}}">{{Competence.NomCompetence}}</option>
-                                {%endfor%}
-                            </select>
                             <input type="hidden" name="EstActif" value="1">
                          </div>
+                         <!-- <div class="inscriptionParent_login1">
+                            <input type="date"  name="DateNaissance" >
+                            <input type="number"  name="AnneeExperience" placeholder="Votre année d'expérience">
+                            
+                         </div> -->
+                         <!-- <div class="inscriptionParent_login1">
+                            
+                            
+                         </div> -->
                          <div class="inscriptionParent_login1">
-                            <input type="password" name="mot_de_passe" placeholder="Mot de passe" id="mot_de_passe" oninput="checkPassword()">
-                            <input type="password" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe" id="confirm_mot_de_passe" oninput="checkPassword()">
+                            <input type="password" class="input" name="mot_de_passe" placeholder="Mot de passe" id="mot_de_passe" oninput="checkPassword()">
+                            <input type="password" class="input" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe" id="confirm_mot_de_passe" oninput="checkPassword()">
                          </div>
                          <p id="password-error" style="color: red;"></p>
                          <input type="submit" value="VALIDER"  id="submit-button" class="btn btn-secondary py-2" style="background-color: #6ebca8; border:none; width: 20%; font-size:1.3em; font-weight: bold;">

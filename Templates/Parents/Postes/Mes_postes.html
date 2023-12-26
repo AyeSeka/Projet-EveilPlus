@@ -32,22 +32,22 @@
                 </ul>
                 <div class="card-body">
                   <a href="#" data-bs-toggle="modal"
-                  data-bs-target="#staticBackdrop" class="btn btn-danger">
+                  data-bs-target="#staticBackdrop{{poste.IdHistoriquePoste}}" class="btn btn-danger">
                     <b>SUPRIMER</b>
                   </a>
-                  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                  <div class="modal fade" id="staticBackdrop{{poste.IdHistoriquePoste}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                          <h5 class="modal-title" id="staticBackdropLabel{{poste.IdHistoriquePoste}}">Suppression de poste</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                           Êtes-vous sûre de vouloir Supprimer le poste Publié le {{poste.DatePublication}} ?
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                           <!-- <button type="button" class="btn btn-primary">Understood</button> -->
                           <a href="{{url_for('Supprimer_poste', IdHistPoste= poste.IdHistoriquePoste)}}" class="btn btn-danger" >
                             <b>SUPRIMER</b>

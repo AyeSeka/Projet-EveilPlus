@@ -5,6 +5,14 @@
             <div class="main_rech1_titre1 mb-4">
                 <h2>Mon profil</h2>
             </div>
+            {% with messages=get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                            {%endfor%}
+                        {%endif%}
+                    {% endwith %} 
+
             <div class="row">
                 
                 <div class="col-md-3">
@@ -87,10 +95,24 @@
                         </tbody>
                     </table>
                     <div class="col-md-6">
-                        <a  href="" class="btn btn-warning text-white">MODIFIER</a>
+                        <a  href="/ModifProfil_par" class="btn btn-warning text-white">MODIFIER</a>
                     </div>
                 </div>
             </div>
         </div>  
     </section>
+
+    <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+    <script>
+        // Sélectionnez l'élément contenant le message flash
+        const flashMessage = document.getElementById('flash-message');
+        
+        // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+        const delay = 7000; // 7 secondes
+        
+        // Utilisez setTimeout pour masquer le message après le délai
+        setTimeout(function() {
+            flashMessage.style.display = 'none';
+        }, delay);
+    </script> 
 {% endblock %}

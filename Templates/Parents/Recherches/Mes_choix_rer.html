@@ -34,7 +34,7 @@
               {% for listContratTemp in listContratTemp %}
               
               <tr>
-                <td>{{listContratTemp.0}}</td>
+                <td>{{listContratTemp.IdContratTemporaire}}</td>
                 <td>
                   <a href="" class="tab-a">
                     <img
@@ -62,10 +62,10 @@
                   <!-- <button class="btn btn-primary choose-btn">Choisir</button> -->
 
                   <a href="#" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop" class="btn btn-danger">
+                        data-bs-target="#staticBackdrop{{listContratTemp.IdContratTemporaire}}" class="btn btn-danger">
                           <b>Retirer</b>
                         </a>
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                        <div class="modal fade" id="staticBackdrop{{listContratTemp.IdContratTemporaire}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                           aria-labelledby="staticBackdropLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
@@ -74,12 +74,12 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                Êtes-vous sûre de vouloir Supprimer le choix N° {{listContratTemp.0}} ?
+                                Êtes-vous sûre de vouloir Supprimer le choix N° {{listContratTemp.IdContratTemporaire}} ?
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                <a href="{{url_for('Supprimer_choix', IdContratTemporaire= listContratTemp.0)}}" class="btn btn-danger" >
+                                <a href="{{url_for('Supprimer_choix', IdContratTemporaire= listContratTemp.IdContratTemporaire)}}" class="btn btn-danger" >
                                   <b>Retirer</b>
                                 </a>
                                 
@@ -121,7 +121,7 @@
                     <h2>Vous n'avez faire aucun choix</h2>
                   </div>
                   <div class="maintenant_2">
-                    <p>Votre historique de poste est vide cliquez sur le bouton <br>
+                    <p>L'historique de vos liste de choix est vide cliquez sur le bouton <br>
                       ci-dessous pour rechercher un repetiteur </p>
                   </div>
                   <div class="maintenant_but">

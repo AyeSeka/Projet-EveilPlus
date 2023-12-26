@@ -113,10 +113,10 @@ def Succes_inscription_parent():
         Roles = request.form["Roles"]
         NomParent = request.form["NomParent"]
         PrenomParent = request.form["PrenomParent"]
-        LieuHabitation = request.form["LieuHabitation"]
-        TelephoneParent1 = request.form["TelephoneParent1"]
-        TelephonePparent2 = request.form["TelephonePparent2"]
-        if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2]):
+        # LieuHabitation = request.form["LieuHabitation"]
+        # TelephoneParent1 = request.form["TelephoneParent1"]
+        # TelephonePparent2 = request.form["TelephonePparent2"]
+        if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomParent,PrenomParent]):
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('inscriptionParent'))
 
@@ -125,7 +125,7 @@ def Succes_inscription_parent():
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
+        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -136,11 +136,11 @@ def Succes_inscription_parent():
 ########### Inscription Repetiteur ##############
 @app.route("/inscriptionRepetiteur", methods=['GET', 'POST'])
 def inscriptionRepetiteur():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * from Competence")
-    Competence = cursor.fetchall()
-    conn.commit()
-    return render_template("Authentification/inscriptionRepetiteur.html", Competence=Competence)
+    # cursor = conn.cursor()
+    # # cursor.execute("SELECT * from Competence")
+    # # Competence = cursor.fetchall()
+    # conn.commit()
+    return render_template("Authentification/inscriptionRepetiteur.html")
 
 
 @app.route("/Succes_inscription_repetiteur", methods=['GET', 'POST'])
@@ -470,8 +470,22 @@ def liste_recherche():
     cursor = conn.cursor()
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
-    usersParent = cursor.fetchone()
-
+    usersParent = cursor.fetchone() 
+    
+    cursor.execute("SELECT * FROM ClassePrimaire")
+    ClassePrimaire = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM ClasseCollege")
+    ClasseCollege = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM ClasseLycee")
+    ClasseLycee = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM MatiereSciences")
+    MatiereSciences = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM MatiereLitteraire")
+    MatiereLitteraire = cursor.fetchall()
     # cursor = conn.cursor()
     # Récupérez les données du formulaire
     habitation = request.form.get("habitation")
@@ -479,24 +493,34 @@ def liste_recherche():
     experience = request.form.get("experience")
     specialite = request.form.get("specialite")
 
+    # cursor.execute("SELECT * FROM Repetiteur")
+    # usersRepetiteur = cursor.fetchall()
+    
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    bouton_etat = cursor.fetchone()[0]
+    # print(bouton_etat)
     # print(habitation)
     # print(niveau)
     # print(experience)
     # print(specialite)
 
-    query = """SELECT  * FROM Repetiteur r join Competence c ON (r.IdCompetence = c.IdCompetence)
+    query = """SELECT  * FROM Repetiteur r JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence)
             
 
             WHERE
             lieu_hab_rep = ? OR
             NiveauRepetiteur = ? OR 
             AnneeExperience = ? OR
-            c.NomCompetence = ?
+            c.NomCompetence = ? AND
+            r.EstActif = ?
             """
     # r.IdRepetiteur = c.IdRepetiteur AND
+    # cursor.execute("SELECT * FROM Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    # info_rep = cursor.fetchall()
 
-    cursor.execute(query, (habitation, niveau, experience, specialite))
+    cursor.execute(query, (habitation, niveau, experience, specialite, bouton_etat))
     repetiteurs = cursor.fetchall()
+    # print(repetiteurs)
     if repetiteurs:
         etat_repetiteur = repetiteurs[0][7]
     else:
@@ -505,7 +529,7 @@ def liste_recherche():
     cursor.commit()
 
     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-    return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs, usersParent=usersParent,etat_repetiteur=etat_repetiteur)
+    return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur)
 
 
 @app.route('/choose_repetiteur', methods=['POST'])
@@ -527,7 +551,6 @@ def choose_repetiteur():
 
         if existing_contract:
             # flash('Vous avez déjà sélectionné ce répétiteur.', 'warning')
-            print("Vous avez déjà choisi ce répétiteur")
             return jsonify(result='AlreadySelected', IdRepetiteur=IdRepetiteur, contractExists=True)
 
         
@@ -538,9 +561,6 @@ def choose_repetiteur():
         heure_actuelle = current_time.strftime("%H:%M:%S")
 
         # Print the répétiteur's ID in the terminal
-        print(f"Chosen répétiteur ID: {IdRepetiteur}")
-        print(f"Id Parent: {IdParent}")
-        print(heure_actuelle)
         
         cursor = conn.cursor()
         query_insert = """
@@ -619,6 +639,50 @@ def profil_parent():
     return render_template("Profil/profil_parent.html", usersParent=usersParent)
 
 
+@app.route("/ModifProfil_par")
+@login_required
+def ModifProfil_par():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
+
+@app.route("/SucessModifProfil_par", methods=['POST'])
+@login_required
+def SucessModifProfil_par():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    if request.method == "POST":
+        Email = request.form["Email"]
+        # confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomParent = request.form["NomParent"]
+        PrenomParent = request.form["PrenomParent"]
+        LieuHabitation = request.form["LieuHabitation"]
+        TelephoneParent1 = request.form["TelephoneParent1"]
+        TelephonePparent2 = request.form["TelephonePparent2"]
+        if not all([Email, Roles, NomParent,PrenomParent,LieuHabitation,TelephoneParent1,TelephonePparent2]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('ModifProfil_par'))
+        cursor = conn.cursor()
+        cursor.execute("UPDATE users SET Email=?, Roles=? WHERE IdUser = ?",(Email,Roles,IdUser))
+        # cursor.execute("SELECT SCOPE_IDENTITY()")
+        # listId = cursor.fetchone()
+        cursor.execute("UPDATE Parent SET NomParent=?, PrenomParent=?, LieuHabitation=?, TelephoneParent1=?, TelephonePparent2=? WHERE IdParent = ?", (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2,usersParent[0]))
+        # Commit des modifications
+        conn.commit()
+        flash('Votre profil à été mis à jour', 'success')
+        return redirect(url_for('profil_parent'))
+    return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
+
+
 @app.route("/profil_repetiteur")
 @login_required
 def profil_repetiteur():
@@ -629,25 +693,101 @@ def profil_repetiteur():
     cursor.commit()
 
     cursor = conn.cursor()
-    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
     bouton_etat = cursor.fetchone()[0]
     conn.commit()
     return render_template("Profil/profil_repetiteur.html", usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat)
 
+@app.route("/ModifProfil_rep", methods=['GET', 'POST'])
+def ModifProfil_rep():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
+    bouton_etat = cursor.fetchone()[0]
+    conn.commit()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from Competence")
+    Competence = cursor.fetchall()
+    cursor.execute("SELECT * FROM ClassePrimaire")
+    ClassePrimaire = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM ClasseCollege")
+    ClasseCollege = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM ClasseLycee")
+    ClasseLycee = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM MatiereSciences")
+    MatiereSciences = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM MatiereLitteraire")
+    MatiereLitteraire = cursor.fetchall()
+    return render_template("Profil/ModifProfil_rep.html",usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat, Competence=Competence, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire)
+
+
+@app.route("/SuccesModifProfil_rep", methods=['GET', 'POST'])
+def SuccesModifProfil_rep():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.commit()
+    if request.method == 'POST':
+        Email = request.form["Email"]
+        Roles = request.form["Roles"]
+        NomRepetiteur = request.form["NomRepetiteur"]
+        PrenomRepetiteur = request.form["PrenomRepetiteur"]
+        lieu_hab_rep = request.form["lieu_hab_rep"]
+        DateNaissance = request.form["DateNaissance"]
+        AnneeExperience = request.form["AnneeExperience"]
+        NiveauRepetiteur = request.form["NiveauRepetiteur"]
+        EstActif = request.form["EstActif"]
+        IdCompetence = request.form["IdCompetence"]
+        Classe = ', '.join(request.form.getlist("Classe[]"))
+        Matiere = ', '.join(request.form.getlist("Matiere[]"))
+        # Vérifier si tous les champs sont remplis
+        if not all([Email, Roles, NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, Classe, Matiere]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('ModifProfil_rep'))
+
+        cursor = conn.cursor()
+        cursor.execute("UPDATE users SET Email=?, Roles=? WHERE IdUser = ?",(Email,Roles,IdUser))
+        cursor.execute("UPDATE Repetiteur SET NomRepetiteur=?, PrenomRepetiteur=?, DateNaissance=?, lieu_hab_rep=?, AnneeExperience=?, NiveauRepetiteur=?, EstActif=?, IdCompetence=? WHERE IdRepetiteur = ?", (NomRepetiteur, PrenomRepetiteur, DateNaissance, lieu_hab_rep, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, usersRepetiteur[0]))
+        
+        # cursor.execute("SELECT SCOPE_IDENTITY()")
+        # listId = cursor.fetchone()
+        cursor.execute("SELECT * FROM Dispense D join Repetiteur R on D.IdRepetiteur=R.IdRepetiteur WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
+        Dispense = cursor.fetchone()
+        if Dispense is None:
+            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES ('{usersRepetiteur[0]}','{Matiere}','{Classe}')")
+        # Commit des modifications
+            conn.commit()
+        else:
+            cursor.execute("UPDATE Dispense SET Matiere=?, Classe=? WHERE IdDispense = ?", (Matiere, Classe, Dispense[0]))
+            
+        flash('Votre profil à été mis à jour', 'success')
+        return redirect(url_for('profil_repetiteur'))
+    return render_template("Profil/ModifProfil_rep.html",usersRepetiteur=usersRepetiteur, Dispense=Dispense)
+
+
 # # bouton disponibilité
-
-
 @app.route('/changer_etat', methods=['POST'])
 @login_required
 def changer_etat():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
-    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
-
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
     bouton_etat = cursor.fetchone()[0]
     nouveau_etat = not bouton_etat
     a = cursor.execute(
-        'UPDATE Repetiteur SET EstActif = ? WHERE IdUser = ?', nouveau_etat, IdUser)
+        'UPDATE Repetiteur SET EstActif = ? WHERE IdRepetiteur = ?', nouveau_etat, usersRepetiteur[0])
     conn.commit()
     return redirect(url_for('profil_repetiteur'))
 
