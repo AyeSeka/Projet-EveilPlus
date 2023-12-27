@@ -136,11 +136,11 @@ def Succes_inscription_parent():
 ########### Inscription Repetiteur ##############
 @app.route("/inscriptionRepetiteur", methods=['GET', 'POST'])
 def inscriptionRepetiteur():
-    # cursor = conn.cursor()
-    # # cursor.execute("SELECT * from Competence")
-    # # Competence = cursor.fetchall()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from Competence")
+    Competence = cursor.fetchall()
     # conn.commit()
-    return render_template("Authentification/inscriptionRepetiteur.html")
+    return render_template("Authentification/inscriptionRepetiteur.html",Competence=Competence)
 
 
 @app.route("/Succes_inscription_repetiteur", methods=['GET', 'POST'])
@@ -148,18 +148,18 @@ def Succes_inscription_repetiteur():
     if request.method == 'POST':
         Email = request.form["Email"]
         mot_de_passe = request.form["mot_de_passe"]
-        confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        # confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
         Roles = request.form["Roles"]
         NomRepetiteur = request.form["NomRepetiteur"]
         PrenomRepetiteur = request.form["PrenomRepetiteur"]
-        lieu_hab_rep = request.form["lieu_hab_rep"]
-        DateNaissance = request.form["DateNaissance"]
-        AnneeExperience = request.form["AnneeExperience"]
-        NiveauRepetiteur = request.form["NiveauRepetiteur"]
+        # lieu_hab_rep = request.form["lieu_hab_rep"]
+        # DateNaissance = request.form["DateNaissance"]
+        # AnneeExperience = request.form["AnneeExperience"]
+        # NiveauRepetiteur = request.form["NiveauRepetiteur"]
         EstActif = request.form["EstActif"]
         IdCompetence = request.form["IdCompetence"]
         # Vérifier si tous les champs sont remplis
-        if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence]):
+        if not all([Email, mot_de_passe, Roles, NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence]):
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('inscriptionRepetiteur'))
 
@@ -168,7 +168,7 @@ def Succes_inscription_repetiteur():
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur,EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')

@@ -41,12 +41,18 @@
                     <div class="form_titr_inscriptionParent"><h2> Inscription Répétiteur<h3></div>
                     <form action="{{url_for('Succes_inscription_repetiteur')}}" method="post">
                         <div class="inscriptionParent_login1">
-                            <input type="text" class="input"  name="NomRepetiteur" placeholder="Votre Nom">
+                            <input type="text" class="input" name="NomRepetiteur" placeholder="Votre Nom">
                             <input type="text" class="input" name="PrenomRepetiteur" placeholder="Votre Prenom">
                         </div>
                         <div class="inscriptionParent_login1">
                             <!-- <input type="text"  name="lieu_hab_rep" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau"> -->
-                            <input type="email" class="input" name="Email" placeholder="Votre email">
+                            <input type="email" class="input"  name="Email" placeholder="Votre email">
+                            <select name="IdCompetence" class="input">
+                                <option>--Vos compétences--</option>
+                            {% for Competence in Competence %}
+                                <option value="{{Competence.IdCompetence}}">{{Competence.NomCompetence}}</option>
+                            {%endfor%}
+                        </select>
                             <input type="hidden" name="Roles" value="Repetiteur">
                             <input type="hidden" name="EstActif" value="1">
                          </div>
@@ -55,10 +61,7 @@
                             <input type="number"  name="AnneeExperience" placeholder="Votre année d'expérience">
                             
                          </div> -->
-                         <!-- <div class="inscriptionParent_login1">
-                            
-                            
-                         </div> -->
+                         
                          <div class="inscriptionParent_login1">
                             <input type="password" class="input" name="mot_de_passe" placeholder="Mot de passe" id="mot_de_passe" oninput="checkPassword()">
                             <input type="password" class="input" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe" id="confirm_mot_de_passe" oninput="checkPassword()">
