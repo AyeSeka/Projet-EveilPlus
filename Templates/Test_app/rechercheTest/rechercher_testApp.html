@@ -1,0 +1,123 @@
+{% extends "Partials/Base_index.html" %}
+{% block body %}
+<!--PARTIE RECHERCHE-->
+<section class="my-5 py-5 section-rech">
+  <div class="container colunm">
+    <div class="main_rech1_titre1 mb-4">
+      <h2>Rechercher un répétiteur</h2>
+    </div>
+    <div class="">
+      <form action="/liste_recherche_testApp" method="POST">
+        <div class="row bg-color">
+          <div class="col-md-7 py-4">
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <label for="habitation" class="form-label">Lieu d'habitation:</label>
+              </div>
+              <div class="col-md-6">
+                <select class="form-control" name="habitation" list="1" id="habitation">
+                    <option value="#">Selectionnez le lieu d'habitation...</option>
+                    <option value="Adzopé">Adzopé</option>
+                    <option value="Adiaké">Adiaké</option>
+                    <option value="Agboville">Agboville</option>
+                    <option value="Agnibilékrou">Agnibilékrou</option>
+                    <option value="Agnié">Agnié</option>
+                    <option value="Abobo">Abobo</option>
+                    <option value="Adjamé">Adjamé</option>
+                    <option value="Anyama">Anyama</option>
+                    <option value="Attécoubé">Attécoubé</option>
+                    <option value="Bangolo">Bangolo</option>
+                    <option value="Bingerville">Bingerville</option>
+                    <option value="Bondoukou">Bondoukou</option>
+                    <option value="Bouaké">Bouaké</option>
+                    <option value="Bouaflé">Bouaflé</option>
+                    <option value="Bouna">Bouna</option>
+                    <option value="Cocody">Cocody</option>
+                    <option value="Dabakala">Dabakala</option>
+                    <option value="Dabou">Dabou</option>
+                    <option value="Daloa">Daloa</option>
+                    <option value="Didiévi">Didiévi</option>
+                    <option value="Divo">Divo</option>
+                    <option value="Ferkessédougou">Ferkessédougou</option>
+                    <option value="Gagnoa">Gagnoa</option>
+                    <option value="Guibéroua">Guibéroua</option>
+                    <option value="Issia">Issia</option>
+                    <option value="Jacqueville">Jacqueville</option>
+                    <option value="Korhogo">Korhogo</option>
+                    <option value="Konongoro">Konongoro</option>
+                    <option value="Lakota">Lakota</option>
+                    <option value="Madinani">Madinani</option>
+                    <option value="Man">Man</option>
+                    <option value="Mankono">Mankono</option>
+                    <option value="Mamou-Kouparou">Mamou-Kouparou</option>
+                    <option value="Oumé">Oumé</option>
+                    <option value="Oumé-Gnanhoué">Oumé-Gnanhoué</option>
+                    <option value="Sakassou">Sakassou</option>
+                    <option value="San-Pédro">San-Pédro</option>
+                    <option value="Sassandra">Sassandra</option>
+                    <option value="Séguéla">Séguéla</option>
+                    <option value="Tiassalé">Tiassalé</option>
+                    <option value="Tanda">Tanda</option>
+                    <option value="Yamoussoukro">Yamoussoukro</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <label for="Niveaus" class="form-label">Niveau d'etude:</label>
+              </div>
+              <div class="col-md-6">
+                <select class="form-control" name="niveau" list="2" id="Niveaus">
+                   <option value="#">Selectionnez votre Niveau Scolaire</option>
+                    <option value="BAC">BAC</option>
+                    <option value="BAC+1">BAC+1</option>
+                    <option value="BAC+2">BAC+2</option>
+                    <option value="BAC+3">BAC+3</option>
+                    <option value="BAC+4">BAC+4</option>
+                    <option value="BAC+5">BAC+5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5 py-4">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="experience" class="form-label">Année d'experience:</label>
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" name="experience" list="3" id="experience" type="number" min = "1" max = "20" placeholder = "Entrez vos années d'expérience"/>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <!-- <label for="Competence" class="form-label">Compétence(s):</label> -->
+                <label for="specialite">Spécialité:</label>
+              </div>
+              <div class="col-md-6">
+                <select class="form-select" id="specialite" name="specialite">
+                  {% for competence in datalist_competence %}
+                  <option value="{{ competence[0] }}">
+                    {{ competence[1]}}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-5 mt-4 m-auto">
+          <div class="col-md-6 mb-sm-4">
+            <button class="btn btn-danger" type="reset">ANNULER</button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-success" type="submit">RECHERCHER</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
