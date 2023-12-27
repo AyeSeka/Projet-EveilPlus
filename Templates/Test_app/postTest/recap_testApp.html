@@ -1,4 +1,4 @@
-{% extends "Partials/Base_parent.html" %}
+{% extends "Partials/Base_index.html" %}
 {% block body %}
 <section class="my-5 py-5 section-rech">
   <div class="container colunm">
@@ -6,7 +6,7 @@
       <h2>Récapitulatif</h2>
     </div>
     <div class="">
-      <form action="{{ url_for('recapitulatif_validation') }}" method="post">
+      <form action="/connexion" method="post">
         <div class="row bg-color">
           <div class="form_poste">
             <div class="rep_post1">
@@ -36,6 +36,4 @@
     </div>
   </div>
 </section>
-
-
 {% endblock %}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style_dash.css')}}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <script src="https://kit.fontawesome.com/642d1dfffc.js" crossorigin="anonymous"></script>
+    <title>dashboard Eveilplus</title> 
+    
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="../img/logo Eveil+.png" alt="">
+            </div>
+
+            <span class="logo_name">Eveilplus</span>
+        </div>
+
+        <div class="menu-items">
+            
+            <ul class="nav-links">
+                <li><a href="#">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="link-name">Acceuil</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="fa-regular fa-message"></i>
+                    <span class="link-name">Messagerie</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-hands-holding-child"></i>
+                    <span class="link-name">parents</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-business-time"></i>
+                    <span class="link-name">repetiteur</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-money-bill"></i>
+                    <span class="link-name">Payements</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="link-name">Profil</span>
+                </a></li>
+            </ul>
+            
+            <ul class="logout-mode">
+                <li><a href="#">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                    <span class="link-name">Dark Mode</span>
+                </a>
+
+                <div class="mode-toggle">
+                  <span class="switch"></span>
+                </div>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+               
+                <input type="text" placeholder="Search here...">
+            </div>
+            
+            <img src="../img/photo profil.jpg" alt="">
+        </div>
+        
+        <div class="dash-content">
+            <div class="overview">
+                
+                <div class="title">
+                    <i class="fa-solid fa-gauge"></i>
+                    <span class="text">Dashboard</span>
+                </div>
+
+                <div class="boxes">
+                    <div class="box box1">
+                        <i class="uil uil-thumbs-up"></i>
+                        <span class="text">personel Eveilplus</span>
+                        <span class="number">50,120</span>
+                    </div>
+                    <div class="box box2">
+                        <i class="uil uil-comments"></i>
+                        <span class="text">librairie</span>
+                        <span class="number">20,120</span>
+                    </div>
+                    <div class="box box3">
+                        <i class="uil uil-share"></i>
+                        <span class="text">parent d'élève</span>
+                        <span class="number">10,120</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="activity">
+                <div class="title">
+                    <i class="fa-solid fa-signal"></i>
+                    <span class="text">Recent Activity</span>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="{{url_for('static', filename='./js/script.js')}}" ></script>
+</body>
+</html>

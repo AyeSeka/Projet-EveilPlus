@@ -16,7 +16,7 @@
               </div>
               <div class="col-md-6">
                 <input class="form-control" name="habitation" list="1" id="habitation"
-                  placeholder="Entrez le lieu d'habitation souhaité" />
+                  placeholder="Selectionnez le lieu d'habitation..." />
 
                 <datalist id="1">
                   {% for habitation in datalist_habitation %}
@@ -34,7 +34,7 @@
               </div>
               <div class="col-md-6">
                 <input class="form-control" name="niveau" list="2" id="Niveaus"
-                  placeholder="Niveau d'étude exigé" />
+                  placeholder="Selectionnez le lieu d'habitation..." />
                 <datalist id="2">
                   {% for niveau in datalist_niveau %}
                   <option value="{{ niveau[0] }}">{{ niveau[0] }}</option>
@@ -51,7 +51,7 @@
               </div>
               <div class="col-md-6">
                 <input class="form-control" name="experience" list="3" id="experience"
-                  placeholder="Année d'experience exigé " />
+                  placeholder="Selectionnez le lieu d'habitation..." />
                 <datalist id="3">
 
 
@@ -66,7 +66,7 @@
             <div class="row mb-4">
               <div class="col-md-6">
                 <!-- <label for="Competence" class="form-label">Compétence(s):</label> -->
-                <label for="specialite">Compétence:</label>
+                <label for="specialite">Spécialité:</label>
               </div>
               <div class="col-md-6">
                 <select class="form-select" id="specialite" name="specialite">

@@ -1,5 +1,5 @@
-{% extends "Partials/Base_parent.html" %} {% block body %}
-
+{% extends "Partials/Base_index.html" %}
+{% block body %}
 <main class="main-search my-5 py-5">
   <!-- <section class="header-table-search">
         <div class="items-controller-search">
@@ -21,7 +21,7 @@
   <div class="mb-4 row container-fluid">
     <div class="col-md-11 col-sm-10"><h2>Liste des répétiteurs</h2></div>
     <div class="col-md-1 col-sm-2">
-      <a href="/recherche" class="btn btn-danger">RETOUR</a>
+      <a href="/rechercher_testApp" class="btn btn-danger">RETOUR</a>
     </div>
   </div>
   <section class="field-search container-fluid" id="itemperpage">
@@ -73,59 +73,9 @@
             {% endif %}
           </td>
           <td>
-            <!-- Button trigger modal -->
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
-            >
-              Choisir
-            </button>
-            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              id="staticBackdrop"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
-              tabindex="-1"
-              aria-labelledby="staticBackdropLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">
-                      Modal title
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div class="modal-body">
-                    Vous êtes sur le point de choisir le répétiteur Hugues
-                    Codeur. Voulez-vous confirmez ?
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                    <a href="/liste_repetiteurchoix" class="btn btn-primary"
-                      >Confirmer</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- Button choose -->
+             <a href="/connexion" class="btn btn-primary">Choisir</a>
+
           </td>
         </tr>
 
@@ -142,4 +92,4 @@
     </div>
   </section>
 </main>
-{% endblock %}
+{%endblock%}

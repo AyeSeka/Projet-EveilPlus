@@ -1,4 +1,3 @@
-
 // ? Filter
 // Select relevant HTML elements
 const filterButtons = document.querySelectorAll("#filter-buttons button");

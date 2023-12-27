@@ -1,53 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{url_for('static', filename='/img/logo_Eveil+.png')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
-    <link rel="stylesheet" href="{{url_for('static', filename='/css/initialize.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
-        
-    <title>Eveil+</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-          <a class="navbar-brand" href="#"><img src="{{url_for('static', filename='/img/logo_Eveil+.png')}}" alt="logo_eveilplus" class="logo"></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link px-5 active" aria-current="page" href="/index">Accueil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link px-5" href="#Services">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link px-5" href="#Apropos">A propos</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link px-3 border rounded dropdown" href="/connexion" id="navbarDropdown" role="button" aria-expanded="false">
-                 Se connecter
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-    </nav>
-   <section class="section1_index"> <img src="{{url_for('static', filename='/img/i.jpg')}}" alt="image_eveil_enfant" class="logo"></section>
+{% extends "Partials/Base_index.html" %}
+{% block body %}
+     <section class="section1_index"> <img src="{{url_for('static', filename='/img/i.jpg')}}" alt="image_eveil_enfant" class="logo"></section>
    <section id="Services">    
       <div class="section2_index_min">
-        {% with messages=get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
-                            {%endfor%}
-                        {%endif%}
-                    {% endwith %}
         <div class="section2_index_min_img">
           <img src="{{url_for('static', filename='/img/why.png')}}" alt="logo_eveilplus" class="logo">
         </div>
@@ -65,9 +20,9 @@
               </div>
             </div>
             <div class="section2_index_min_img_1_btn">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">S'INSCRIRE</a>
+              <a href="/inscriptionParent">S'INSCRIRE</a>
                  <!-- Modal -->
-                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                 <!--  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -89,7 +44,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>-->
 
             </div>
           </div>
@@ -97,7 +52,6 @@
       </div>
    </section>
    <section class="section2_index">
-      
     <div class="section2_index_min">
       <div class="section2_index_min_img">
         <div class="section2_index_min_img_1">
@@ -113,32 +67,7 @@
             </div>
           </div>
           <div class="section2_index_min_img_1_btn1">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">S'INSCRIRE</a>
-             <!-- Modal -->
-             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5 container" id="staticBackdropLabel">INSCRIPTION</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body container">
-                    <p> <i> Je m'inscris en tant que...</i></p>
-                  </div>
-                  <div class="modal-body">
-                      <div class="container row m-auto">
-                          <div class="col-md-6">
-                              <a href="/inscriptionParent" class="btn btn-success"> PARENT</a>
-                          </div>
-                          <div class="col-md-6">
-                              <a href="/inscriptionRepetiteur" class="btn btn-warning"> REPETITEUR</a>
-                          </div>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+             <a href="/inscriptionParent">S'INSCRIRE</a>
           </div>
         </div>
       </div>
@@ -167,101 +96,10 @@
           </div>
         </div>
         <div class="section2_index_min_img_1_btn">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">S'INSCRIRE</a>
-           <!-- Modal -->
-           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5 container" id="staticBackdropLabel">INSCRIPTION</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body container">
-                  <p> <i> Je m'inscris en tant que...</i></p>
-                </div>
-                <div class="modal-body">
-                    <div class="container row m-auto">
-                        <div class="col-md-6">
-                            <a href="/inscriptionParent" class="btn btn-success"> PARENT</a>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="/inscriptionRepetiteur" class="btn btn-warning"> REPETITEUR</a>
-                        </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <a href="#">ACHETER</a>
         </div>
       </div>
     </div>
   </div>
   </section>
-  <footer id="Apropos">
-    <div class="footer_main_index">
-      <div class="footer_main_index1">
-        <div class="footer_main_index1_titr1"> 
-          <h4>A propos de nous</h4>
-        </div>
-        <div class="footer_main_index1_txt">
-          douleur assis amet, consectetur magna aliqua. 
-          Ut enim ad minim veniam, quisdotempor incididunt r
-        </div>
-      </div>
-      <div class="footer_main_index1">
-        <div class="footer_main_index1_titr1"> 
-          <h4>Lien Utile</h4>
-        </div>
-        <div class="footer_main_index1_txt">
-          <div><a href="#">Facebook</a></div>
-          <div><a href="#">Linkedln</a></div>
-          <div><a href="#">Instagram</a></div>
-          <div><a href="#"><a href="#">twitter</a></a></div>
-        </div>
-      </div>
-      <div class="footer_main_index1">
-        <div class="footer_main_index1_titr1"> 
-          <h4>Contactez nous</h4>
-        </div>
-        <div class="footer_main_index1_txt">
-          douleur assis amet, consectetur magna aliqua. 
-          Ut enim ad minim veniam, quisdotempor incididunt r
-        </div>
-      </div>
-      <div class="footer_main_index1">
-        <div class="footer_main_index1_titr1"> 
-          <h4>Newletters</h4>
-        </div>
-        <div class="footer_main_index1_txt_news">
-          <form  class="footer_form_index"action ="#" methode="#">
-            <input  class="footer_input_index" type="mail" name="#" placeholder="Entrez votre addresse mail">
-            <input class="footer_input_btn" type="submit" value="S'ABONNER">
-          </form>
-        </div>
-      </div>
-    </div>
-  </footer>
-      
-
-<!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
-<script>
-  // Sélectionnez l'élément contenant le message flash
-  const flashMessage = document.getElementById('flash-message');
-  
-  // Définissez un délai (en millisecondes) avant que le message ne disparaisse
-  const delay = 5000; // 5 secondes
-  
-  // Utilisez setTimeout pour masquer le message après le délai
-  setTimeout(function() {
-      flashMessage.style.display = 'none';
-  }, delay);
-</script>
-      <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
-
-    
-    <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{url_for('static', filename='/js/index.js')}}"></script>
-    <!-- <script src="js/bootstrap.min.js"></script> -->
-</body>
-</html>
+{% endblock %}

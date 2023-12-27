@@ -7,10 +7,10 @@ var tr = tbody.querySelectorAll("tr");
 var emptyBox = [];
 var index = 1;
 var itemPerPage = 4;
-console.log(tbody);
-console.log(pageUl);
-console.log(itemPerPage);
-console.log(tr);
+// console.log(tbody);
+// console.log(pageUl);
+// console.log(itemPerPage);
+// console.log(tr);
 
 for (let i = 0; i < tr.length; i++) {
   emptyBox.push(tr[i]);
@@ -126,41 +126,4 @@ search.onkeyup = (e) => {
   }
 };
 
-
-
-
-
-
-const body = document.querySelector("body"),
-      modeToggle = body.querySelector(".mode-toggle");
-      sidebar = body.querySelector("nav");
-       sidebarToggle = body.querySelector(".sidebar-toggle");
-
- let getMode = localStorage.getItem("mode");
- if(getMode && getMode ==="dark"){
-     body.classList.toggle("dark");
- }
-
- let getStatus = localStorage.getItem("status");
- if(getStatus && getStatus ==="close"){
-     sidebar.classList.toggle("close");
- }
-
- modeToggle.addEventListener("click", () =>{
-     body.classList.toggle("dark");
-     if(body.classList.contains("dark")){
-         localStorage.setItem("mode", "dark");
-     }else{
-         localStorage.setItem("mode", "light");
-     }
- });
-
- sidebarToggle.addEventListener("click", () => {
-     sidebar.classList.toggle("close");
-     if(sidebar.classList.contains("close")){
-         localStorage.setItem("status", "close");
-     }else{
-         localStorage.setItem("status", "open");
-     }
- })
 

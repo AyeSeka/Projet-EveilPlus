@@ -25,12 +25,33 @@
           <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>{{poste.NbreEnfant}} </b></i></li>
           <li class="list-group-item"><i>Nombre de séance : <b>{{poste.NbresJours}}</b></i>/semaine</li>
           <li class="list-group-item"><i>Niveau : <b>{{poste.NiveauEnfant}}</b></i></li>
-          <li class="list-group-item"><i>Lieu d'habitation : <b>{{poste.lieu_habitation}}</b></i></li>
+          <li class="list-group-item"><i>Niveau : <b>{{poste.lieu_habitation}}</b></i></li>
           <li class="list-group-item"><i>Date limite : <b>{{poste.DateLimte}}</b></i></li>
           <li class="list-group-item"><i>Date de publication : <b>{{poste.DatePublication}}</b></i></li>
         </ul>
         <div class="card-body">
-          
+          <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <b>SUPRIMER</b>
+          </a>
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                  <a href="{{ url_for('poster_maintenant') }}" class="btn btn-danger">SUPRIMER</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {% endfor %}

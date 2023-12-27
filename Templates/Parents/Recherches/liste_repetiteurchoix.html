@@ -1,0 +1,165 @@
+{% extends "Partials/Base_parent.html" %}
+{% block body %}
+<section class="main_rech">
+    <section class="my-5 py-5 section-rech">
+        <div class="container colunm">
+            <div class="mb-4 row container-fluid">
+                <div class="col-md-11 col-sm-10"><h2>Liste des répétiteurs</h2></div>
+                <div class="col-md-1 col-sm-2"><a href="/liste_recherche" class="btn btn-danger">RETOUR</a></div>
+            </div>  
+            <!-- <button class="btn btn-danger" type="reset">ANNULER</button>     -->
+            <table class="table Tab rounded">
+                <thead class="table-light">
+                <th>Nom</th>
+                <th>Note</th>
+                <th>Status</th>
+                <th>Action</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <a href="/info_repetiteur" class="tab-a">
+                                <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
+                                Hugues Codeur   
+                            </a>
+                        </td>
+                        <td>7.5/10</td>
+                        <td>Disponible</td>
+                        <td>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            Annuler
+                        </button>
+                        <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                                        <a href="/liste_recherche" class="btn btn-danger">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="" class="tab-a">
+                                <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
+                                Hugues Codeur   
+                            </a>
+                        </td>
+                        <td>7.5/10</td>
+                        <td>Disponible</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Choisir
+                            </button>
+                            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                                            <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="" class="tab-a">
+                                <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
+                                Hugues Codeur   
+                            </a>
+                        </td>
+                        <td>7.5/10</td>
+                        <td>Disponible</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Choisir
+                            </button>
+                            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    ...
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                                    <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="" class="tab-a">
+                                <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class="img-thumbnail"  width="45px" alt="">
+                                Hugues Codeur   
+                            </a>
+                        </td>
+                        <td>7.5/10</td>
+                        <td>Disponible</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Choisir
+                            </button>
+                            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    ...
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                                    <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+{% endblock %}
