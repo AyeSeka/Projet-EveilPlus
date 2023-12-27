@@ -7,15 +7,15 @@ from functools import wraps
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-                       "Database=eveil_plus;"
-                       "Trusted_Connection=yes")
-
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                        "Server=GEEK_MACHINE\SQLEXPRESS;"
+#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
+
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                       "Server=GEEK_MACHINE\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
 
 
 # conn = pyodbc.connect(

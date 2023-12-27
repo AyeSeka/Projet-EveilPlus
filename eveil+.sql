@@ -25,17 +25,6 @@ CREATE TABLE Competence (
     IdCompetence INT PRIMARY KEY IDENTITY(1,1),
     NomCompetence VARCHAR(55) NOT NULL
 );
-ALTER TABLE Repetiteur   
-ADD IdCompetence int,
-FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
-	IdUser int,
-FOREIGN KEY(IdUser) REFERENCES users(IdUser);
-
-
-insert into Competence (NomCompetence) values ('Sciences'),
-												('Litterature'),
-												('Sciences et Litterature')
-
 
 CREATE TABLE Parent(
 	IdParent int primary key IDENTITY(1,1),
@@ -45,9 +34,6 @@ CREATE TABLE Parent(
 	TelephoneParent1 varchar(15) NULL,
 	TelephonePparent2 varchar(15) NULL,
 	);
-ALTER TABLE Parent   
-ADD IdUser int,
-FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
 CREATE TABLE Personnel_Eveil (
     IdPersoEveil INT PRIMARY KEY IDENTITY(1,1),
@@ -56,9 +42,6 @@ CREATE TABLE Personnel_Eveil (
     Telephone VARCHAR(15),
     Adresse VARCHAR(55)
 );
-ALTER TABLE Personnel_Eveil   
-ADD IdUser int,
-FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
 CREATE TABLE CategorieProduits (
     IdCategorie INT PRIMARY KEY IDENTITY(1,1),
@@ -82,14 +65,6 @@ CREATE TABLE Commande (
     Montant FLOAT,
 );
 
---CREATE TABLE Paiement_Repetiteur (
---    id_paiement_repetiteur INT PRIMARY KEY IDENTITY(1,1),
---    date_paiement_repetiteur DATETIME,
---    montant_paiement_repetiteur FLOAT,
---);
-
-
-
 CREATE TABLE Stock (
     IdStock INT PRIMARY KEY IDENTITY(1,1),
     QuantiteStock INT,
@@ -111,19 +86,14 @@ CREATE TABLE Poste (
 	DateLimte Date NOT NULL,
 	DatePublication  VARCHAR(35)
 );
-select * from Poste 
+/*select * from Poste 
         SELECT PO.* FROM Poste PO JOIN Parent PA ON PO.IdParent=PA.IdParent WHERE PA.PrenomParent = 'bbb'
-
+		*/
 CREATE TABLE HistoriquePoste (
     IdHistoriquePoste INT PRIMARY KEY IDENTITY(1,1),
 	IdPoste INT,
 	FOREIGN KEY(IdPoste) REFERENCES Poste(IdPoste)
 );
-ALTER TABLE Poste
-ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
-
-
-
 
 CREATE TABLE ContratPar_Rep (
 	IdContrat int PRIMARY KEY IDENTITY(1,1) NOT NULL,
@@ -131,13 +101,6 @@ CREATE TABLE ContratPar_Rep (
 	DateDebutContrat date NULL,
 	
 );
-
-ALTER TABLE ContratPar_Rep 
-ADD IdParent int,
-FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
-	IdRepetiteur int,
-FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur);
-
 
 CREATE TABLE NiveauEtudeEleve(
 	IdNiveauEtudeint int PRIMARY KEY IDENTITY(1,1) NOT NULL,
@@ -149,6 +112,44 @@ CREATE TABLE NoteRepetiteur (
 	IdNote int primary key IDENTITY(1,1) NOT NULL,
 	NoteRepetiteur int NOT NULL,
 ) 
+
+
+ALTER TABLE Repetiteur   
+ADD IdCompetence int,
+FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
+	IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser);
+
+
+insert into Competence (NomCompetence) values ('Sciences'),
+												('Litterature'),
+												('Sciences et Litterature')
+
+ALTER TABLE Parent   
+ADD IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser)
+
+
+ALTER TABLE Personnel_Eveil   
+ADD IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser)
+
+
+--CREATE TABLE Paiement_Repetiteur (
+--    id_paiement_repetiteur INT PRIMARY KEY IDENTITY(1,1),
+--    date_paiement_repetiteur DATETIME,
+--    montant_paiement_repetiteur FLOAT,
+--);
+
+ALTER TABLE Poste
+ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
+
+ALTER TABLE ContratPar_Rep 
+ADD IdParent int,
+FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
+	IdRepetiteur int,
+FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur);
+
 
 ALTER TABLE NoteRepetiteur 
 ADD IdRepetiteur int,
