@@ -14,7 +14,7 @@ bcrypt = Bcrypt(app)
 #                        "Trusted_Connection=yes")
 
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=GEEK_MACHINE\SQLEXPRESS;"
+                       "Server=LAPTOP-QL3EU2TD\SQLEXPRESS01;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 
@@ -192,7 +192,7 @@ def recap_testApp():
 
 
 ########### INFO ##############
-# ! Mécanisme de protection pour obligier le user à se connecter
+#  Mécanisme de protection pour obligier le user à se connecter
 # ? Utiliser le décorateur @login_required
 
 
@@ -328,7 +328,7 @@ def Succes_inscription_repetiteur():
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur,EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{lieu_hab_rep}','{DateNaissance}','{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser, DateNaissance, lieu_hab_rep) VALUES ('{NomRepetiteur}', '{PrenomRepetiteur}', '{EstActif}', '{IdCompetence}', '{listId[0]}', '{DateNaissance}', '{lieu_hab_rep}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -507,7 +507,7 @@ def poster_maintenant():
 # DEBUT RECHERCHE
 
 
-# ! Back-End Recherche
+#  Back-End Recherche
 # ? Fonction pour récupérer les options depuis la base de données
 
 def get_options_from_db(column_name, table_name):
@@ -693,7 +693,7 @@ def panier_rep():
     return render_template("Panier/panier_rep.html", usersRepetiteur=usersRepetiteur)
 # FIN COMMANDE
 # DEBUT LIBRAIRIE
-# ! MES REPETITEURS
+#  MES REPETITEURS
 # ? Mes Repetiteurs
 
 
@@ -749,7 +749,7 @@ def form_paiement():
     return render_template("Parents/mes_repetiteurs/form_paiement.html", usersParent=usersParent)
 
 
-# ! BACK-END LIBRAIRIE
+#  BACK-END LIBRAIRIE
 @app.route("/librairie_parent")
 @login_required
 def librairie_parent():
