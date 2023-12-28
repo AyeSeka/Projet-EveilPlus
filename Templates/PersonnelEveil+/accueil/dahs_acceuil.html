@@ -1,0 +1,51 @@
+{% extends "Partials/Base_dash.html" %}
+{% block body %}    
+    <section class="dashboard">
+       <!--<div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+               
+                <input type="text" placeholder="Search here...">
+            </div>
+            
+            <img src="../img/photo profil.jpg" alt="">
+        </div>-->
+        
+        <div class="dash-content">
+            <div class="overview">
+                
+                <div class="title">
+                    <i class="fa-solid fa-gauge"></i>
+                    <span class="text">Dashboard</span>
+                </div>
+
+                <div class="boxes">
+                    <div class="box box1">
+                        <i class="uil uil-thumbs-up"></i>
+                        <span class="text">personel Eveilplus</span>
+                        <span class="number">50,120</span>
+                    </div>
+                    <div class="box box2">
+                        <i class="uil uil-comments"></i>
+                        <span class="text">librairie</span>
+                        <span class="number">20,120</span>
+                    </div>
+                    <div class="box box3">
+                        <i class="uil uil-share"></i>
+                        <span class="text">parent d'élève</span>
+                        <span class="number">10,120</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="activity">
+                <div class="title">
+                    <i class="fa-solid fa-signal"></i>
+                    <span class="text">Recent Activity</span>
+            </div>
+
+        </div>
+    </section>
+{% endblock body %}

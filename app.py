@@ -8,15 +8,11 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
-
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=LAPTOP-QL3EU2TD\SQLEXPRESS01;"
+                       "Server=Geek_Machine\\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
+
 
 
 # conn = pyodbc.connect(
@@ -847,8 +843,15 @@ def deconnexion():
 
 @app.route("/dashboard_admin")
 def dashboard_admin():
-    return render_template("PersonnelEveil+/dahs_acceuil.html")
+    return render_template("PersonnelEveil+/accueil/dahs_acceuil.html")
 
+@app.route("/messagerie")
+def messagerie():
+    return render_template("PersonnelEveil+/messagerie/msg_dash.html")
+
+@app.route("/accueil_parent_dash")
+def accueil_parent_dash():
+    return render_template("PersonnelEveil+/parent/accueil_parent_dash.html")
 
 
 if __name__ == "__main__":
