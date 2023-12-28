@@ -8,6 +8,12 @@
 .logo{
     height: 80px;
 }
+.logo-name{
+  margin-bottom: -60px;
+}
+.logout-mode{
+  margin-top: -10px;
+}
 
 /*page poste.html */
 

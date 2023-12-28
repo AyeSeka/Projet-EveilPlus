@@ -1,14 +1,11 @@
  <nav>
         <div class="logo-name">
             <div class="logo-image">
-                <img src="../img/logo Eveil+.png" alt="">
+                <img src="{{url_for('static', filename='/img/logo_Eveil+.png')}}" alt="logo_eveilplus" class="logo">
             </div>
-
             <span class="logo_name">Eveilplus</span>
         </div>
-
         <div class="menu-items">
-            
             <ul class="nav-links">
                 <li><a href="/dashboard_admin">
                     <i class="fa-solid fa-house"></i>
@@ -34,24 +31,14 @@
                     <i class="fa-solid fa-user"></i>
                     <span class="link-name">Profil</span>
                 </a></li>
-            </ul>
-            
-            <ul class="logout-mode">
-                <li><a href="#">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span class="link-name">Logout</span>
-                </a></li>
-
-                <li class="mode">
-                    <a href="#">
-                        <i class="uil uil-moon"></i>
-                    <span class="link-name">Dark Mode</span>
-                </a>
-
-                <div class="mode-toggle">
-                  <span class="switch"></span>
-                </div>
-            </li>
+                <ul class="logout-mode">
+                    <li>
+                        <a href="#">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="link-name">Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </ul>
         </div>
     </nav>
