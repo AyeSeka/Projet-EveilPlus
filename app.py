@@ -3,13 +3,14 @@ import pyodbc
 from flask import Flask, render_template, request,  redirect, url_for, flash, session
 from flask_bcrypt import Bcrypt
 from functools import wraps
+from werkzeug.security import generate_password_hash
 # from flask_login import current_user, login_required
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=Geek_Machine\\SQLEXPRESS;"
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
+                      "Server=DESKTOP-K074SIS\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 
@@ -54,36 +55,42 @@ def liste_recherche_testApp():
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
 
-    # cursor = conn.cursor()
-    # Récupérez les données du formulaire
     habitation = request.form.get("habitation")
     niveau = request.form.get("niveau")
     experience = request.form.get("experience")
     specialite = request.form.get("specialite")
 
-    # print(habitation)
-    # print(niveau)
-    # print(experience)
-    # print(specialite)
-
     query = """SELECT  * FROM Repetiteur r join Competence c ON (r.IdCompetence = c.IdCompetence)
-            
-
             WHERE
-            lieu_hab_rep = ? OR
-            NiveauRepetiteur = ? OR 
-            AnneeExperience = ? OR
-            c.NomCompetence = ?
+            lieu_hab_rep = ? AND
+            NiveauRepetiteur = ? AND 
+            AnneeExperience = ? AND
+            r.IdCompetence = ?
             """
-    # r.IdRepetiteur = c.IdRepetiteur AND
-
     cursor.execute(query, (habitation, niveau, experience, specialite))
     repetiteurs = cursor.fetchall()
-    etat_repetiteur = repetiteurs[0][7]
+    etat_repetiteur = None
+    message = None
+
+    # Vérifiez si tous les critères de recherche sont satisfaits
+    if habitation and niveau and experience and specialite and len(repetiteurs) == 0:
+        message = "Aucune correspondance trouvée."
+        print("Message:", message)
+    elif len(repetiteurs) > 0:
+        etat_repetiteur = repetiteurs[0][7]
+        print("Recherche:", habitation, niveau, experience, specialite)
+        print("Repetiteurs:", repetiteurs)
+
     cursor.commit()
 
-    # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-    return render_template("Test_app/rechercheTest/liste_recherche_testApp.html", repetiteurs=repetiteurs, usersParent=usersParent,etat_repetiteur=etat_repetiteur)
+    print("Repetiteurs:", repetiteurs)
+    print("Users Parent:", usersParent)
+    print("État du répétiteur:", etat_repetiteur)
+    print("Message:", message)
+
+    return render_template("Test_app/rechercheTest/liste_recherche_testApp.html", repetiteurs=repetiteurs, usersParent=usersParent, etat_repetiteur=etat_repetiteur, message=message)
+
+
 
 
 @app.route("/poste_testApp", methods=["GET", "POST"])
@@ -841,6 +848,8 @@ def accueil_parent_dash():
     return render_template("PersonnelEveil+/parent/accueil_parent_dash.html")
 
 
+
 if __name__ == "__main__":
     app.secret_key = 'admin123'
     app.run(debug=True)
+
