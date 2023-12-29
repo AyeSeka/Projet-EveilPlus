@@ -324,7 +324,7 @@ def Succes_inscription_repetiteur():
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser, DateNaissance, lieu_hab_rep) VALUES ('{NomRepetiteur}', '{PrenomRepetiteur}', '{EstActif}', '{IdCompetence}', '{listId[0]}', '{DateNaissance}', '{lieu_hab_rep}')")
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, DateNaissance, lieu_hab_rep, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}', '{PrenomRepetiteur}', '{DateNaissance}', '{lieu_hab_rep}', '{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}', '{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
