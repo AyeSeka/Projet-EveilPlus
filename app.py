@@ -62,24 +62,36 @@ def liste_recherche_testApp():
 
     query = """SELECT  * FROM Repetiteur r join Competence c ON (r.IdCompetence = c.IdCompetence)
             WHERE
-            lieu_hab_rep = ? OR
-            NiveauRepetiteur = ? OR 
-            AnneeExperience = ? OR
+            lieu_hab_rep = ? AND
+            NiveauRepetiteur = ? AND 
+            AnneeExperience = ? AND
             c.NomCompetence = ?
             """
     cursor.execute(query, (habitation, niveau, experience, specialite))
     repetiteurs = cursor.fetchall()
     etat_repetiteur = None
+    message = None
 
-    if len(repetiteurs) == 0:
+    # Vérifiez si tous les critères de recherche sont satisfaits
+    if habitation and niveau and experience and specialite and len(repetiteurs) == 0:
         message = "Aucune correspondance trouvée."
-    else:
-        message = None
+        print("Message:", message)
+    elif len(repetiteurs) > 0:
         etat_repetiteur = repetiteurs[0][7]
+        print("Recherche:", habitation, niveau, experience, specialite)
+        print("Repetiteurs:", repetiteurs)
 
     cursor.commit()
 
+    print("Repetiteurs:", repetiteurs)
+    print("Users Parent:", usersParent)
+    print("État du répétiteur:", etat_repetiteur)
+    print("Message:", message)
+
     return render_template("Test_app/rechercheTest/liste_recherche_testApp.html", repetiteurs=repetiteurs, usersParent=usersParent, etat_repetiteur=etat_repetiteur, message=message)
+
+
+
 
 @app.route("/poste_testApp", methods=["GET", "POST"])
 def poste_testApp():
@@ -297,44 +309,23 @@ def inscriptionRepetiteur():
 @app.route("/Succes_inscription_repetiteur", methods=['GET', 'POST'])
 def Succes_inscription_repetiteur():
     if request.method == 'POST':
-        # ... (votre code pour récupérer les données du formulaire)
-
-        # Vérification si les champs sont remplis
+        Email = request.form["Email"]
+        mot_de_passe = request.form["mot_de_passe"]
+        confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomRepetiteur = request.form["NomRepetiteur"]
+        PrenomRepetiteur = request.form["PrenomRepetiteur"]
+        lieu_hab_rep = request.form["lieu_hab_rep"]
+        DateNaissance = request.form["DateNaissance"]
+        AnneeExperience = request.form["AnneeExperience"]
+        NiveauRepetiteur = request.form["NiveauRepetiteur"]
+        EstActif = request.form["EstActif"]
+        IdCompetence = request.form["IdCompetence"]
+        # Vérifier si tous les champs sont remplis
         if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence]):
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('inscriptionRepetiteur'))
 
-<<<<<<< HEAD
-        # Vérification du mot de passe
-        if mot_de_passe != confirm_mot_de_passe:
-            flash('Les mots de passe ne correspondent pas.', 'danger')
-            return redirect(url_for('inscriptionRepetiteur'))
-
-        # Hash du mot de passe
-        mot_de_passe_hache = generate_password_hash(mot_de_passe).decode('utf-8')
-
-        # Utilisation de la transaction
-        try:
-            with conn.cursor() as cursor:
-                # Insertion dans la table 'users'
-                cursor.execute("INSERT INTO users (Email, mot_de_passe, Roles) VALUES (%s, %s, %s)", (Email, mot_de_passe_hache, Roles))
-                
-                # Récupération de l'ID généré
-                user_id = cursor.lastrowid
-
-                # Insertion dans la table 'Repetiteur'
-                cursor.execute("INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser, DateNaissance, lieu_hab_rep) VALUES (%s, %s, %s, %s, %s, %s, %s)", (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, user_id, DateNaissance, lieu_hab_rep))
-                
-            # Commit de la transaction
-            conn.commit()
-            flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-            return redirect(url_for('connexion'))
-        except Exception as e:
-            # En cas d'erreur, annuler la transaction
-            conn.rollback()
-            flash(f"Erreur lors de l'inscription : {str(e)}", 'danger')
-
-=======
         mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
@@ -345,7 +336,6 @@ def Succes_inscription_repetiteur():
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
         return redirect(url_for('connexion'))
->>>>>>> e5328294ab9f4a7337d7eacd5eb96764ad5b466b
     return render_template("Authentification/inscriptionRepetiteur.html")
 # PARENT
 # DEBUT PARENT
@@ -874,4 +864,4 @@ def accueil_parent_dash():
 
 if __name__ == "__main__":
     app.secret_key = 'admin123'
-    app.run(debug=True)
+
