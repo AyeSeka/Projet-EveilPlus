@@ -304,6 +304,7 @@ def Succes_inscription_repetiteur():
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('inscriptionRepetiteur'))
 
+<<<<<<< HEAD
         # Vérification du mot de passe
         if mot_de_passe != confirm_mot_de_passe:
             flash('Les mots de passe ne correspondent pas.', 'danger')
@@ -333,6 +334,18 @@ def Succes_inscription_repetiteur():
             conn.rollback()
             flash(f"Erreur lors de l'inscription : {str(e)}", 'danger')
 
+=======
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
+        cursor = conn.cursor()
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
+        cursor.execute("SELECT SCOPE_IDENTITY()")
+        listId = cursor.fetchone()
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, DateNaissance, lieu_hab_rep, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}', '{PrenomRepetiteur}', '{DateNaissance}', '{lieu_hab_rep}', '{AnneeExperience}','{NiveauRepetiteur}','{EstActif}','{IdCompetence}', '{listId[0]}')")
+        # Commit des modifications
+        conn.commit()
+        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+        return redirect(url_for('connexion'))
+>>>>>>> e5328294ab9f4a7337d7eacd5eb96764ad5b466b
     return render_template("Authentification/inscriptionRepetiteur.html")
 # PARENT
 # DEBUT PARENT
