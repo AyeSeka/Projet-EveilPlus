@@ -65,7 +65,7 @@ def liste_recherche_testApp():
             lieu_hab_rep = ? AND
             NiveauRepetiteur = ? AND 
             AnneeExperience = ? AND
-            c.NomCompetence = ?
+            r.IdCompetence = ?
             """
     cursor.execute(query, (habitation, niveau, experience, specialite))
     repetiteurs = cursor.fetchall()
@@ -864,4 +864,5 @@ def accueil_parent_dash():
 
 if __name__ == "__main__":
     app.secret_key = 'admin123'
+    app.run(debug=True)
 
