@@ -150,6 +150,15 @@ def recap_testApp():
         enfant = request.form.get("enfant")
         seance = request.form.get("seance")
         date_limite = request.form.get("date_limite")
+        
+        
+        # Convertir la chaîne de date en objet de date
+        date_limite = datetime.strptime(date_limite, '%Y-%m-%d').date()
+        
+             # Comparer les dates
+        if date_limite <= datetime.now().date():
+            flash(f"Veuillez choisir une date limite valide", 'danger')
+            return redirect(url_for('poste_testApp'))
 
         # Stocker les données dans la carte temporaire
         # Stocker les informations dans la session
@@ -666,8 +675,7 @@ def changer_etat():
 # Panier
 
 
-@app.route("/panier_parent")
-@login_required
+@app.route("/panier")
 def panier_parent():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
@@ -675,18 +683,8 @@ def panier_parent():
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
-    return render_template("Panier/panier_parent.html", usersParent=usersParent)
+    return render_template("Panier/panier.html", usersParent=usersParent)
 
-
-@app.route("/panier_rep")
-@login_required
-def panier_rep():
-    IdUser = session.get('IdUser')
-    cursor = conn.cursor()
-    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
-    usersRepetiteur = cursor.fetchone()
-    cursor.commit()
-    return render_template("Panier/panier_rep.html", usersRepetiteur=usersRepetiteur)
 # FIN COMMANDE
 # DEBUT LIBRAIRIE
 #  MES REPETITEURS
@@ -746,8 +744,7 @@ def form_paiement():
 
 
 #  BACK-END LIBRAIRIE
-@app.route("/librairie_parent")
-@login_required
+@app.route("/librairie")
 def librairie_parent():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
@@ -755,18 +752,8 @@ def librairie_parent():
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
-    return render_template("librairie/librairie_parent.html", usersParent=usersParent)
+    return render_template("librairie/librairie.html", usersParent=usersParent)
 
-
-@app.route("/librairie_repetiteur")
-@login_required
-def librairie_repetiteur():
-    IdUser = session.get('IdUser')
-    cursor = conn.cursor()
-    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
-    usersRepetiteur = cursor.fetchone()
-    cursor.commit()
-    return render_template("librairie/librairie_repetiteur.html", usersRepetiteur=usersRepetiteur)
 
 # FIN LIBRAIRIE
 # DEBUT REPETITEUR
@@ -837,8 +824,8 @@ def info_repetiteur():
 def deconnexion():
     # Supprimer l'ID de l'utilisateur de la session lors de la déconnexion
     session.pop('user_id', None)
-    flash("Vous avez été déconnecté.")
-    return redirect(url_for('index'))
+    flash("Vous avez été déconnecté.", "success")
+    return redirect(url_for('connexion'))
 
 
 @app.route("/dashboard_admin")

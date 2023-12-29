@@ -5,6 +5,13 @@
     <div class="main_rech1_titre1 mb-4">
       <h2>Publier mon offres</h2>
     </div>
+        {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                {%endfor%}
+            {%endif%}
+        {% endwith %}
     <div class="">
       <form action="{{ url_for('recap_testApp') }}" method="POST">
         <div class="row col-md-8 px-2 m-auto bg-color">
@@ -45,15 +52,51 @@
                   <label class="form-label">fois par semaine à</label>
                 </div>
                 <div class="col-md-6">
-                  <input class="form-control" list="datalist" id="habitation"
-                    placeholder="Selectionnez le lieu d'habitation..." name="habitation">
-                  <datalist id="datalist">
-                    {% for lieu in lieu_repetiteur %}
-                    <option value="{{ lieu[0] }}">
-                      {{ lieu[0]}}
-                    </option>
-                    {% endfor %}
-                  </datalist>
+                    <select class="form-control" name="habitation" list="1" id="habitation">
+                                <option value="#">Selectionnez le lieu d'habitation...</option>
+                                <option value="Adzopé">Adzopé</option>
+                                <option value="Adiaké">Adiaké</option>
+                                <option value="Agboville">Agboville</option>
+                                <option value="Agnibilékrou">Agnibilékrou</option>
+                                <option value="Agnié">Agnié</option>
+                                <option value="Abobo">Abobo</option>
+                                <option value="Adjamé">Adjamé</option>
+                                <option value="Anyama">Anyama</option>
+                                <option value="Attécoubé">Attécoubé</option>
+                                <option value="Bangolo">Bangolo</option>
+                                <option value="Bingerville">Bingerville</option>
+                                <option value="Bondoukou">Bondoukou</option>
+                                <option value="Bouaké">Bouaké</option>
+                                <option value="Bouaflé">Bouaflé</option>
+                                <option value="Bouna">Bouna</option>
+                                <option value="Cocody">Cocody</option>
+                                <option value="Dabakala">Dabakala</option>
+                                <option value="Dabou">Dabou</option>
+                                <option value="Daloa">Daloa</option>
+                                <option value="Didiévi">Didiévi</option>
+                                <option value="Divo">Divo</option>
+                                <option value="Ferkessédougou">Ferkessédougou</option>
+                                <option value="Gagnoa">Gagnoa</option>
+                                <option value="Guibéroua">Guibéroua</option>
+                                <option value="Issia">Issia</option>
+                                <option value="Jacqueville">Jacqueville</option>
+                                <option value="Korhogo">Korhogo</option>
+                                <option value="Konongoro">Konongoro</option>
+                                <option value="Lakota">Lakota</option>
+                                <option value="Madinani">Madinani</option>
+                                <option value="Man">Man</option>
+                                <option value="Mankono">Mankono</option>
+                                <option value="Mamou-Kouparou">Mamou-Kouparou</option>
+                                <option value="Oumé">Oumé</option>
+                                <option value="Oumé-Gnanhoué">Oumé-Gnanhoué</option>
+                                <option value="Sakassou">Sakassou</option>
+                                <option value="San-Pédro">San-Pédro</option>
+                                <option value="Sassandra">Sassandra</option>
+                                <option value="Séguéla">Séguéla</option>
+                                <option value="Tiassalé">Tiassalé</option>
+                                <option value="Tanda">Tanda</option>
+                                <option value="Yamoussoukro">Yamoussoukro</option>               
+                  </select>
                 </div>
               </div>
             </div>
@@ -96,6 +139,20 @@
   </div>
 </section>
 
-
-
+    <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+    <script>
+        // Sélectionnez l'élément contenant le message flash
+        const flashMessage = document.getElementById('flash-message');
+        
+        // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+        const delay = 3000; // 3 secondes
+        
+        // Utilisez setTimeout pour masquer le message après le délai
+        setTimeout(function() {
+            flashMessage.style.display = 'none';
+        }, delay);
+    </script>
+    <!-- <script src="/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
+    <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
 {% endblock %}
