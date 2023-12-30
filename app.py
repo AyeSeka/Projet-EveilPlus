@@ -327,14 +327,26 @@ def Succes_inscription_parent():
 
         mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
-        cursor.execute("SELECT SCOPE_IDENTITY()")
-        listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}' '{listId[0]}')")
-        # Commit des modifications
-        conn.commit()
-        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-        return redirect(url_for('connexion'))
+        
+        # Exécuter une requête pour vérifier l'existence de l'utilisateur
+        cursor.execute(f"SELECT COUNT(*) FROM users WHERE Email = '{Email}'")
+        
+       # Récupérer le résultat
+        email = cursor.fetchone()[0]
+        
+        # Vérifier le résultat
+        if email != 0:
+            flash(f"L'utilisateur {Email} existe déjà, utiliser un autre mail", 'danger')
+            return redirect(url_for('inscriptionParent'))
+        else:
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
+            cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+            return redirect(url_for('connexion'))
     return render_template("Authentification/inscriptionParent.html")
 
 
@@ -370,14 +382,25 @@ def Succes_inscription_repetiteur():
 
         mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
-        cursor.execute("SELECT SCOPE_IDENTITY()")
-        listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
-        # Commit des modifications
-        conn.commit()
-        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-        return redirect(url_for('connexion'))
+        # Exécuter une requête pour vérifier l'existence de l'utilisateur
+        cursor.execute(f"SELECT COUNT(*) FROM users WHERE Email = '{Email}'")
+        
+       # Récupérer le résultat
+        email = cursor.fetchone()[0]
+        
+        # Vérifier le résultat
+        if email != 0:
+            flash(f"L'utilisateur {Email} existe déjà, utiliser un autre mail", 'danger')
+            return redirect(url_for('inscriptionRepetiteur'))
+        else:
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
+            cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+            return redirect(url_for('connexion'))
     return render_template("Authentification/inscriptionRepetiteur.html")
 # PARENT
 # DEBUT PARENT

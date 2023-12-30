@@ -42,65 +42,16 @@
                     <div class="form_titr_inscriptionParent"><h2> Inscription Parent d'élève<h3></div>
                     <form action="{{url_for('Succes_inscription_parent')}}" method="post">
                         <div class="inscriptionParent_login1">
-                            <input type="text"  name="NomParent" placeholder="Votre Nom">
-                            <input type="text"  name="PrenomParent" placeholder="Votre Prenom">
+                            <input type="text" class="input" name="NomParent" placeholder="Votre Nom">
+                            <input type="text" class="input" name="PrenomParent" placeholder="Votre Prenom">
                         </div>
                         <div class="inscriptionParent_login1">
-                            <input type="email"  name="Email" placeholder="Votre email">
-                            <input type="text"  name="TelephoneParent1" placeholder="Votre numéro de téléphone joignable">
-                            <!-- <select class="form-control" name="LieuHabitation" list="1" id="habitation">
-                                <option value="#">Selectionnez le lieu d'habitation...</option>
-                                <option value="Adzopé">Adzopé</option>
-                                <option value="Adiaké">Adiaké</option>
-                                <option value="Agboville">Agboville</option>
-                                <option value="Agnibilékrou">Agnibilékrou</option>
-                                <option value="Agnié">Agnié</option>
-                                <option value="Abobo">Abobo</option>
-                                <option value="Adjamé">Adjamé</option>
-                                <option value="Anyama">Anyama</option>
-                                <option value="Attécoubé">Attécoubé</option>
-                                <option value="Bangolo">Bangolo</option>
-                                <option value="Bingerville">Bingerville</option>
-                                <option value="Bondoukou">Bondoukou</option>
-                                <option value="Bouaké">Bouaké</option>
-                                <option value="Bouaflé">Bouaflé</option>
-                                <option value="Bouna">Bouna</option>
-                                <option value="Cocody">Cocody</option>
-                                <option value="Dabakala">Dabakala</option>
-                                <option value="Dabou">Dabou</option>
-                                <option value="Daloa">Daloa</option>
-                                <option value="Didiévi">Didiévi</option>
-                                <option value="Divo">Divo</option>
-                                <option value="Ferkessédougou">Ferkessédougou</option>
-                                <option value="Gagnoa">Gagnoa</option>
-                                <option value="Guibéroua">Guibéroua</option>
-                                <option value="Issia">Issia</option>
-                                <option value="Jacqueville">Jacqueville</option>
-                                <option value="Korhogo">Korhogo</option>
-                                <option value="Konongoro">Konongoro</option>
-                                <option value="Lakota">Lakota</option>
-                                <option value="Madinani">Madinani</option>
-                                <option value="Man">Man</option>
-                                <option value="Mankono">Mankono</option>
-                                <option value="Mamou-Kouparou">Mamou-Kouparou</option>
-                                <option value="Oumé">Oumé</option>
-                                <option value="Oumé-Gnanhoué">Oumé-Gnanhoué</option>
-                                <option value="Sakassou">Sakassou</option>
-                                <option value="San-Pédro">San-Pédro</option>
-                                <option value="Sassandra">Sassandra</option>
-                                <option value="Séguéla">Séguéla</option>
-                                <option value="Tiassalé">Tiassalé</option>
-                                <option value="Tanda">Tanda</option>
-                                <option value="Yamoussoukro">Yamoussoukro</option>
-                            </select> -->
+                            <input type="email"  class="input" name="Email" placeholder="Votre email">
+                            <input type="text"  class="input" name="TelephoneParent1" placeholder="Votre numéro de téléphone joignable">
                         </div>
-                        <!-- <div class="inscriptionParent_login1">
-                            <input type="text"  name="TelephoneParent1" placeholder="Votre numéro de téléphone 1">
-                            <input type="text"  name="TelephonePparent2" placeholder="Votre numéro de téléphone 2">
-                        </div> -->
                         <div class="inscriptionParent_login1">
-                            <input type="password" name="mot_de_passe" placeholder="Mot de passe" id="mot_de_passe" oninput="checkPassword()">
-                            <input type="password" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe" id="confirm_mot_de_passe" oninput="checkPassword()">
+                            <input type="password" class="input" name="mot_de_passe" placeholder="Mot de passe" id="mot_de_passe" oninput="checkPassword()">
+                            <input type="password" class="input" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe" id="confirm_mot_de_passe" oninput="checkPassword()">
                             <input type="hidden" name="Roles" value="Parent">
                         </div>
                         <p id="password-error" style="color: red;"></p>
