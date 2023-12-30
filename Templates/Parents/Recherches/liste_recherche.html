@@ -1,54 +1,287 @@
 {% extends "Partials/Base_parent.html" %} {% block body %}
 
 <main class="main-search my-5 py-5">
-  <!-- <section class="header-table-search">
-        <div class="items-controller-search">
-          <h5>Show</h5>
-          <select name="" id="itemperpage">
-            <option value="04">04</option>
-            <option value="05">05</option>
-            <option value="08" selected>08</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </select>
-          <h5>Per Page</h5>
+    
+  
+    <section class="">
+      
+      <div class="mb-4 row container-fluid">
+        {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                {%endfor%}
+            {%endif%}
+        {% endwith %}
+          <div class="col-md-11 col-sm-10"><h2>Liste des répétiteurs</h2></div>
+          <div class="col-md-1 col-sm-2">
+            <a href="/recherche" class="btn btn-danger">RETOUR</a>
+          </div>
+      </div>
+      <section class="field-search container-fluid row" id="itemperpage">
+        <nav class="filtre col-md-2">
+          <ul>
+            <form action="">
+            <li>
+              <h3 class="text-center">Filtre</h3>
+              <small><i>Optimiser votre recherche</i></small>
+            </li>
+            <li class="ms-0">
+              <span class="nav-item">
+                
+
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        <h4>Classe enseigné</h4>
+                      </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                      <div class="accordion-body"> 
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="panelsStayOpen-headingOne1">
+                            <button class="accordion-button w-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne1" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne1">
+                              Primaire
+                            </button>
+                          </h2>
+                          <div id="panelsStayOpen-collapseOne1" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne1">
+                            <div class="accordion-body">
+
+                              {% for ClassePrimaire in ClassePrimaire %}
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="ClassePrimaire[]" value="{{ ClassePrimaire[1] }}" id="ClassePrimaire{{ loop.index }}">
+                                  <label class="form-check-label" for="ClassePrimaire{{ loop.index }}">
+                                    {{ ClassePrimaire[1] }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="panelsStayOpen-headingOne2">
+                            <button class="accordion-button w-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne2" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne2">
+                             Collège
+                            </button>
+                          </h2>
+                          <div id="panelsStayOpen-collapseOne2" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne2">
+                            <div class="accordion-body">
+                              {% for ClasseCollege in ClasseCollege %}
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="ClasseCollege[]" value="{{ ClasseCollege[1] }}" id="ClasseCollege{{ loop.index }}">
+                                  <label class="form-check-label" for="ClasseCollege{{ loop.index }}">
+                                    {{ ClasseCollege[1] }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="panelsStayOpen-headingOne3">
+                            <button class="accordion-button w-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne3" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne3">
+                              Lycée
+                            </button>
+                          </h2>
+                          <div id="panelsStayOpen-collapseOne3" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne3">
+                            <div class="accordion-body">
+                              
+                              {% for ClasseLycee in ClasseLycee %}
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="ClasseLycee[]" value="{{ ClasseLycee[1] }}" id="ClasseLycee{{ loop.index }}">
+                                  <label class="form-check-label" for="ClasseLycee{{ loop.index }}">
+                                    {{ ClasseLycee[1] }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item px-0">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                        <h4>Matière enseigné</h4>
+                      </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                      <div class="accordion-body">
+                        
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="panelsStayOpen-headingOneSciences">
+                            <button class="accordion-button w-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOneSciences" aria-expanded="false" aria-controls="panelsStayOpen-collapseOneSciences">
+                              Sciences
+                            </button>
+                          </h2>
+                          <div id="panelsStayOpen-collapseOneSciences" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOneSciences">
+                            <div class="accordion-body p-0">
+                              
+                              {% for MatiereSciences in MatiereSciences %}
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="MatiereSciences[]" value="{{ MatiereSciences[1] }}" id="MatiereSciences{{ loop.index }}">
+                                  <label class="form-check-label" for="MatiereSciences{{ loop.index }}">
+                                    {{ MatiereSciences[1] }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="panelsStayOpen-headingOneLitteratures">
+                            <button class="accordion-button w-100 px-1" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOneLitteratures" aria-expanded="false" aria-controls="panelsStayOpen-collapseOneLitteratures">
+                              Litterature
+                            </button>
+                          </h2>
+                          <div id="panelsStayOpen-collapseOneLitteratures" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOneLitteratures">
+                            <div class="accordion-body px-0">
+                              
+                              {% for MatiereLitteraire in MatiereLitteraire %}
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="MatiereLitteraire[]" value="{{ MatiereLitteraire[1] }}" id="MatiereLitteraire{{ loop.index }}">
+                                  <label class="form-check-label" for="MatiereLitteraire{{ loop.index }}">
+                                    {{ MatiereLitteraire[1] }}
+                                  </label>
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                        
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </li>
+            <input type="submit"- class="btn btn-success mt-4" value="Soumettre">
+          </form>
+          </ul>
+        </nav>
+        <div class="container col-md-10">
+          <div class="row d-flex justify-content-between table-responsive" style="height: 490px;">
+          
+            {% for repetiteur in repetiteurs %}
+              <div class="card col-lg-3 col-md-4 col-sm-6 mb-lg-5 mb-md-5 ms-md-4 mb-sm-4 ms-sm-4" id="cards" style="width: 18rem;">
+                <a href="" data-bs-target="#staticBackdrop{{repetiteur.IdRepetiteur}}" data-bs-toggle="modal" class="tab-a">
+                  <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="card-img-top img-thumbnail "
+                      alt="...">
+                </a>
+                <marquee behavior="scroll" direction="left" scrollamount="5">
+                  <!-- Votre message ici -->
+                  Cliquez sur l'image pour  en savoir plus sur <b>{{repetiteur.PrenomRepetiteur }} {{repetiteur.NomRepetiteur }}</b>
+              </marquee>
+                        <div class="modal fade" id="staticBackdrop{{repetiteur.IdRepetiteur}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title" id="staticBackdropLabel">{{repetiteur.PrenomRepetiteur }} {{repetiteur.NomRepetiteur }}</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="container-fluid row">
+                                  <div class="col-md-4">
+                                    <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="card-img-top img-thumbnail "
+                                    alt="...">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <table class="table table-striped table-hover">
+                                      <tbody>
+                                        
+                                        <tr>
+                                          <td><b>Lieu d'habition</b></td>
+                                          <td>{{repetiteur.lieu_hab_rep}}</td>
+                                      </tr>
+                                    
+                                      <tr>
+                                          <td><b>Niveau d'étude</b></td>
+                                          <td>{{repetiteur.NiveauRepetiteur}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Année d'experience</b></td>
+                                          <td>{{repetiteur.AnneeExperience}}</td>
+                                      </tr>
+                                      <tr>
+                                          <td><b>Compétence</b></td>
+                                          <td>{{repetiteur.NomCompetence}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td><b>Matière</b></td>
+                                        <td>{{repetiteur.Matiere}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Classe</b></td>
+                                      <td>{{repetiteur.Classe}}</td>
+                                  </tr>
+                                      
+                                      </tbody>
+                                      
+                                  </table>
+                                  </div>
+                                </div>
+                                
+                                
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-primary choose-btn" data-repetiteur-id="{{ repetiteur.IdRepetiteur }}">Choisir</button>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                <div class="card-body">
+                  <h5 class="card-title text-center"><b>{{repetiteur.PrenomRepetiteur }} {{repetiteur.NomRepetiteur }}</b></h5>
+                </div>
+                <ul class="list-group list-group-flush liste-cards">
+                  <!-- <li class="list-group-item"><i>Name : <b></b></i></li> -->
+                  <li class="list-group-item"><i>Note : <b>10/10</b></i></li>
+                  <li class="list-group-item">
+                    <i>Status: 
+                      <b>
+                        {% if etat_repetiteur %} 
+                          <span class="text-success">Disponible</span>
+                        {% else %} 
+                          <span class="text-danger">Indisponible</span>
+                        {% endif %}
+                      </b>
+                    </i>
+                  </li>
+                </ul>
+                <div class="card-body">
+                  <button class="btn btn-primary choose-btn" data-repetiteur-id="{{ repetiteur.IdRepetiteur }}">Choisir</button>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
         </div>
-        <div class="search-search">
-          <h5>Search</h5>
-          <input type="text" name="" id="search" placeholder="search" />
-        </div>
-      </section> -->
-  <div class="mb-4 row container-fluid">
-    <div class="col-md-11 col-sm-10"><h2>Liste des répétiteurs</h2></div>
-    <div class="col-md-1 col-sm-2">
-      <a href="/recherche" class="btn btn-danger">RETOUR</a>
-    </div>
-  </div>
-  <section class="field-search container-fluid" id="itemperpage">
+      </section>
+    </section>
+  
+  
+
+  <!-- <section class="field-search container-fluid" id="itemperpage">
     <table>
       <thead class="">
         <tr>
-          <!-- <th><input type="checkbox" name="" id="selectAll"></th> -->
-          <!-- <th>S.N</th> -->
           <th>Name</th>
           <th>Note</th>
-          <!-- <th>Position</th> -->
           <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <!-- <tr>
-              <td><input type="checkbox"></td>
-              <td>01</td>
-              <td>Tiger Nixon</td>
-              <td>7,5</td>
-              <td>Disponible</td>
-              <td><input type="checkbox"></td>
-              <td><i class="fa fa-edit"></i> | <i class="fa fa-trash"></i></td>
-            </tr> -->
-
-        <!-- * test -->
 
         {% for repetiteur in repetiteurs %}
         <tr>
@@ -73,59 +306,9 @@
             {% endif %}
           </td>
           <td>
-            <!-- Button trigger modal -->
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
-            >
-              Choisir
-            </button>
-            <!-- <a href="/liste_repetiteurchoix" class="btn btn-primary">Choisir</a> -->
-            <!-- Modal -->
-            <div
-              class="modal fade"
-              id="staticBackdrop"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
-              tabindex="-1"
-              aria-labelledby="staticBackdropLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">
-                      Modal title
-                    </h5>
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div class="modal-body">
-                    Vous êtes sur le point de choisir le répétiteur Hugues
-                    Codeur. Voulez-vous confirmez ?
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                    <a href="/liste_repetiteurchoix" class="btn btn-primary"
-                      >Confirmer</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
+            <button class="btn btn-primary choose-btn" data-repetiteur-id="{{ repetiteur.IdRepetiteur }}">Choisir</button>
+
+           
           </td>
         </tr>
 
@@ -136,10 +319,26 @@
       <ul class="pagination-search">
         <li class="prev"><a href="#" id="prev">&#139;</a></li>
 
-        <!-- page number here -->
         <li class="next"><a href="#" id="next">&#155;</a></li>
       </ul>
     </div>
-  </section>
+  </section> -->
 </main>
+
+<!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+<script>
+  // Sélectionnez l'élément contenant le message flash
+  const flashMessage = document.getElementById('flash-message');
+  
+  // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+  const delay = 5000; // 5 secondes
+  
+  // Utilisez setTimeout pour masquer le message après le délai
+  setTimeout(function() {
+      flashMessage.style.display = 'none';
+  }, delay);
+</script>
+
+ 
 {% endblock %}
+ 

@@ -14,19 +14,19 @@
 </head>
 <body>
     {% include './Partials/header_parent.html' %}
-    {% with messages=get_flashed_messages(with_categories=true) %}
+    <!--{% with messages=get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
             <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
         {%endfor%}
     {%endif%}
-{% endwith %}
+{% endwith %}-->
     {% block body %}
                 
     {% endblock %}
 
     <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
-    <script>
+    <!--<script>
         // Sélectionnez l'élément contenant le message flash
         const flashMessage = document.getElementById('flash-message');
         
@@ -37,9 +37,44 @@
         setTimeout(function() {
             flashMessage.style.display = 'none';
         }, delay);
-    </script>
+    </script>-->
     <!-- <script src="/js/bootstrap.bundle.min.js"></script> -->
     <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
     <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
+    <script src="{{url_for('static', filename='/js/script.js')}}" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.choose-btn').click(function() {
+                var repetiteurId = $(this).data('repetiteur-id');
+    
+                // Make an AJAX POST request
+                $.ajax({    
+                    type: 'POST',
+                    url: '/choose_repetiteur',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({ repetiteurId: repetiteurId }),
+                    success: function(response) {
+                         // Check if the contract already exists
+                    if (response.contractExists) {
+                    alert('Vous avez déjà sélectionné ce répétiteur. Veuillez vérifier la liste des répétiteurs choisient ');
+                } else if (!response.contractExists){
+                     // Handle the response from the server
+                     alert('Vous avez choisi ce répétiteur. Vérifier la liste de vos choisient dans "Mes Choix" ');
+                     console.log(response);
+
+                     // Update the content dynamically if needed
+                     // ...
+                }
+                       
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    
 </body>
 </html>

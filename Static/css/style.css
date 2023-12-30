@@ -352,7 +352,7 @@ footer{
   justify-content: space-around;
   align-items: center;
 }
-.inscriptionParent_login1 input,.inscriptionParent_login1 select{
+.inscriptionParent_login1 .input{
   width: 45%;
   height: 100%;
   padding-left: 10px;
@@ -2204,4 +2204,67 @@ font-size: 0.6rem;
 }
 .round input[type='file']::-webkit-file-upload-button{
   cursor: pointer;
+}
+
+
+
+.filtre{
+  position: sticky;
+  top: 0;
+  bottom: 0;
+  padding-left: 0;
+  /* height: 100vh; */
+  /* left: 0; */
+  /* width: 90px; */
+  /* z-index: 99; */
+  /* width: 280px; */
+  background: #fff;
+  overflow: hidden;
+  transition: 1s;
+}
+/* .filtre:hover{
+  width: 180px;
+  transition: 1s;
+} */
+/* .logoEv{
+  text-align: center;
+  display: flex;
+  margin: 10px 0 0 10px;
+  padding-bottom: 3rem;
+} */
+
+/* .logoEv img{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+} */
+/* .logoEv li span{
+  font-weight: bold;
+  padding-left: 5px;
+  font-size: 18px;
+  text-transform: uppercase;
+} */
+/* .filtre li a{
+  position: relative;
+  width: 280px;
+  font-size: 14px;
+  color: rgb(85, 83, 83);
+  display: table;
+  padding: 10px;
+} */
+/* .filtre .fas{
+  position: relative;
+  width: 70px;
+  height: 40px;
+  top: 20px;
+  font-size: 20px;
+  text-align: center;
+} */
+.filtre li .nav-item{
+  position: relative;
+  top: 12px;
+  /* margin-left: 10px; */
+}
+.filtre a:hover{
+  background: #eee;
 }

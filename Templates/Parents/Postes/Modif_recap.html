@@ -2,6 +2,7 @@
 {% block body %}
 <section class="my-5 py-5 section-rech">
   <div class="container colunm">
+    
     <div class="main_rech1_titre1 mb-4">
       <h2>Publier mon offres</h2>
     </div>
@@ -12,7 +13,7 @@
                 <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
             {%endfor%}
         {%endif%}
-      {% endwith %}
+    {% endwith %} 
       <form action="{{ url_for('recapitulatif') }}" method="POST">
         <div class="row col-md-8 px-2 m-auto bg-color">
           <div class="col-md-12 p-2">
@@ -22,7 +23,7 @@
               </div>
               <div class="col-md-2">
                 <select class="form-select" id="Seance" aria-label="Default select example" name="enfant">
-                  <option selected>0</option>
+                    <option value="{{data_recap['enfant']}}">{{data_recap['enfant']}}</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -42,7 +43,8 @@
               <div class="row mt-3">
                 <div class="col-md-2">
                   <select class="form-select" aria-label="Default select example" name="seance">
-                    <option selected>0</option>
+                    <option value="{{data_recap['seance']}}">{{data_recap['seance']}}</option>
+                    
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -53,7 +55,7 @@
                 </div>
                 <div class="col-md-6">
                   <input class="form-control" list="datalist" id="habitation"
-                    placeholder="Selectionnez le lieu d'habitation..." name="habitation">
+                    placeholder="Selectionnez le lieu d'habitation..." value="{{data_recap['habitation']}}" name="habitation">
                   <datalist id="datalist">
                     {% for lieu in lieu_repetiteur %}
                     <option value="{{ lieu[0] }}">
@@ -69,6 +71,10 @@
                 <label class="form-label">Niveau:</label>
               </div>
               <div class="col-md-9">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox"
+                  value="{{data_recap['niveau']}}" name="niveau[]" checked>
+                <label class="form-check-label" for="inlineCheckbox">{{data_recap['niveau']}}</label>
+                
                 {% for niveau in niveauEtudiant %}
                 <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ loop.index }}"
                   value="{{ niveau[1] }}" name="niveau[]">
@@ -83,7 +89,7 @@
                 <label for="Date" class="form-label">Date limite:</label>
               </div>
               <div class="col-md-7">
-                <input type="date" class="form-control" id="Date" name="date_limite">
+                <input type="date" class="form-control" value="{{data_recap['date_limite']}}" id="Date" name="date_limite">
               </div>
             </div>
           </div>
@@ -101,8 +107,9 @@
 
     </div>
   </div>
-</section>
 
+  
+</section>
 <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
 <script>
   // Sélectionnez l'élément contenant le message flash
@@ -116,5 +123,6 @@
       flashMessage.style.display = 'none';
   }, delay);
 </script> 
+
 
 {% endblock %}

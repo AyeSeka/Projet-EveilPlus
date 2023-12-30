@@ -7,23 +7,8 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
         <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
         <link rel="stylesheet" href="{{url_for('static', filename='/css/initialize.css')}}">
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
-            
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">   
         <title>Eveil+</title>
-        <script>
-            function checkPassword() {
-                var password = document.getElementById("mot_de_passe").value;
-                var confirmPassword = document.getElementById("confirm_mot_de_passe").value;
-    
-                if (password !== confirmPassword) {
-                    document.getElementById("password-error").innerHTML = "Les mots de passe ne correspondent pas";
-                    document.getElementById("submit-button").disabled = true;
-                } else {
-                    document.getElementById("password-error").innerHTML = "";
-                    document.getElementById("submit-button").disabled = false;
-                }
-            }
-        </script>
     </head>
     <body class="body_page_connx">
         <section class="section_connexion_page">
@@ -31,25 +16,21 @@
             <main class="section_inscriptionParent_page_container">
                 <div class="section_inscriptionParent_container1">
 
-                    {% with messages=get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
-                            {%endfor%}
-                        {%endif%}
-                    {% endwith %} 
-
-                    <div class="form_titr_inscriptionParent"><h2> Inscription Parent d'élève<h3></div>
-                    <form action="{{url_for('Succes_inscription_parent')}}" method="post">
+                    
+                    <div class="form_titr_inscriptionParent"><h2> Modifier mon profil<h3></div>
+                    <form action="{{url_for('SucessModifProfil_par')}}" method="post">
                         <div class="inscriptionParent_login1">
-                            <input type="text"  name="NomParent" placeholder="Votre Nom">
-                            <input type="text"  name="PrenomParent" placeholder="Votre Prenom">
+                            <input type="text" class="input" name="NomParent" placeholder="Votre Nom" value="{{usersParent.NomParent}}">
+                            <input type="text" class="input" name="PrenomParent" placeholder="Votre Prenom" value=" {{usersParent.PrenomParent}}">
                         </div>
                         <div class="inscriptionParent_login1">
-                            <input type="email"  name="Email" placeholder="Votre email">
-                            <input type="text"  name="TelephoneParent1" placeholder="Votre numéro de téléphone joignable">
-                            <!-- <select class="form-control" name="LieuHabitation" list="1" id="habitation">
-                                <option value="#">Selectionnez le lieu d'habitation...</option>
+                            <input type="email" class="input" name="Email" placeholder="Votre email" value="{{usersParent.Email}}">
+                            <input type="text" class="input" name="TelephoneParent1" placeholder="Votre numéro de téléphone 1"   value="{{usersParent.TelephoneParent1}}">
+                            <!-- <input type="text" class="input" name="LieuHabitation" placeholder="Votre lieu d'habitation Ex: Cocody\2 plateau" value="{{usersParent.LieuHabitation}}"> -->
+                        </div>
+                        <div class="inscriptionParent_login1">
+                            <select class="form-control" name="LieuHabitation" list="1" id="habitation">
+                                <option value="{{usersParent.LieuHabitation}}">{{usersParent.LieuHabitation}}</option>
                                 <option value="Adzopé">Adzopé</option>
                                 <option value="Adiaké">Adiaké</option>
                                 <option value="Agboville">Agboville</option>
@@ -92,41 +73,24 @@
                                 <option value="Tiassalé">Tiassalé</option>
                                 <option value="Tanda">Tanda</option>
                                 <option value="Yamoussoukro">Yamoussoukro</option>
-                            </select> -->
+                            </select>
+                            <input type="text" class="input" name="TelephonePparent2" placeholder="Votre numéro de téléphone 2"  value="{{usersParent.TelephonePparent2}}">
                         </div>
-                        <!-- <div class="inscriptionParent_login1">
-                            <input type="text"  name="TelephoneParent1" placeholder="Votre numéro de téléphone 1">
-                            <input type="text"  name="TelephonePparent2" placeholder="Votre numéro de téléphone 2">
-                        </div> -->
                         <div class="inscriptionParent_login1">
-                            <input type="password" name="mot_de_passe" placeholder="Mot de passe" id="mot_de_passe" oninput="checkPassword()">
-                            <input type="password" name="confirm_mot_de_passe" placeholder="Confirmer votre mot de passe" id="confirm_mot_de_passe" oninput="checkPassword()">
                             <input type="hidden" name="Roles" value="Parent">
                         </div>
-                        <p id="password-error" style="color: red;"></p>
+                        
                         <input type="submit" value="VALIDER" id="submit-button" class="btn btn-secondary py-2" style="background-color: #6ebca8; border:none; width: 20%; font-size:1.3em; font-weight: bold;">
 
                     </form>
                     <div class="inscriptionParent_login2">
-                        Déja un compte ? <a href="/connexion"> Connecter vous ici</a>
+                     <a class="btn btn-danger"  href="/profil_parent">Abandonner</a>
                     </div>
                 </div>
             </main>
         </section>
 
-        <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
-        <script>
-            // Sélectionnez l'élément contenant le message flash
-            const flashMessage = document.getElementById('flash-message');
-            
-            // Définissez un délai (en millisecondes) avant que le message ne disparaisse
-            const delay = 7000; // 7 secondes
-            
-            // Utilisez setTimeout pour masquer le message après le délai
-            setTimeout(function() {
-                flashMessage.style.display = 'none';
-            }, delay);
-        </script> 
+        
         <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
         <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
     </body>

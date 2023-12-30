@@ -1,41 +1,104 @@
 CREATE DATABASE eveil_plus;
 USE eveil_plus;
-
-create table users(
-	IdUser INT PRIMARY KEY IDENTITY(1,1),
-	Email VARCHAR(30) not null unique,
-	mot_de_passe VARCHAR(255) not null,
-	confirm_mot_de_passe varchar(255) NULL,
-	Roles VARCHAR(30) not null,
-	path_PhotoProfil VARCHAR(255)
-)
-
 CREATE TABLE Repetiteur (
     IdRepetiteur INT PRIMARY KEY IDENTITY(1,1),
     NomRepetiteur VARCHAR(30) NOT NULL,
     PrenomRepetiteur VARCHAR(55) NOT NULL,
-    DateNaissance date NOT NULL,
-    lieu_hab_rep VARCHAR(55)NOT NULL,
-    AnneeExperience INT NOT NULL,
-    NiveauRepetiteur VARCHAR(10) NOT NULL,
+    DateNaissance date,
+    lieu_hab_rep VARCHAR(55),
+    AnneeExperience INT ,
+    NiveauRepetiteur VARCHAR(10),
     EstActif BIT
 );
+
+
+CREATE TABLE MatiereSciences (
+    IdMatiereSciences INT PRIMARY KEY IDENTITY(1,1),
+    NomMatiereSciences VARCHAR(170) NOT NULL,
+);
+
+CREATE TABLE MatiereLitteraire (
+    IdMatiereLitteraire INT PRIMARY KEY IDENTITY(1,1),
+    NomMatiereLitteraire VARCHAR(170) NOT NULL,
+);
+
+CREATE TABLE Dispense (
+    IdDispense INT PRIMARY KEY IDENTITY(1,1),
+    IdRepetiteur int,
+	FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur),
+	Matiere VARCHAR(255) NULL,
+	Classe VARCHAR(255) NULL
+);
+
+
+
+insert into MatiereSciences (NomMatiereSciences) values ('Maths'),
+														('P-Chemie'),
+														('SVT'),
+														('Hist-Geo')
+
+insert into MatiereLitteraire (NomMatiereLitteraire) values ('Français'),	
+														('Anglais'),
+														('Allemand'),
+														('Espagnol'),
+														('Phylosophie')
+
+
+CREATE TABLE ClassePrimaire (
+    IdClassePrimaire INT PRIMARY KEY IDENTITY(1,1),
+    NomClassePrimaire VARCHAR(255) NOT NULL,
+);
+
+insert into ClassePrimaire (NomClassePrimaire) values ('CP1'),
+													('CP2'),
+													('CE1'),
+													('CE2'),
+													('CM1'),
+													('CM2')
+
+
+CREATE TABLE ClasseCollege (
+    IdClasseCollege INT PRIMARY KEY IDENTITY(1,1),
+    NomClasseCollege VARCHAR(255) NOT NULL,
+);
+
+insert into ClasseCollege (NomClasseCollege) values ('6ième'),
+													('5ième'),
+													('4ième'),
+													('3ième')
+
+
+CREATE TABLE ClasseLycee (
+    IdClasseLycee INT PRIMARY KEY IDENTITY(1,1),
+    NomClasseLycee VARCHAR(255) NOT NULL,
+);
+
+insert into ClasseLycee (NomClasseLycee) values ('2ndA'),
+												('2ndC'),
+												('1ièmeA'),
+												('1ièmeD'),
+												('1ièmeC'),
+												('TleA'),
+												('TleD'),
+												('TleC')
+
+
+SELECT  * FROM Repetiteur r join Competence c ON (r.IdCompetence = c.IdCompetence)
 
 CREATE TABLE Competence (
     IdCompetence INT PRIMARY KEY IDENTITY(1,1),
     NomCompetence VARCHAR(55) NOT NULL
 );
-ALTER TABLE Repetiteur   
-ADD IdCompetence int,
-FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
-	IdUser int,
-FOREIGN KEY(IdUser) REFERENCES users(IdUser);
-
 
 insert into Competence (NomCompetence) values ('Sciences'),
 												('Litterature'),
 												('Sciences et Litterature')
 
+ALTER TABLE Repetiteur   
+ADD IdCompetence int,
+FOREIGN KEY(IdCompetence) REFERENCES Competence(IdCompetence),
+	IdUser int,
+FOREIGN KEY(IdUser) REFERENCES users(IdUser);
 
 CREATE TABLE Parent(
 	IdParent int primary key IDENTITY(1,1),
@@ -49,6 +112,18 @@ ALTER TABLE Parent
 ADD IdUser int,
 FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
+create table users(
+	IdUser INT PRIMARY KEY IDENTITY(1,1),
+	Email VARCHAR(30) not null unique,
+	mot_de_passe VARCHAR(255) not null,
+	confirm_mot_de_passe varchar(255) NULL,
+	Roles VARCHAR(30) not null,
+	path_PhotoProfil VARCHAR(255)
+)
+
+
+
+
 CREATE TABLE Personnel_Eveil (
     IdPersoEveil INT PRIMARY KEY IDENTITY(1,1),
     NomPersoEveil VARCHAR(25),
@@ -60,11 +135,6 @@ ALTER TABLE Personnel_Eveil
 ADD IdUser int,
 FOREIGN KEY(IdUser) REFERENCES users(IdUser)
 
-CREATE TABLE CategorieProduits (
-    IdCategorie INT PRIMARY KEY IDENTITY(1,1),
-    NomCategorie VARCHAR(30)
-);
-
 CREATE TABLE Produits (
     IdProduits INT PRIMARY KEY IDENTITY(1,1),
     NomProduits VARCHAR(55) not null,
@@ -74,6 +144,12 @@ CREATE TABLE Produits (
 	FOREIGN KEY(IdCategorie) REFERENCES CategorieProduits(IdCategorie),
     path_photo_Produits VARCHAR(255)
     
+);
+
+
+CREATE TABLE CategorieProduits (
+    IdCategorie INT PRIMARY KEY IDENTITY(1,1),
+    NomCategorie VARCHAR(30)
 );
 
 CREATE TABLE Commande (
@@ -109,15 +185,11 @@ CREATE TABLE Poste (
 	lieu_habitation VARCHAR(55) not null,
 	NiveauEnfant varchar(90) NOT NULL,
 	DateLimte Date NOT NULL,
-	DatePublication  VARCHAR(35)
+	DatePublication datetime NOT NULL
 );
-
 
 ALTER TABLE Poste
 ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
-
-
-
 
 CREATE TABLE ContratPar_Rep (
 	IdContrat int PRIMARY KEY IDENTITY(1,1) NOT NULL,
@@ -125,7 +197,8 @@ CREATE TABLE ContratPar_Rep (
 	DateDebutContrat date NULL,
 	
 );
-
+select * from Parent
+SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser
 ALTER TABLE ContratPar_Rep 
 ADD IdParent int,
 FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
@@ -153,3 +226,5 @@ FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
 insert into NiveauEtudeEleve (NomNiveauEtude) values ('Primaire'),
 												('Collège'),
 												('Lycée')
+DBCC CHECKIDENT('ContratTemporaire', RESEED, 0);
+select * from ContratTemporaire

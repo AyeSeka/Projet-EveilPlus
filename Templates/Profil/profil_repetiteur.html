@@ -14,7 +14,13 @@
                     </form>
                 </div>
             </div> 
-           
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                {%endfor%}
+            {%endif%}
+        {% endwith %}
             <div class="row">
                 <div class="col-md-3">
                     <button type="button" style="border: none;" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
@@ -97,10 +103,22 @@
                         
                     </table>
                     <div class="col-md-6">
-                        <a  href="" class="btn btn-warning text-white">MODIFIER</a>
+                        <a  href="/ModifProfil_rep" class="btn btn-warning text-white">MODIFIER</a>
                     </div>
                 </div>
             </div>
         </div>  
     </section>
+    <script>
+        // Sélectionnez l'élément contenant le message flash
+        const flashMessage = document.getElementById('flash-message');
+        
+        // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+        const delay = 7000; // 7 secondes
+        
+        // Utilisez setTimeout pour masquer le message après le délai
+        setTimeout(function() {
+            flashMessage.style.display = 'none';
+        }, delay);
+    </script> 
 {% endblock %}
