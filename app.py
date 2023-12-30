@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 
 
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
-                      "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+                      "Server=Geek_Machine\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 
@@ -846,6 +846,10 @@ def messagerie():
 @app.route("/accueil_parent_dash")
 def accueil_parent_dash():
     return render_template("PersonnelEveil+/parent/accueil_parent_dash.html")
+
+@app.route("/accueil_repetiteur_dash")
+def accueil_repetiteur_dash():
+    return render_template("PersonnelEveil+/repetiteur/accueil_repetiteur_dash.html")
 
 
 

@@ -13,116 +13,39 @@
             <img src="../img/photo profil.jpg" alt="">
         </div>-->
         
-    <!-- Container pour les graphiques -->
-        <div class="charts-container">
-            <!-- Barplot -->
-            <canvas id="barChart" class="chart"></canvas>
+        <div class="dash-content">
+            <div class="overview">
+                
+                <div class="title">
+                    <i class="fa-solid fa-gauge"></i>
+                    <span class="text">Dashboard</span>
+                </div>
 
-            <!-- Courbe -->
-            <canvas id="lineChart" class="chart"></canvas>
+                <div class="boxes">
+                    <div class="box box1">
+                        <i class="uil uil-thumbs-up"></i>
+                        <span class="text">personel Eveilplus</span>
+                        <span class="number">50,120</span>
+                    </div>
+                    <div class="box box2">
+                        <i class="uil uil-comments"></i>
+                        <span class="text">librairie</span>
+                        <span class="number">20,120</span>
+                    </div>
+                    <div class="box box3">
+                        <i class="uil uil-share"></i>
+                        <span class="text">parent d'élève</span>
+                        <span class="number">10,120</span>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Histogramme -->
-            <canvas id="histogramChart" class="chart"></canvas>
+            <div class="activity">
+                <div class="title">
+                    <i class="fa-solid fa-signal"></i>
+                    <span class="text">Recent Activity</span>
+            </div>
+
         </div>
-
-        <script>
-            // Fonction pour mettre à jour un graphique de type Barplot
-            function updateBarChart(chartId, chartData) {
-                var ctx = document.getElementById(chartId).getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: chartData.labels || [],
-                        datasets: [{
-                            label: chartData.label || 'Données',
-                            data: chartData.data || [],
-                            backgroundColor: chartData.backgroundColor || getRandomColor(),
-                            borderColor: chartData.borderColor || 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Fonction pour mettre à jour un graphique de type Courbe
-            function updateLineChart(chartId, chartData) {
-                var ctx = document.getElementById(chartId).getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: chartData.labels || [],
-                        datasets: [{
-                            label: chartData.label || 'Données',
-                            data: chartData.data || [],
-                            backgroundColor: chartData.backgroundColor || getRandomColor(),
-                            borderColor: chartData.borderColor || 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Fonction pour mettre à jour un graphique de type Histogramme
-            function updateHistogramChart(chartId, chartData) {
-                var ctx = document.getElementById(chartId).getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: chartData.labels || [],
-                        datasets: [{
-                            label: chartData.label || 'Données',
-                            data: chartData.data || [],
-                            backgroundColor: chartData.backgroundColor || getRandomColor(),
-                            borderColor: chartData.borderColor || 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Générer une couleur aléatoire
-            function getRandomColor() {
-                var letters = '0123456789ABCDEF';
-                var color = '#';
-                for (var i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-            }
-
-            // Récupérer les données depuis le backend
-            $.get('/api/data', function(data) {
-                // Mettre à jour le Barplot avec les données
-                updateBarChart('barChart', { data: data.connectedParents, label: 'Parents Connectés' });
-
-                // Mettre à jour la Courbe avec les données
-                updateLineChart('lineChart', { data: data.postsByParents, label: 'Nombre de Postes Réalisés' });
-
-                // Mettre à jour l'Histogramme avec les données
-                updateHistogramChart('histogramChart', { data: data.connectionsCount, label: 'Nombre de Mises en Relations' });
-            });
-        </script>
     </section>
-
-{% endblock body %}
+{% endblock body %}
