@@ -9,15 +9,15 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
-#                       "Server=Geek_Machine\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
-
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
+                      "Server=Geek_Machine\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
+
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
 
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
