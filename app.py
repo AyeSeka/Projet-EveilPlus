@@ -464,6 +464,15 @@ def recapitulatif():
         seance = request.form.get("seance")
         date_limite = request.form.get("date_limite")
 
+
+        # Convertir la chaîne de date en objet de date
+        date_limite = datetime.strptime(date_limite, '%Y-%m-%d').date()
+        
+             # Comparer les dates
+        if date_limite <= datetime.now().date():
+            flash(f"Veuillez choisir une date limite valide", 'danger')
+            return redirect(url_for('poste'))
+
         # Stocker les données dans la carte temporaire
         # Stocker les informations dans la session
         data_recap = {
