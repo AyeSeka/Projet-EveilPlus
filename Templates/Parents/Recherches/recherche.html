@@ -15,16 +15,52 @@
                 <label for="habitation" class="form-label">Lieu d'habitation:</label>
               </div>
               <div class="col-md-6">
-                <input class="form-control" name="habitation" list="1" id="habitation"
-                  placeholder="Selectionnez le lieu d'habitation..." />
+                <select class="form-control" name="habitation" list="1" id="habitation">
+                    <option value="#">Selectionnez le lieu d'habitation...</option>
+                    <option value="Adzopé">Adzopé</option>
+                    <option value="Adiaké">Adiaké</option>
+                    <option value="Agboville">Agboville</option>
+                    <option value="Agnibilékrou">Agnibilékrou</option>
+                    <option value="Agnié">Agnié</option>
+                    <option value="Abobo">Abobo</option>
+                    <option value="Adjamé">Adjamé</option>
+                    <option value="Anyama">Anyama</option>
+                    <option value="Attécoubé">Attécoubé</option>
+                    <option value="Bangolo">Bangolo</option>
+                    <option value="Bingerville">Bingerville</option>
+                    <option value="Bondoukou">Bondoukou</option>
+                    <option value="Bouaké">Bouaké</option>
+                    <option value="Bouaflé">Bouaflé</option>
+                    <option value="Bouna">Bouna</option>
+                    <option value="Cocody">Cocody</option>
+                    <option value="Dabakala">Dabakala</option>
+                    <option value="Dabou">Dabou</option>
+                    <option value="Daloa">Daloa</option>
+                    <option value="Didiévi">Didiévi</option>
+                    <option value="Divo">Divo</option>
+                    <option value="Ferkessédougou">Ferkessédougou</option>
+                    <option value="Gagnoa">Gagnoa</option>
+                    <option value="Guibéroua">Guibéroua</option>
+                    <option value="Issia">Issia</option>
+                    <option value="Jacqueville">Jacqueville</option>
+                    <option value="Korhogo">Korhogo</option>
+                    <option value="Konongoro">Konongoro</option>
+                    <option value="Lakota">Lakota</option>
+                    <option value="Madinani">Madinani</option>
+                    <option value="Man">Man</option>
+                    <option value="Mankono">Mankono</option>
+                    <option value="Mamou-Kouparou">Mamou-Kouparou</option>
+                    <option value="Oumé">Oumé</option>
+                    <option value="Oumé-Gnanhoué">Oumé-Gnanhoué</option>
+                    <option value="Sakassou">Sakassou</option>
+                    <option value="San-Pédro">San-Pédro</option>
+                    <option value="Sassandra">Sassandra</option>
+                    <option value="Séguéla">Séguéla</option>
+                    <option value="Tiassalé">Tiassalé</option>
+                    <option value="Tanda">Tanda</option>
+                    <option value="Yamoussoukro">Yamoussoukro</option>
+                </select>
 
-                <datalist id="1">
-                  {% for habitation in datalist_habitation %}
-                  <option value="{{ habitation[0] }}">
-                    {{ habitation[0] }}
-                  </option>
-                  {% endfor %}
-                </datalist>
               </div>
             </div>
 
@@ -33,13 +69,15 @@
                 <label for="Niveaus" class="form-label">Niveau d'etude:</label>
               </div>
               <div class="col-md-6">
-                <input class="form-control" name="niveau" list="2" id="Niveaus"
-                  placeholder="Selectionnez le lieu d'habitation..." />
-                <datalist id="2">
-                  {% for niveau in datalist_niveau %}
-                  <option value="{{ niveau[0] }}">{{ niveau[0] }}</option>
-                  {% endfor %}
-                </datalist>
+                <select class="form-control" name="niveau" list="2" id="Niveaus">
+                   <option value="#">Selectionnez votre Niveau Scolaire</option>
+                    <option value="BAC">BAC</option>
+                    <option value="BAC+1">BAC+1</option>
+                    <option value="BAC+2">BAC+2</option>
+                    <option value="BAC+3">BAC+3</option>
+                    <option value="BAC+4">BAC+4</option>
+                    <option value="BAC+5">BAC+5</option>
+                </select>
               </div>
             </div>
           </div>
@@ -50,17 +88,8 @@
                 <label for="experience" class="form-label">Année d'experience:</label>
               </div>
               <div class="col-md-6">
-                <input class="form-control" name="experience" list="3" id="experience"
-                  placeholder="Selectionnez le lieu d'habitation..." />
-                <datalist id="3">
-
-
-                  {% for experience in datalist_experience %}
-                  <option value="{{ experience[0] }}">
-                    {{ experience[0]}}
-                  </option>
-                  {% endfor %}
-                </datalist>
+                <input class="form-control" name="experience" list="3" id="experience" min="0" max="20" type="number"
+                  placeholder="Entrez vos année d'expérience" />
               </div>
             </div>
             <div class="row mb-4">
