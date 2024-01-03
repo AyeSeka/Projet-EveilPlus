@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{url_for('static', filename='/img/logo_Eveil+.png')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/initialize.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+            
+        <title>Eveil+</title>
+    </head>
+    <body class="body_page_connx">
+        <section class="section_connexion_page">
+            
+            <main class="section_connexion_page_container">
+                <div class="section_connexion_page_container1">
+                    <img src="https://img.freepik.com/vecteurs-libre/illustration-vectorielle-assurance-chomage-concept-abstrait-prestations-chomage-emploi-perdu-homme-affaires-fatigue-stresse-formulaire-reclamation-indemnisation-travailleurs-travail-papier-metaphore-abstraite-entrevue_335657-1355.jpg?w=740&t=st=1704299921~exp=1704300521~hmac=bd8007f4cf9524d3226a92d2b14eb21cc0ed7f3bb02041aae9f907b0d1aca610" alt="enfant et femme">
+                </div>
+                <div class="section_connexion_page_container1">
+                    {% with messages=get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                            {%endfor%}
+                        {%endif%}
+                    {% endwith %}
+                    
+                    <div class="form_titr_page_connex"><h2>Recuperez Votre Compte<h3></div>
+                        
+                    <form method="POST" action="/mot_de_passe_oublie_traitement">
+                        <div class="connx_page_login1">
+                            <input type="email" name="Email" class="inp_page_connex" placeholder="Entrez votre adresse mail svp" id="nom_utilisateur" required>
+                        </div>
+                        <div class="page_conx_btn_valid">
+                            <a href="/connexion" class="btn btn-secondary py-2" style="background-color: #FF0000; border: none; width: 40%; font-size: 1.3em; font-weight: bold; text-align: center; text-decoration: none; display: inline-block;">
+                                RETOUR
+                            </a>
+                            <button type="submit" class="btn btn-secondary py-2" style="background-color: #6ebca8; border:none; width: 40%; font-size:1.3em; font-weight: bold;">VALIDER</button>
+                        </div>
+                    </form><br>
+
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+        <script>
+            // Sélectionnez l'élément contenant le message flash
+            const flashMessage = document.getElementById('flash-message');
+            
+            // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+            const delay = 5000; // 5 secondes
+            
+            // Utilisez setTimeout pour masquer le message après le délai
+            setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, delay);
+        </script>
+        <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
+        <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
+    </body>
+</html>
