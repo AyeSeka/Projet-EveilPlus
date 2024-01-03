@@ -15,7 +15,11 @@ bcrypt = Bcrypt(app)
 #                        "Trusted_Connection=yes")
 
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+<<<<<<< HEAD
                        "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+=======
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+>>>>>>> f70b2ea4fa0467135082d2f98874fc313ec22f60
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 

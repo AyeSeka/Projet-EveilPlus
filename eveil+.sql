@@ -128,6 +128,17 @@ CREATE TABLE ContratPar_Rep (
 	
 );
 
+CREATE TABLE ContratTemporaire(
+	IdContratTemporaire int PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	StatutContratTemporaire bit NOT NULL,
+	tempsContratTemporaire VARCHAR(55) NOT NULL, 
+	IdParent int,
+	FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
+	IdRepetiteur int,
+	FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur)
+
+);
+
 CREATE TABLE NiveauEtudeEleve(
 	IdNiveauEtudeint int PRIMARY KEY IDENTITY(1,1) NOT NULL,
 	NomNiveauEtude varchar(55) NOT NULL,
