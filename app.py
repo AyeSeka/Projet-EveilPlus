@@ -9,15 +9,15 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
-#                       "Server=Geek_Machine\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
-
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
+                      "Server=Geek_Machine\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
+
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
 
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
@@ -330,7 +330,7 @@ def Succes_inscription_parent():
         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}' '{listId[0]}')")
+        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -942,13 +942,13 @@ def profil_parent():
 @app.route("/ModifProfil_par")
 @login_required
 def ModifProfil_par():
-    IdUser = session.get('IdUser')
+    user_id = session.get('IdUser')
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
-    usersParent = cursor.fetchone()
-    cursor.commit()
-    return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
+    # Sélectionner les informations existantes de l'utilisateur
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (user_id,))
+    user_data = cursor.fetchone()
+    cursor.close()
+    return render_template("Profil/ModifProfil_par.html", usersParent=user_data)
 
 @app.route("/SucessModifProfil_par", methods=['POST'])
 @login_required
@@ -963,11 +963,11 @@ def SucessModifProfil_par():
         Email = request.form["Email"]
         # confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
         Roles = request.form["Roles"]
-        NomParent = request.form["NomParent"]
-        PrenomParent = request.form["PrenomParent"]
-        LieuHabitation = request.form["LieuHabitation"]
-        TelephoneParent1 = request.form["TelephoneParent1"]
-        TelephonePparent2 = request.form["TelephonePparent2"]
+        NomParent = request.form.get("NomParent", "")
+        PrenomParent = request.form.get("PrenomParent", "")
+        TelephoneParent1 = request.form.get("TelephoneParent1", "")
+        LieuHabitation = request.form.get("LieuHabitation", "")
+        TelephonePparent2 = request.form.get("TelephonePparent2", "")
         if not all([Email, Roles, NomParent,PrenomParent,LieuHabitation,TelephoneParent1,TelephonePparent2]):
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('ModifProfil_par'))
