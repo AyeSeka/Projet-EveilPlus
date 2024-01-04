@@ -1,4 +1,24 @@
 {% extends "Partials/Base_repetiteut.html" %}
+
 {% block body %}
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, ea tempora temporibus debitis officia quibusdam. Est modi porro eos aperiam magnam iure eveniet? Eius temporibus, doloribus ipsum illo iure libero.</p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div id="flash-message" class="alert alert-success">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <script>
+        // Sélectionnez l'élément contenant le message flash
+        const flashMessage = document.getElementById('flash-message');
+        
+        // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+        const delay = 5000; // 5 secondes
+        
+        // Utilisez setTimeout pour masquer le message après le délai
+        setTimeout(function() {
+            flashMessage.style.display = 'none';
+        }, delay);
+    </script>
 {% endblock %}

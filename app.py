@@ -4,13 +4,27 @@ from flask import Flask, jsonify, render_template, request,  redirect, url_for, 
 from flask_bcrypt import Bcrypt
 from functools import wraps
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
+import os
+
+
 # from flask_login import current_user, login_required
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
+<<<<<<< HEAD
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
                       "Server=Geek_Machine\SQLEXPRESS;"
+=======
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
+#                       "Server=Geek_Machine\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
+
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                       "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+>>>>>>> 8eec2ca22b7f6aab95835cc84e7f40f7fdcf2f8c
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 
@@ -27,10 +41,94 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 
 # )
 
+connection_string = (
+    "Driver={ODBC Driver 17 for SQL Server};"
+    "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+    "Database=ivoryExplore;"
+    "Trusted_Connection=yes"
+)
+
+# Définissez le chemin vers le dossier où vous stockez les photos de profil
+UPLOAD_FOLDER = 'Static/img/user_img'
+# Définissez les extensions de fichiers autorisées
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+###### Modification_Photo_Profil #####
+
+# Assurez-vous d'avoir cette fonction définie quelque part dans votre code
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+
+
+
 ################## TEST_APP ####################
 @app.route("/")
 def index():
     return render_template("Authentification/index.html")
+
+# Fonction pour se connecter à la base de données SQL Server
+def connect_db():
+    return pyodbc.connect(connection_string)
+
+
+# Route du mot de passe oublié
+@app.route('/mot_de_passe_oublie')
+def mot_de_passe_oublie():
+    return render_template('Authentification/mot_de_passe_oublie.html')
+
+@app.route('/mot_de_passe_oublie_traitement', methods=['POST'])
+def mot_de_passe_oublie_traitement():
+    if request.method == 'POST':
+        email = request.form['Email']
+        
+        cursor = conn.cursor()
+        cursor.execute("SELECT IdUser FROM users WHERE email = ?", (email,))
+        
+        # Récupérer les résultats de la requête
+        result = cursor.fetchone()
+
+        cursor.close()
+
+        if result:
+#             # Si l'e-mail existe, rediriger vers la page de réinitialisation avec l'ID associé
+            # flash('E-mail trouvé. Redirection vers la page "/grace".')
+            return redirect(url_for('réinitialiser', user_id=result[0]))
+        else:
+            # Si l'e-mail n'existe pas, afficher un message d'erreur
+            flash('E-mail non trouvé. Veuillez réessayer.', 'danger')
+            return redirect(url_for('mot_de_passe_oublie'))  # Assurez-vous d'ajuster la route de redirection
+
+    # Si la requête n'est pas POST ou si l'e-mail n'existe pas, rester sur la même page
+    return render_template("mot_de_passe_oublie.html")  # Assurez-vous d'ajuster le nom du template
+
+@app.route('/réinitialiser/<int:user_id>')
+def réinitialiser(user_id):
+    # Traitez l'ID de l'utilisateur comme nécessaire dans cette route
+    return render_template('Authentification/réinitialiser.html', user_id=user_id)
+
+@app.route("/réinitialiser_traitement/<int:user_id>",  methods=["GET", "POST"])
+def réinitialiser_traitement(user_id):
+    if request.method == 'POST':
+        mot_de_passe = request.form["mot_de_passe"]
+        
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
+        
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE users SET mot_de_passe = ? WHERE IdUser = ?", (mot_de_passe_hache, user_id))
+        conn.commit()
+        
+        flash('Modification réussie! Connectez-vous maintenant.', 'success')
+    
+    return render_template('Authentification/connexion.html')
+
+
+
+
+
 
 
 @app.route("/rechercher_testApp", methods=["GET"])
@@ -244,17 +342,18 @@ def success_connexion():
     cursor.commit()
     if users is not None:
         session['IdUser'] = users.IdUser
+
         # session['IdRepetiteur'] = usersRepetiteur.IdRepetiteur
         # print(session['IdUser'])
         # Vérification du mot de passe haché
         if bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Parent':
             session['user_id'] = users[0]
             # Authentification réussie
-            flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
+            # flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
             return redirect(url_for('Accueil_parent'))
         elif users and bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Repetiteur':
 
-            flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
+            # flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
             session['user_id'] = users[0]
 
             return redirect(url_for('accueil_repetiteur'))
@@ -382,6 +481,13 @@ def Succes_inscription_repetiteur():
 # PARENT
 # DEBUT PARENT
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'IdUser' not in session:
+            return redirect(url_for('connexion'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/accueil_parent")
 @login_required
@@ -391,8 +497,18 @@ def Accueil_parent():
     cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
-    return render_template("Parents/accueil_parent.html", usersParent=usersParent)
+    
+    if usersParent:
+        prenom_parent = usersParent[1]  # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
+        nom_parent = usersParent[2]  # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
 
+        flash(f'Bienvenue, cher parent {prenom_parent} {nom_parent}!', 'success')
+        session['just_logged_in'] = True  # Ajoutez cette ligne pour indiquer que l'utilisateur vient de se connecter
+
+        return render_template("Parents/accueil_parent.html", usersParent=usersParent)
+    else:
+        flash('Répétiteur non trouvé.', 'danger')
+        return redirect(url_for('connexion'))
 
 data_recap = {}
 
@@ -933,8 +1049,7 @@ def Supprimer_choix(IdContratTemporaire):
 def profil_parent():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
     return render_template("Profil/profil_parent.html", usersParent=usersParent)
@@ -981,6 +1096,8 @@ def SucessModifProfil_par():
         flash('Votre profil à été mis à jour', 'success')
         return redirect(url_for('profil_parent'))
     return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
+                
+
 
 @app.route("/profil_repetiteur")
 @login_required
@@ -1186,6 +1303,14 @@ def librairie_parent():
 # DEBUT REPETITEUR
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'IdUser' not in session:
+            return redirect(url_for('connexion'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route("/accueil_repetiteur")
 @login_required
 def accueil_repetiteur():
@@ -1193,8 +1318,17 @@ def accueil_repetiteur():
     cursor = conn.cursor()
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
-    cursor.commit()
-    return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur)
+    cursor.close()
+
+    if usersRepetiteur:
+        prenom_repetiteur = usersRepetiteur[1]  # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
+        nom_repetiteur = usersRepetiteur[2]  # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
+
+        flash(f'Bienvenue, cher répétiteur {prenom_repetiteur} {nom_repetiteur}!', 'success')
+        return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur)
+    else:
+        flash('Répétiteur non trouvé.', 'danger')
+        return redirect(url_for('connexion'))
     # return render_template("Repetiteur/accueil_repetiteur.html")
 # DEBUT RECHERCHE_REPETITEUR
 
