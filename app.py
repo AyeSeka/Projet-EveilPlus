@@ -4,6 +4,10 @@ from flask import Flask, jsonify, render_template, request,  redirect, url_for, 
 from flask_bcrypt import Bcrypt
 from functools import wraps
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
+import os
+
+
 # from flask_login import current_user, login_required
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -15,11 +19,7 @@ bcrypt = Bcrypt(app)
 #                        "Trusted_Connection=yes")
 
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-<<<<<<< HEAD
                        "Server=DESKTOP-K074SIS\SQLEXPRESS;"
-=======
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
->>>>>>> f70b2ea4fa0467135082d2f98874fc313ec22f60
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 
@@ -37,6 +37,23 @@ connection_string = (
     "Database=ivoryExplore;"
     "Trusted_Connection=yes"
 )
+
+# Définissez le chemin vers le dossier où vous stockez les photos de profil
+UPLOAD_FOLDER = 'Static/img/user_img'
+# Définissez les extensions de fichiers autorisées
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+###### Modification_Photo_Profil #####
+
+# Assurez-vous d'avoir cette fonction définie quelque part dans votre code
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+
+
 
 ################## TEST_APP ####################
 @app.route("/")
@@ -1034,7 +1051,7 @@ def ModifProfil_par():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+        "SELECT P., U. FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
     return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
@@ -1045,7 +1062,7 @@ def SucessModifProfil_par():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+        "SELECT P., U. FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     cursor.commit()
     if request.method == "POST":
@@ -1064,12 +1081,14 @@ def SucessModifProfil_par():
         cursor.execute("UPDATE users SET Email=?, Roles=? WHERE IdUser = ?",(Email,Roles,IdUser))
         # cursor.execute("SELECT SCOPE_IDENTITY()")
         # listId = cursor.fetchone()
-        cursor.execute("UPDATE Parent SET NomParent=?, PrenomParent=?, LieuHabitation=?, TelephoneParent1=?, TelephonePparent2=? WHERE IdParent = ?", (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2,usersParent[0]))
+        cursor.execute("UPDATE Parent SET NomParent=?, PrenomParent=?, LieuHabitation=?, TelephoneParent1=?, TelephonePparent2=? WHERE IdParent = ?", (NomParent, PrenomParent, 				LieuHabitation, TelephoneParent1, TelephonePparent2,usersParent[0]))
         # Commit des modifications
         conn.commit()
         flash('Votre profil à été mis à jour', 'success')
         return redirect(url_for('profil_parent'))
     return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
+                
+
 
 @app.route("/profil_repetiteur")
 @login_required
