@@ -16,9 +16,10 @@
                 
                 <div class="col-md-3">
                     <button type="button" style="border: none;" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
-                        <div class="">
-                            <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="img-thumbnail img-fluid" alt="...">
-                        </div>   
+                    <div class="">
+                        <img src="{{ url_for('static', filename=photo_path) }}" class="img-thumbnail img-fluid" alt="...">
+                    </div>
+
                     </button>
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -28,16 +29,15 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body" >
-                                    <form class="m-auto" style="width: 290px;">
-
+                                    <form class="m-auto" style="width: 290px;" action="/upload" method="post" enctype="multipart/form-data">
                                         <div class="uplaod">
-                                            <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" class="img-thumbnail img-fluid" width="200px" alt="...">
+                                            <img id="imagePreview" src="{{ url_for('static', filename=photo_path) }}" class="img-thumbnail img-fluid" width="200px" alt="...">
                                             <div class="round">
-                                                <input type="file">
+                                                <input type="file" id="fileInput" name="file" accept="image/*" onchange="previewImage(event)" required>
                                                 <i class="ri-camera-line" style="color: #fff; font-size:1.5em;"></i>
                                             </div>
                                         </div>   
-                                        <input type="submit" class="btn btn-warning text-white" value="Modifier">
+                                        <input type="submit" class="btn btn-warning text-white" value="Valider">
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -73,7 +73,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><b>Lieu d'habition</b></td>
+                            <td><b>Lieu d'habitation</b></td>
                             <td>
                                 {{usersParent.LieuHabitation}}
                             </td>
@@ -112,5 +112,18 @@
         setTimeout(function() {
             flashMessage.style.display = 'none';
         }, delay);
+    </script>
+    <script>
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                var img = document.getElementById('imagePreview');
+                img.src = reader.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
     </script> 
 {% endblock %}

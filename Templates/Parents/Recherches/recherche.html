@@ -15,7 +15,7 @@
                 <label for="habitation" class="form-label">Lieu d'habitation:</label>
               </div>
               <div class="col-md-6">
-                <select class="form-control" name="habitation" list="1" id="habitation">
+                <select class="form-control" name="habitation" list="1" id="habitation" required>
                     <option value="#">Selectionnez le lieu d'habitation...</option>
                     <option value="Adzopé">Adzopé</option>
                     <option value="Adiaké">Adiaké</option>
@@ -69,7 +69,7 @@
                 <label for="Niveaus" class="form-label">Niveau d'etude:</label>
               </div>
               <div class="col-md-6">
-                <select class="form-control" name="niveau" list="2" id="Niveaus">
+                <select class="form-control" name="niveau" list="2" id="Niveaus" required>
                    <option value="#">Selectionnez votre Niveau Scolaire</option>
                     <option value="BAC">BAC</option>
                     <option value="BAC+1">BAC+1</option>
@@ -89,7 +89,7 @@
               </div>
               <div class="col-md-6">
                 <input class="form-control" name="experience" list="3" id="experience" min="0" max="20" type="number"
-                  placeholder="Entrez vos année d'expérience" />
+                  placeholder="Entrez vos année d'expérience" required />
               </div>
             </div>
             <div class="row mb-4">
@@ -98,7 +98,7 @@
                 <label for="specialite">Spécialité:</label>
               </div>
               <div class="col-md-6">
-                <select class="form-select" id="specialite" name="specialite">
+                <select class="form-select" id="specialite" name="specialite" required>
                   {% for competence in datalist_competence %}
                   <option value="{{ competence[0] }}">
                     {{ competence[1]}}

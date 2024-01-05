@@ -15,7 +15,12 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link p-3 border rounded dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}" style="border-radius: 45px;" class=" me-2 " width="25px">{{usersRepetiteur.PrenomRepetiteur}} {{usersRepetiteur.NomRepetiteur}}
+            <img
+              src="{{ url_for('static', filename=photo_path) }}"
+              style="border-radius: 45px"
+              class="me-2"
+              width="25px"
+            />              
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="/profil_repetiteur">Mon profil</a></li>
