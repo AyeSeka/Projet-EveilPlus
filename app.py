@@ -1219,8 +1219,18 @@ def ModifProfil_rep():
 
     cursor = conn.cursor()
     cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
-    bouton_etat = cursor.fetchone()[0]
-    conn.commit()
+
+    result = cursor.fetchone()
+
+    if result:
+        bouton_etat = result[0]
+        conn.commit()
+    else:
+        bouton_etat = None  # Ou toute autre valeur par défaut que vous souhaitez assigner
+
+    print("Users Repetiteur:", usersRepetiteur)
+    print("Bouton Etat:", bouton_etat)
+
     cursor = conn.cursor()
     cursor.execute("SELECT * from Competence")
     Competence = cursor.fetchall()
@@ -1261,7 +1271,7 @@ def SuccesModifProfil_rep():
         Roles = request.form["Roles"]
         NomRepetiteur = request.form["NomRepetiteur"]
         PrenomRepetiteur = request.form["PrenomRepetiteur"]
-        lieu_hab_rep = request.form["lieu_hab_rep"]
+        lieu_hab_rep = request.form.get["lieu_hab_rep"]
         DateNaissance = request.form["DateNaissance"]
         AnneeExperience = request.form["AnneeExperience"]
         NiveauRepetiteur = request.form["NiveauRepetiteur"]
@@ -1419,15 +1429,15 @@ def form_paiement():
 
 
 #  BACK-END LIBRAIRIE
-@app.route("/librairie")
-def librairie_parent():
-    IdUser = session.get('IdUser')
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
-    usersParent = cursor.fetchone()
-    cursor.commit()
-    return render_template("librairie/librairie.html", usersParent=usersParent)
+# @app.route("/librairie")
+# def librairie_parent():
+#     IdUser = session.get('IdUser')
+#     cursor = conn.cursor()
+#     cursor.execute(
+#         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+#     usersParent = cursor.fetchone()
+#     cursor.commit()
+#     return render_template("librairie/librairie.html", usersParent=usersParent)
 
 
 # FIN LIBRAIRIE

@@ -16,6 +16,40 @@
                 display: block;
                 margin-bottom: 5px;
             }
+
+            .multiselect {
+                width: 200px;
+                }
+
+                .selectBox {
+                position: relative;
+                }
+
+                .selectBox select {
+                width: 100%;
+                font-weight: bold;
+                }
+
+                .overSelect {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                }
+
+                #checkboxes {
+                display: none;
+                border: 1px #dadada solid;
+                }
+
+                #checkboxes label {
+                display: block;
+                }
+
+                #checkboxes label:hover {
+                background-color: #1e90ff;
+                }
         </style>
         <script>
             function checkPassword() {
@@ -52,8 +86,13 @@
                             <input type="text" class="input" name="PrenomRepetiteur" placeholder="Votre Prenom" value="{{usersRepetiteur.PrenomRepetiteur}}">
                         </div>
                         <div class="inscriptionParent_login1">
+<<<<<<< Updated upstream
                             <select class="form-control input" name="lieu_hab_rep"  list="1" id="habitation" placeholder="Votre lieu d'habitation">
                                 <option value="" disabled selected style="display:none;">Votre lieu d'habitation</option>
+=======
+                            <select class="form-control input" name="LieuHabitation" list="1" id="habitation" placeholder="Votre lieu d'habitation" required>
+                                <option value="#" disabled selected style="display:none;">{{ usersRepetiteur.LieuHabitation if usersRepetiteur.LieuHabitation else ''"Votre lieu d'habitation" }}</option>
+>>>>>>> Stashed changes
                                 <option value="Adzopé">Adzopé</option>
                                 <option value="Adiaké">Adiaké</option>
                                 <option value="Agboville">Agboville</option>
@@ -107,7 +146,7 @@
                          </div>
                          <div class="inscriptionParent_login1">
                             <select name="NiveauRepetiteur" class="input">
-                                <option value="{{usersRepetiteur.NiveauRepetiteur}}">{{usersRepetiteur.NiveauRepetiteur}}</option>
+                                <option value="#">{{usersRepetiteur.NiveauRepetiteur if usersRepetiteur.NiveauRepetiteur else ''"Votre dernier diplôme" }}</option>
                                 <option value="BAC">BAC</option>
                                 <option value="BAC+1">BAC+1</option>
                                 <option value="BAC+2">BAC+2</option>
@@ -123,61 +162,46 @@
                             </select>
                             <input type="hidden" name="EstActif" value="1">
                          </div>
-                         <div class="inscriptionParent_login1">
-                            <fieldset class="table-responsive input border rounded" style="height: 110%; ">
-                                <legend> <small>Primaire:</small> </legend>
-                                {% for ClassePrimaire in ClassePrimaire %}
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="Classe[]" value="{{ ClassePrimaire[1] }}" id="ClassePrimaire{{ loop.index }}">
-                                        <label class="form-check-label" for="ClassePrimaire{{ loop.index }}">
-                                            {{ ClassePrimaire[1] }}
-                                        </label>
-                                    </div>
-                                {% endfor %}
-                                <legend> <small>College:</small> </legend>
-                                {% for ClasseCollege in ClasseCollege %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="Classe[]" value="{{ ClasseCollege[1] }}" id="ClasseCollege{{ loop.index }}">
-                                    <label class="form-check-label" for="ClasseCollege{{ loop.index }}">
-                                        {{ ClasseCollege[1] }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                            <legend> <small>Lycée:</small> </legend>
-                                {% for ClasseLycee in ClasseLycee %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="Classe[]" value="{{ ClasseLycee[1] }}" id="ClasseLycee{{ loop.index }}">
-                                    <label class="form-check-label" for="ClasseLycee{{ loop.index }}">
-                                        {{ ClasseLycee[1] }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                            </fieldset>
-                                                          
-                            <fieldset class="table-responsive input border rounded" style="height: 110%; ">
-                                <legend> <small>Sciences:</small> </legend>
-                                {% for MatiereSciences in MatiereSciences %}
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="Matiere[]" value="{{ MatiereSciences[1] }}" id="MatiereSciences{{ loop.index }}">
-                                        <label class="form-check-label" for="MatiereSciences{{ loop.index }}">
-                                            {{ MatiereSciences[1] }}
-                                        </label>
-                                    </div>
-                                {% endfor %}
-                                <legend> <small>Litteraire:</small> </legend>
-                                {% for MatiereLitteraire in MatiereLitteraire %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="Matiere[]" value="{{ MatiereLitteraire[1] }}" id="MatiereLitteraire{{ loop.index }}">
-                                    <label class="form-check-label" for="MatiereLitteraire{{ loop.index }}">
-                                        {{ MatiereLitteraire[1] }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                            </fieldset>
-                         </div>
-                         <p id="errorMessage" style="color: red;"></p>
-                         <input type="submit" value="VALIDER"  id="submit-button" class="btn btn-secondary py-2" style="background-color: #6ebca8; border:none; width: 20%; font-size:1.3em; font-weight: bold;">
+                    <div class="inscriptionParent_login1">
+                        <select class="input" id="Classe" name="Classe" required>
+                            <option value="#">{{usersRepetiteur.NomMatiereLitteraire if usersRepetiteur.NomMatiereLitteraire else ''"Le niveau enseigné" }}</option>
+                            <option value="CP1">CP1</option>
+                            <option value="CP2">CP2</option>
+                            <option value="CE1">CE1</option>
+                            <option value="CE2">CE2</option>
+                            <option value="CM1">CM1</option>
+                            <option value="CM2">CM2</option>
+                            <option value="6ème">6ème</option>
+                            <option value="5ème">5ème</option>
+                            <option value="4ème">4ème</option>
+                            <option value="3ème">3ème</option>
+                            <option value="2ndA">2ndA</option>
+                            <option value="2ndC">2ndC</option>
+                            <option value="1èreA">1èreA</option>
+                            <option value="1èreC">1èreC</option>
+                            <option value="1èreD">1èreD</option>
+                            <option value="TleA">TleA</option>
+                            <option value="TleC">TleC</option>
+                            <option value="TleD">TleD</option>
+                        </select>
+                        <select class="input" id="Classe" name="Classe" required>
+                            <option value="#">{{usersRepetiteur.NomMatiereScience if usersRepetiteur.NomMatiereScience else ''"La matière enseigné" }}</option>
+                            <option value="Mathématiques">Mathématiques</option>
+                            <option value="Physique-Chimie">Physique-Chimie</option>
+                            <option value="SVT">SVT</option>
+                            <option value="Histoire-Géographie">Histoire-Géographie</option>
+                            <option value="Français">Français</option>
+                            <option value="Anglais">Anglais</option>
+                            <option value="Allemand">Allemand</option>
+                            <option value="Espagnol">Espagnol</option>
+                            <option value="Phylosophie">Phylosophie</option>
+                        </select>
+                        
+                        </div>
+                        <p id="errorMessage" style="color: red;"></p>
+                        <input type="submit" value="VALIDER"  id="submit-button" class="btn btn-secondary py-2" style="background-color: #6ebca8; border:none; width: 20%; font-size:1.3em; font-weight: bold;">
                     </form>
+                    
                     <div class="inscriptionParent_login2">
                         <a class="btn btn-danger"  href="/profil_repetiteur">Abandonner</a>
                     </div>
@@ -204,8 +228,29 @@
                 }
               });
             });
+<<<<<<< Updated upstream
         </script> -->
         
+=======
+          </script> -->
+
+        <script>
+            var expanded = false;
+
+            function showCheckboxes() {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+            }
+        </script>
+
+                    
+>>>>>>> Stashed changes
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const lieuHabitationSelect = document.getElementById('habitation');
