@@ -1,12 +1,13 @@
 from datetime import datetime
 import pyodbc
-from flask import Flask, jsonify, render_template, request,  redirect, url_for, flash, session,send_file
+from flask import Flask, jsonify, render_template, request,  redirect, url_for, flash, session,send_file, json
 from flask_bcrypt import Bcrypt
 from functools import wraps
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 import os
+
 
 
 # from flask_login import current_user, login_required
@@ -16,23 +17,6 @@ bcrypt = Bcrypt(app)
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
 #                       "Server=Geek_Machine\SQLEXPRESS;"
-<<<<<<< Updated upstream
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
-
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
-
-conn = pyodbc.connect(
-    "Driver={ODBC Driver 17 for SQL Server};"
-    "Server=DESKTOP-K074SIS\SQLEXPRESS;"
-    "Database=eveil_plus;"
-    "Trusted_Connection=yes"
-)
-# # 
-=======
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
 
@@ -40,7 +24,6 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
                         "Server=DESKTOP-K074SIS\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
->>>>>>> Stashed changes
 
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
@@ -53,11 +36,7 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 connection_string = (
     "Driver={ODBC Driver 17 for SQL Server};"
     "Server=DESKTOP-K074SIS\SQLEXPRESS;"
-<<<<<<< Updated upstream
-    "Database=eveil_plus;"
-=======
     "Database=ivoryExplore;"
->>>>>>> Stashed changes
     "Trusted_Connection=yes"
 )
 # # Fonction pour se connecter à la base de données SQL Server
@@ -907,74 +886,121 @@ def liste_recherche():
     cursor = conn.cursor()
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
-    usersParent = cursor.fetchone() 
-    
+    usersParent = cursor.fetchone()
+
     cursor.execute("SELECT * FROM ClassePrimaire")
     ClassePrimaire = cursor.fetchall()
-    
+
     cursor.execute("SELECT * FROM ClasseCollege")
     ClasseCollege = cursor.fetchall()
-    
+
     cursor.execute("SELECT * FROM ClasseLycee")
     ClasseLycee = cursor.fetchall()
-    
+
     cursor.execute("SELECT * FROM MatiereSciences")
     MatiereSciences = cursor.fetchall()
-    
+
     cursor.execute("SELECT * FROM MatiereLitteraire")
     MatiereLitteraire = cursor.fetchall()
-    # cursor = conn.cursor()
-    # Récupérez les données du formulaire
-    habitation = request.form.get("habitation")
-    niveau = request.form.get("niveau")
-    experience = request.form.get("experience")
-    specialite = request.form.get("specialite")
 
-    # cursor.execute("SELECT * FROM Repetiteur")
-    # usersRepetiteur = cursor.fetchall()
+    if request.method == "POST":
+        habitation = request.form.get("habitation")
+        niveau = request.form.get("niveau")
+        experience = request.form.get("experience")
+        specialite = request.form.get("specialite")
+        
+        cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+        result = cursor.fetchone()
+        
+        bouton_etat = result[0] if result else None
+
+        # Liste des filtres pour les classes et matières
+        classes_primaire = request.form.getlist("ClassePrimaire[]")
+        classes_college = request.form.getlist("ClasseCollege[]")
+        classes_lycee = request.form.getlist("ClasseLycee[]")
+        matieres_sciences = request.form.getlist("MatiereSciences[]")
+        matieres_litteraires = request.form.getlist("MatiereLitteraire[]")
+
+        # Construisez la clause WHERE en fonction des filtres sélectionnés
+        conditions = []
+
+        if habitation:
+            conditions.append("lieu_hab_rep = ?")
+
+        if niveau:
+            conditions.append("NiveauRepetiteur = ?")
+
+        if experience:
+            conditions.append("AnneeExperience = ?")
+
+        if specialite:
+            conditions.append("c.NomCompetence = ?")
+
+        if classes_primaire:
+            conditions.append("ClassePrimaire IN ({})".format(
+                ",".join(["?" for _ in classes_primaire])))
+
+        if classes_college:
+            conditions.append("ClasseCollege IN ({})".format(
+                ",".join(["?" for _ in classes_college])))
+
+        if classes_lycee:
+            conditions.append("ClasseLycee IN ({})".format(
+                ",".join(["?" for _ in classes_lycee])))
+
+        if matieres_sciences:
+            conditions.append("MatiereSciences IN ({})".format(
+                ",".join(["?" for _ in matieres_sciences])))
+
+        if matieres_litteraires:
+            conditions.append("MatiereLitteraire IN ({})".format(
+                ",".join(["?" for _ in matieres_litteraires])))
+
+        # Construisez la requête SQL
+        query = """
+            SELECT * FROM Repetiteur r
+            JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur
+            JOIN Competence c ON (r.IdCompetence = c.IdCompetence)
+            WHERE {} AND r.EstActif = ?
+            """.format(" AND ".join(conditions))
+
+        # Exécutez la requête avec les paramètres
+        params = [param for param in [habitation, niveau, experience, specialite,
+                                      *classes_primaire, *classes_college,
+                                      *classes_lycee, *matieres_sciences,
+                                      *matieres_litteraires,  bouton_etat] if param]
+
+        cursor.execute(query, params)
+        repetiteurs = cursor.fetchall()
+        if repetiteurs:
+            etat_repetiteur = repetiteurs[0][7]
+        else:
+            etat_repetiteur = None
+
+        cursor.execute("SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
+        result = cursor.fetchone()
+
+        if result and result[0]:
+            photo_path = result[0]
+        else:
+            photo_path = url_for('static', filename='/img/user_img/user_avatar.jpg')
+
+        cursor.commit()
+
+        return render_template("Parents/Recherches/liste_recherche.html",
+                               specialite=specialite, repetiteurs=repetiteurs,
+                               usersParent=usersParent, MatiereSciences=MatiereSciences,
+                               MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire,
+                               ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee,
+                               etat_repetiteur=etat_repetiteur, photo_path=photo_path)
     
-    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
-    bouton_etat = cursor.fetchone()[0]
-    # print(bouton_etat)
-    # print(habitation)
-    # print(niveau)
-    # print(experience)
-    # print(specialite)
+    # Si la méthode n'est pas POST, retournez simplement le template sans effectuer la recherche
+    return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent,
+                           MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire,
+                           ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege,
+                           ClasseLycee=ClasseLycee)
 
-    query = """SELECT  * FROM Repetiteur r JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence)
-            
 
-            WHERE
-            lieu_hab_rep = ? OR
-            NiveauRepetiteur = ? OR 
-            AnneeExperience = ? OR
-            c.NomCompetence = ? AND
-            r.EstActif = ?
-            """
-    # r.IdRepetiteur = c.IdRepetiteur AND
-    # cursor.execute("SELECT * FROM Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON R.IdCompetence=C.IdCompetence")
-    # info_rep = cursor.fetchall()
-
-    cursor.execute(query, (habitation, niveau, experience, specialite, bouton_etat))
-    repetiteurs = cursor.fetchall()
-    # print(repetiteurs)
-    if repetiteurs:
-        etat_repetiteur = repetiteurs[0][7]
-    else:
-        etat_repetiteur = None
-    
-    cursor.execute("SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-    
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for('static', filename='/img/user_img/user_avatar.jpg')
-    
-    cursor.commit()
-
-    # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-    return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur,photo_path=photo_path)
 
 # @app.route("/liste_repetiteurchoix")
 # @login_required
@@ -1234,60 +1260,124 @@ def profil_repetiteur():
 @app.route("/ModifProfil_rep", methods=['GET', 'POST'])
 def ModifProfil_rep():
     IdUser = session.get('IdUser')
+
+    # Utilisez une seule requête pour récupérer toutes les informations nécessaires
     cursor = conn.cursor()
-    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    cursor.execute("""
+        SELECT R.*, NomCompetence, U.*, R.EstActif
+        FROM Repetiteur R
+        JOIN users U ON R.IdUser=U.IdUser
+        JOIN Competence C ON R.IdCompetence=C.IdCompetence
+        WHERE U.IdUser = ?
+    """, IdUser)
     usersRepetiteur = cursor.fetchone()
-    cursor.commit()
 
-    cursor = conn.cursor()
-    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
+    if usersRepetiteur is None:
+        # Gérer le cas où l'utilisateur n'est pas trouvé
+        return jsonify({"error": "Utilisateur non trouvé"}), 404
 
-    result = cursor.fetchone()
-
-    if result:
-        bouton_etat = result[0]
-        conn.commit()
-    else:
-        bouton_etat = None  # Ou toute autre valeur par défaut que vous souhaitez assigner
-
-    print("Users Repetiteur:", usersRepetiteur)
-    print("Bouton Etat:", bouton_etat)
-
-    cursor = conn.cursor()
-    cursor.execute("SELECT * from Competence")
-    Competence = cursor.fetchall()
-    cursor.execute("SELECT * FROM ClassePrimaire")
-    ClassePrimaire = cursor.fetchall()
-    
-    cursor.execute("SELECT * FROM ClasseCollege")
-    ClasseCollege = cursor.fetchall()
-    
-    cursor.execute("SELECT * FROM ClasseLycee")
-    ClasseLycee = cursor.fetchall()
-    
-    cursor.execute("SELECT * FROM MatiereSciences")
-    MatiereSciences = cursor.fetchall()
-    
-    cursor.execute("SELECT * FROM MatiereLitteraire")
-    MatiereLitteraire = cursor.fetchall()
+    # Récupérez le chemin de la photo de profil
     cursor.execute("SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
     result = cursor.fetchone()
-            
+
     if result and result[0]:
         photo_path = result[0]
     else:
         photo_path = url_for('static', filename='/img/user_img/user_avatar.jpg')
-    
-    return render_template("Profil/ModifProfil_rep.html",usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat, Competence=Competence, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire,photo_path=photo_path)
+
+    # Récupérez les compétences, classes et matières
+    cursor.execute("SELECT * FROM Competence")
+    Competence = cursor.fetchall()
+
+    # Récupérez l'état actif
+    cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
+    bouton_etat = cursor.fetchone()[0]
+
+   # Si la méthode de la requête est POST, mettez à jour les colonnes NomClasse et NomMatiere
+    if request.method == "POST":
+        # Récupérer les valeurs des classes sélectionnées
+        selected_classes = request.form.getlist('Classe')
+        # Récupérer les valeurs des matières sélectionnées
+        selected_matieres = request.form.getlist('Matiere[]')
+
+        # Vérifier si les classes sélectionnées existent dans les tables correspondantes
+        valid_classes = validate_selected_classes(selected_classes, cursor, ['ClassePrimaire', 'ClasseCollege', 'ClasseLycee'])
+        if not valid_classes:
+            return jsonify({"error": "Classes invalides"}), 400
+
+        # Vérifier si les matières sélectionnées existent dans les tables correspondantes
+        valid_matieres = validate_selected_matieres(selected_matieres, cursor, ['MatiereSciences', 'MatiereLitteraire'])
+        if not valid_matieres:
+            return jsonify({"error": "Matieres invalides"}), 400
+
+        # Convertir les listes en chaînes JSON pour les stocker dans la base de données
+        classes_json = json.dumps(valid_classes)
+        matieres_json = json.dumps(valid_matieres)
+
+        # Mettre à jour les colonnes NomClasse et NomMatiere dans la table Repetiteur
+        cursor.execute("UPDATE Repetiteur SET NomClasse=?, NomMatiere=? WHERE IdRepetiteur=?", (classes_json, matieres_json, usersRepetiteur[0]))
+        conn.commit()
+
+    # Récupérez les classes de Primaire, Collège et Lycée
+    cursor.execute("SELECT * FROM ClassePrimaire")
+    ClassePrimaire = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseCollege")
+    ClasseCollege = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseLycee")
+    ClasseLycee = cursor.fetchall()
+
+    # Récupérez les matières de Science
+    cursor.execute("SELECT * FROM MatiereSciences")
+    MatiereSciences = cursor.fetchall()
+
+    # Récupérez les matières Littéraires
+    cursor.execute("SELECT * FROM MatiereLitteraire")
+    MatiereLitteraire = cursor.fetchall()
+
+    return render_template("Profil/ModifProfil_rep.html", usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat, Competence=Competence, photo_path=photo_path, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire)
+
+# Exemple de validation des classes
+def validate_selected_classes(selected_classes, cursor, table_names):
+    valid_classes = []
+
+    for table_name in table_names:
+        cursor.execute(f"SELECT * FROM {table_name}")
+        all_classes = [row[1] for row in cursor.fetchall()]
+        valid_classes.extend([c for c in selected_classes if c in all_classes])
+
+    return valid_classes
+
+# Exemple de validation des matières
+def validate_selected_matieres(selected_matieres, cursor, table_names):
+    valid_matieres = []
+
+    for table_name in table_names:
+        cursor.execute(f"SELECT * FROM {table_name}")
+        all_matieres = [row[1] for row in cursor.fetchall()]
+        valid_matieres.extend([m for m in selected_matieres if m in all_matieres])
+
+    return valid_matieres
 
 
-@app.route("/SuccesModifProfil_rep", methods=['GET', 'POST'])
+@app.route("/SuccesModifProfil_rep", methods=['POST'])
 def SuccesModifProfil_rep():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
-    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    cursor.execute("""
+        SELECT R.*, NomCompetence, U.*
+        FROM Repetiteur R
+        JOIN users U ON R.IdUser=U.IdUser
+        JOIN Competence C ON R.IdCompetence=C.IdCompetence
+        WHERE U.IdUser = ?
+    """, IdUser)
     usersRepetiteur = cursor.fetchone()
-    cursor.commit()
+
+    if not usersRepetiteur:
+        flash('Utilisateur non trouvé', 'danger')
+        return redirect(url_for('nom_de_la_page_d_accueil'))
+
     if request.method == 'POST':
         Email = request.form["Email"]
         Roles = request.form["Roles"]
@@ -1301,36 +1391,72 @@ def SuccesModifProfil_rep():
         IdCompetence = request.form["IdCompetence"]
         Classe = ', '.join(request.form.getlist("Classe[]"))
         Matiere = ', '.join(request.form.getlist("Matiere[]"))
+
         # Vérifier si tous les champs sont remplis
         if not all([Email, Roles, NomRepetiteur, PrenomRepetiteur, lieu_hab_rep, DateNaissance, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, Classe, Matiere]):
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('ModifProfil_rep'))
 
-        cursor = conn.cursor()
-        cursor.execute("UPDATE users SET Email=?, Roles=? WHERE IdUser = ?",(Email,Roles,IdUser))
-        cursor.execute("UPDATE Repetiteur SET NomRepetiteur=?, PrenomRepetiteur=?, DateNaissance=?, lieu_hab_rep=?, AnneeExperience=?, NiveauRepetiteur=?, EstActif=?, IdCompetence=? WHERE IdRepetiteur = ?", (NomRepetiteur, PrenomRepetiteur, DateNaissance, lieu_hab_rep, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, usersRepetiteur[0]))
+        cursor.execute("UPDATE users SET Email=?, Roles=? WHERE IdUser = ?", (Email, Roles, IdUser))
+        cursor.execute("""
+            UPDATE Repetiteur
+            SET NomRepetiteur=?, PrenomRepetiteur=?, DateNaissance=?, lieu_hab_rep=?, AnneeExperience=?,
+                NiveauRepetiteur=?, EstActif=?, IdCompetence=?
+            WHERE IdRepetiteur = ?
+        """, (NomRepetiteur, PrenomRepetiteur, DateNaissance, lieu_hab_rep, AnneeExperience, NiveauRepetiteur, EstActif, IdCompetence, usersRepetiteur[0]))
+
+        # Récupérer les valeurs des classes sélectionnées
+        selected_classes = request.form.getlist('Classe[]')
+        # Récupérer les valeurs des matières sélectionnées
+        selected_matieres = request.form.getlist('Matiere[]')
+
+        # Vérifier si les classes sélectionnées existent dans les tables correspondantes
+        valid_classes = validate_selected_classes(selected_classes, cursor, ['ClassePrimaire', 'ClasseCollege', 'ClasseLycee'])
+        # if not valid_classes:
+        #     flash('Classes invalides', 'danger')
+        #     return redirect(url_for('ModifProfil_rep'))
+
+        # Vérifier si les matières sélectionnées existent dans les tables correspondantes
+        valid_matieres = validate_selected_matieres(selected_matieres, cursor, ['MatiereSciences', 'MatiereLitteraire'])
+        # if not valid_matieres:
+        #     flash('Matieres invalides', 'danger')
+        #     return redirect(url_for('ModifProfil_rep'))
+
+        # Exemple de stockage dans la base de données pour les classes
+        classes_str = ', '.join(valid_classes)
+        cursor.execute("UPDATE Repetiteur SET NomClasse=? WHERE IdRepetiteur=?", (classes_str, usersRepetiteur[0]))
+        conn.commit()
+
+        # Exemple de stockage dans la base de données pour les matières
+        matieres_str = ', '.join(valid_matieres)
+        cursor.execute("UPDATE Repetiteur SET NomMatiere=? WHERE IdRepetiteur=?", (matieres_str, usersRepetiteur[0]))
+        conn.commit()
+
+        # Mettre à jour les colonnes NomClasse et NomMatiere dans la table Repetiteur
+        cursor.execute("UPDATE Repetiteur SET NomClasse=?, NomMatiere=? WHERE IdRepetiteur=?", (classes_str, matieres_str, usersRepetiteur[0]))
+        conn.commit()
+
         cursor.execute("SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
         result = cursor.fetchone()
-                
+
         if result and result[0]:
             photo_path = result[0]
         else:
             photo_path = url_for('static', filename='/img/user_img/user_avatar.jpg')
-        
-        # cursor.execute("SELECT SCOPE_IDENTITY()")
-        # listId = cursor.fetchone()
+
         cursor.execute("SELECT * FROM Dispense D join Repetiteur R on D.IdRepetiteur=R.IdRepetiteur WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
         Dispense = cursor.fetchone()
+
         if Dispense is None:
-            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES ('{usersRepetiteur[0]}','{Matiere}','{Classe}')")
-        # Commit des modifications
+            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES (?, ?, ?)", (usersRepetiteur[0], Matiere, Classe))
             conn.commit()
         else:
             cursor.execute("UPDATE Dispense SET Matiere=?, Classe=? WHERE IdDispense = ?", (Matiere, Classe, Dispense[0]))
-            
-        flash('Votre profil à été mis à jour', 'success')
+
+        flash('Votre profil a été mis à jour', 'success')
         return redirect(url_for('profil_repetiteur'))
-    return render_template("Profil/ModifProfil_rep.html",usersRepetiteur=usersRepetiteur, Dispense=Dispense,photo_path=photo_path)
+
+    return render_template("Profil/ModifProfil_rep.html", usersRepetiteur=usersRepetiteur, photo_path=photo_path)
 
 
 # # bouton disponibilité
@@ -1451,15 +1577,15 @@ def form_paiement():
 
 
 #  BACK-END LIBRAIRIE
-# @app.route("/librairie")
-# def librairie_parent():
-#     IdUser = session.get('IdUser')
-#     cursor = conn.cursor()
-#     cursor.execute(
-#         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
-#     usersParent = cursor.fetchone()
-#     cursor.commit()
-#     return render_template("librairie/librairie.html", usersParent=usersParent)
+@app.route("/librairie")
+def librairie_parent():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("librairie/librairie.html", usersParent=usersParent)
 
 
 # FIN LIBRAIRIE
