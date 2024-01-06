@@ -16,6 +16,7 @@ bcrypt = Bcrypt(app)
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
 #                       "Server=Geek_Machine\SQLEXPRESS;"
+<<<<<<< Updated upstream
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
 
@@ -31,6 +32,15 @@ conn = pyodbc.connect(
     "Trusted_Connection=yes"
 )
 # # 
+=======
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
+
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                        "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
+>>>>>>> Stashed changes
 
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
@@ -43,7 +53,11 @@ conn = pyodbc.connect(
 connection_string = (
     "Driver={ODBC Driver 17 for SQL Server};"
     "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+<<<<<<< Updated upstream
     "Database=eveil_plus;"
+=======
+    "Database=ivoryExplore;"
+>>>>>>> Stashed changes
     "Trusted_Connection=yes"
 )
 # # Fonction pour se connecter à la base de données SQL Server
@@ -1279,7 +1293,7 @@ def SuccesModifProfil_rep():
         Roles = request.form["Roles"]
         NomRepetiteur = request.form["NomRepetiteur"]
         PrenomRepetiteur = request.form["PrenomRepetiteur"]
-        lieu_hab_rep = request.form.get["lieu_hab_rep"]
+        lieu_hab_rep = request.form["lieu_hab_rep"]
         DateNaissance = request.form["DateNaissance"]
         AnneeExperience = request.form["AnneeExperience"]
         NiveauRepetiteur = request.form["NiveauRepetiteur"]
