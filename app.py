@@ -14,15 +14,23 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
-                      "Server=Geek_Machine\SQLEXPRESS;"
-                       "Database=eveil_plus;"
-                       "Trusted_Connection=yes")
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"                       
+#                       "Server=Geek_Machine\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 #                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
+
+conn = pyodbc.connect(
+    "Driver={ODBC Driver 17 for SQL Server};"
+    "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+    "Database=eveil_plus;"
+    "Trusted_Connection=yes"
+)
+# # 
 
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
@@ -32,12 +40,12 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 
 # )
 
-# connection_string = (
-#     "Driver={ODBC Driver 17 for SQL Server};"
-#     "Server=DESKTOP-K074SIS\SQLEXPRESS;"
-#     "Database=ivoryExplore;"
-#     "Trusted_Connection=yes"
-# )
+connection_string = (
+    "Driver={ODBC Driver 17 for SQL Server};"
+    "Server=DESKTOP-K074SIS\SQLEXPRESS;"
+    "Database=eveil_plus;"
+    "Trusted_Connection=yes"
+)
 # # Fonction pour se connecter à la base de données SQL Server
 # def connect_db():
 #     return pyodbc.connect(connection_string)
@@ -1616,4 +1624,3 @@ def accueil_repetiteur_dash():
 if __name__ == "__main__":
     app.secret_key = 'admin123'
     app.run(debug=True)
-
