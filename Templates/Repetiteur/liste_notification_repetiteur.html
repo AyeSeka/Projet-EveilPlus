@@ -1,0 +1,54 @@
+{% extends "Partials/Base_repetiteut.html" %}
+
+{% block body %}
+<h1>Mes Notifications</h1>
+
+<div id="notifications-container">
+    <!-- Les notifications seront affichées ici -->
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function () {
+            console.log('Connexion établie avec le serveur Socket.IO');
+        });
+
+
+        <!-- ? Test avec room -->
+        var room = "{{id_user}}";
+        console.log(typeof room)
+
+        socket.on('notification_repetiteur', function (message) {
+            // Traitez le message de notification ici
+            console.log('Notification reçue :', message);
+
+            // Exemple : Afficher la notification dans une boîte d'alerte
+            updateNotifications(message);
+        });
+
+        // Rejoindre la salle spécifique
+        socket.emit('join', { room: room });
+
+
+
+
+
+        // Fonction pour mettre à jour la section des notifications
+        function updateNotifications(notificationData) {
+            console.log('Mise à jour des notifications:', notificationData);
+
+            const notificationsContainer = document.getElementById('notifications-container');
+
+            // Créez un élément de notification et ajoutez-le à la liste
+            const notificationElement = document.createElement('div');
+            notificationElement.classList.add('notification-item');
+            notificationElement.innerHTML = `<p>${notificationData}</p>`;
+            notificationsContainer.appendChild(notificationElement);
+        }
+    });
+</script>
+
+{% endblock %}

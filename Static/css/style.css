@@ -7,6 +7,19 @@
   padding: 0;
 }
 
+/* ? Liste des Notifications Répétiteurs */
+#notifications-container {
+  height: 80px;
+  width: 280px;
+}
+
+.notification-item {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
 /****Page Index******/
 .section1_index{
   width: 100%;

@@ -1,31 +1,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="#"
-      ><img
-        src="{{url_for('static', filename='/img/logo_Eveil+.png')}}"
-        alt="logo_eveilplus"
-        class="logo"
-    /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <a class="navbar-brand" href="#"><img src="{{url_for('static', filename='/img/logo_Eveil+.png')}}"
+        alt="logo_eveilplus" class="logo" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a
-            class="nav-link p-3 me-3 active"
-            aria-current="page"
-            href="/accueil_parent"
-            >Accueil</a
-          >
+          <a class="nav-link p-3 me-3 active" aria-current="page" href="/accueil_parent">Accueil</a>
         </li>
         <li class="nav-item">
           <a class="nav-link p-3 me-3" href="/recherche">Rechercher</a>
@@ -33,24 +17,14 @@
         <li class="nav-item">
           <a class="nav-link p-3 me-3" href="/poste">Poster</a>
         </li>
-       <!-- <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link p-3 me-3" href="/librairie_parent">Librairie</a>
         </li>-->
         <li class="nav-item dropdown">
-          <a
-            class="nav-link p-3 border rounded dropdown-toggle"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="{{ url_for('static', filename=photo_path) }}"
-              style="border-radius: 45px"
-              class="me-2"
-              width="25px"
-            />
+          <a class="nav-link p-3 border rounded dropdown-toggle" href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ url_for('static', filename='uploads/images_profil_parent/' + usersParent.path_PhotoProfil) }}"
+              style="border-radius: 45px" class="me-2" width="25px" />
             {{usersParent.PrenomParent}} {{usersParent.NomParent}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -60,7 +34,9 @@
             <li><a class="dropdown-item" href="/mes_repetiteurs">Répétiteurs</a></li>
             <li><a class="dropdown-item" href="/Mes_choix_rer">Mes choix</a></li>
             <!--<li><a class="dropdown-item" href="#">Mes commandes</a></li>-->
-            <li><hr class="dropdown-divider"></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li><a class="dropdown-item" href="/deconnexion">Déconnexion</a></li>
           </ul>
           <!--
