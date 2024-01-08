@@ -19,23 +19,23 @@ socketio = SocketIO(app)
 # app.register_blueprint(sse, url_prefix='/sse')
 
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                       "Server=Geek_Machine\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                      "Server=Geek_Machine\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 #                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
 
-conn = pyodbc.connect(
-    'Driver={SQL Server};'
-    'Server=HP\\SQLEXPRESS;'
-    'Database=eveil_plus;'
-    'user=HP\\goliy;'
+# conn = pyodbc.connect(
+#     'Driver={SQL Server};'
+#     'Server=HP\\SQLEXPRESS;'
+#     'Database=eveil_plus;'
+#     'user=HP\\goliy;'
 
-)
+# )
 
 # connection_string = (
 #     "Driver={ODBC Driver 17 for SQL Server};"
@@ -540,12 +540,10 @@ def Succes_inscription_parent():
         mot_de_passe_hache = bcrypt.generate_password_hash(
             mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{
-                       Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{
-                       NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
+        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -586,16 +584,14 @@ def Succes_inscription_repetiteur():
         mot_de_passe_hache = bcrypt.generate_password_hash(
             mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{
-                       Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
+        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
         cursor.execute("SELECT SCOPE_IDENTITY()")
         listId = cursor.fetchone()
 
         # Définir le nom de l'image par défaut (à personnaliser selon votre structure de dossiers)
         # default_image = 'default_profil.png'
 
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{
-                       NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
         # Commit des modifications
         conn.commit()
         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
@@ -640,8 +636,7 @@ def Accueil_parent():
         # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
         nom_parent = usersParent[2]
 
-        flash(f'Bienvenue, cher parent {
-              prenom_parent} {nom_parent}!', 'success')
+        flash(f'Bienvenue, cher parent {prenom_parent} {nom_parent}!', 'success')
         # Ajoutez cette ligne pour indiquer que l'utilisateur vient de se connecter
         session['just_logged_in'] = True
 
@@ -852,8 +847,7 @@ def recapitulatif_validation():
     cursor.execute(
         "SELECT P.IdParent FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{data_recap['enfant']}','{
-                   data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{usersParent[0]}')")
+    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{usersParent[0]}')")
 
     cursor.execute("SELECT SCOPE_IDENTITY()")
     IdPoste = cursor.fetchone()
@@ -1010,8 +1004,7 @@ def get_options_from_db(column_name, table_name):
         # Si la table est specialite_matiere, on doit joindre avec la table Matiere pour obtenir le nom de la matière
         query = f"SELECT {table_name}.*, Competence.NomCompetence " \
             f"FROM {table_name} " \
-            f"JOIN Competence ON {
-                table_name}.IdCompetence = Competence.IdCompetence"
+            f"JOIN Competence ON {table_name}.IdCompetence = Competence.IdCompetence"
     else:
         # Pour les autres tables, la requête reste la même sans jointure avec la table Matiere
         query = f"SELECT * FROM {table_name}"
@@ -1553,8 +1546,7 @@ def SuccesModifProfil_rep():
             "SELECT * FROM Dispense D join Repetiteur R on D.IdRepetiteur=R.IdRepetiteur WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
         Dispense = cursor.fetchone()
         if Dispense is None:
-            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES ('{
-                           usersRepetiteur[0]}','{Matiere}','{Classe}')")
+            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES ('{usersRepetiteur[0]}','{Matiere}','{Classe}')")
         # Commit des modifications
             conn.commit()
         else:
@@ -1738,8 +1730,7 @@ def accueil_repetiteur():
         # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
         nom_repetiteur = usersRepetiteur[2]
 
-        flash(f'Bienvenue, cher répétiteur {
-              prenom_repetiteur} {nom_repetiteur}!', 'success')
+        flash(f'Bienvenue, cher répétiteur {prenom_repetiteur} {nom_repetiteur}!', 'success')
         return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur, photo_path=photo_path)
     else:
         flash('Répétiteur non trouvé.', 'danger')

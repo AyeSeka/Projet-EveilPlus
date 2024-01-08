@@ -1,44 +1,37 @@
- <nav>
-        <div class="logo-name">
-            <div class="logo-image">
-                <img src="{{url_for('static', filename='/img/logo_Eveil+.png')}}" alt="logo_eveilplus" class="logo">
-            </div>
-            <span class="logo_name">Eveilplus</span>
-        </div>
-        <div class="menu-items">
-            <ul class="nav-links">
-                <li><a href="/dashboard_admin">
-                    <i class="fa-solid fa-house"></i>
-                    <span class="link-name">Acceuil</span>
-                </a></li>
-                <li><a href="/messagerie">
-                    <i class="fa-regular fa-message"></i>
-                    <span class="link-name">Messagerie</span>
-                </a></li>
-                <li><a href="/accueil_parent_dash">
-                    <i class="fa-solid fa-hands-holding-child"></i>
-                    <span class="link-name">parents</span>
-                </a></li>
-                <li><a href="/accueil_repetiteur_dash">
-                    <i class="fa-solid fa-business-time"></i>
-                    <span class="link-name">repetiteur</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fa-solid fa-money-bill"></i>
-                    <span class="link-name">Payements</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="fa-solid fa-user"></i>
-                    <span class="link-name">Profil</span>
-                </a></li>
-                <ul class="logout-mode">
-                    <li>
-                        <a href="#">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span class="link-name">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </ul>
-        </div>
-    </nav>
+    <nav>
+          <ul>
+            <li><a href="#" class="logo">
+              <img src="./pic/logo.jpg">
+              <span class="nav-item">User_Name</span>
+            </a></li>
+            <li><a href="/dashboard_admin">
+              <i class="fas fa-home"></i>
+              <span class="nav-item">Accueil</span>
+            </a></li>
+            <li><a href="/messagerie">
+              <i class="fas fa-comment"></i>
+              <span class="nav-item">Notification</span>
+            </a></li>
+            <li><a href="/accueil_parent_dash">
+              <i class="fas fa-user"></i>
+              <span class="nav-item">Parent</span>
+            </a></li>
+            <li><a href="/accueil_repetiteur_dash">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <span class="nav-item">Repetiteur</span>
+            </a></li>
+            <li><a href="#">
+              <i class="fas fa-chart-bar"></i>
+              <span class="nav-item">Payement</span>
+            </a></li>
+            <li><a href="#">
+              <i class="fas fa-cog"></i>
+              <span class="nav-item">Setting</span>
+            </a></li>
+    
+            <li><a href="#" class="logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="nav-item">Deconnexion</span>
+            </a></li>
+          </ul>
+        </nav>
