@@ -21,11 +21,14 @@
           <a class="nav-link p-3 me-3" href="/librairie_parent">Librairie</a>
         </li>-->
         <li class="nav-item dropdown">
-          <a class="nav-link p-3 border rounded dropdown-toggle" href="#" id="navbarDropdown" role="button"
+          <a class="nav-link p-2 border rounded dropdown-toggle" href="#" id="navbarDropdown" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ url_for('static', filename='uploads/images_profil_parent/' + usersParent.path_PhotoProfil) }}"
-              style="border-radius: 45px" class="me-2" width="25px" />
+            <span class="logoGene">
+              <img src="{{ url_for('static', filename='uploads/images_profil_parent/' + usersParent.path_PhotoProfil) }}"
+              />
             {{usersParent.PrenomParent}} {{usersParent.NomParent}}
+            </span>
+            
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/profil_parent">Mon profil</a></li>

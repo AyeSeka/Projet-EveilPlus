@@ -1,37 +1,37 @@
-    <nav>
-          <ul>
-            <li><a href="#" class="logo">
-              <img src="./pic/logo.jpg">
-              <span class="nav-item">User_Name</span>
+    <nav >
+          <ul class="table-responsive">
+            <li><a href="/profil_persoEveil" class="logo">
+              <img src="{{ url_for('static', filename='uploads/images_profil_perso/' + usersPersoEveil.path_PhotoProfil) }}">
+              <span class="nav-items">{{usersPersoEveil.PrenomPersoEveil}} {{usersPersoEveil.NomPersoEveil}}</span>
             </a></li>
             <li><a href="/dashboard_admin">
               <i class="fas fa-home"></i>
-              <span class="nav-item">Accueil</span>
+              <span class="nav-items">Accueil</span>
             </a></li>
             <li><a href="/messagerie">
               <i class="fas fa-comment"></i>
-              <span class="nav-item">Notification</span>
+              <span class="nav-items">Notification</span>
             </a></li>
             <li><a href="/accueil_parent_dash">
               <i class="fas fa-user"></i>
-              <span class="nav-item">Parent</span>
+              <span class="nav-items">Parent</span>
             </a></li>
             <li><a href="/accueil_repetiteur_dash">
               <i class="fas fa-chalkboard-teacher"></i>
-              <span class="nav-item">Repetiteur</span>
+              <span class="nav-items">Repetiteur</span>
             </a></li>
             <li><a href="#">
               <i class="fas fa-chart-bar"></i>
-              <span class="nav-item">Payement</span>
+              <span class="nav-items">Payement</span>
             </a></li>
             <li><a href="#">
               <i class="fas fa-cog"></i>
-              <span class="nav-item">Setting</span>
+              <span class="nav-items">Setting</span>
             </a></li>
     
-            <li><a href="#" class="logout">
+            <li><a href="/deconnexion" class="logout">
               <i class="fas fa-sign-out-alt"></i>
-              <span class="nav-item">Deconnexion</span>
+              <span class="nav-items">Deconnexion</span>
             </a></li>
           </ul>
         </nav>

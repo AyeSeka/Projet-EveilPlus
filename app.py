@@ -65,10 +65,12 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 # ? Configuration pour le stockage des images du parent et du répétiteur
 UPLOAD_FOLDER_PARENT = 'Static/uploads/images_profil_parent'
 UPLOAD_FOLDER_REPETITEUR = 'Static/uploads/images_profil_repetiteur'
+UPLOAD_FOLDER_PERSO = 'Static/uploads/images_profil_perso'
 
 
 app.config['UPLOAD_FOLDER_PARENT'] = UPLOAD_FOLDER_PARENT
 app.config['UPLOAD_FOLDER_REPETITEUR'] = UPLOAD_FOLDER_REPETITEUR
+app.config['UPLOAD_FOLDER_PERSO'] = UPLOAD_FOLDER_PERSO
 
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -79,6 +81,59 @@ app.config['SESSION_TYPE'] = 'filesystem'
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+# ? Modifier photo de profil du parent
+# Route pour la modification du profil (y compris la mise à jour de la photo de profil)
+@app.route('/upload_profile_photo_perso', methods=['POST'])
+def upload_profile_photo_perso():
+    
+    if 'photo' not in request.files:
+        return "Aucun fichier sélectionné"
+        # return redirect(request.url)
+
+    file = request.files['photo']
+
+    if file.filename == '':
+        return "Aucun fichier sélectionné"
+        # return redirect(request.url)
+
+    if file and allowed_file(file.filename):
+        # Assurez-vous que le dossier d'uploads existe, sinon, créez-le
+        if not os.path.exists(UPLOAD_FOLDER_PERSO):
+            os.makedirs(UPLOAD_FOLDER_PERSO)
+
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER_PERSO'], filename)
+        file.save(file_path)
+
+        # Remplacez les barres obliques inverses par des barres obliques normales dans le chemin
+        # file_path = file_path.replace('\\', '/')
+
+        # Extraire la partie relative du chemin complet
+        relative_path = os.path.relpath(
+            file_path, app.config['UPLOAD_FOLDER_PERSO'])
+        print(relative_path)
+
+        # Récupérez l'ID de l'utilisateur connecté depuis la session
+        user_id = session.get('IdUser')
+
+        if user_id is not None:
+            # Mettez à jour le chemin de la photo de profil dans la base de données
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE users SET path_PhotoProfil = ? WHERE IdUser = ?", (relative_path, user_id))
+            conn.commit()
+
+            # Flash message pour indiquer la mise à jour réussie
+            flash('Profil mis à jour avec succès!', 'success')
+        else:
+            # Gérer le cas où l'ID de l'utilisateur n'est pas présent dans la session
+            return "Erreur id de l'utilisateur"
+
+        # Redirigez vers la page du profil mis à jour
+        return redirect(url_for('profil_persoEveil'))
+
+    return redirect(request.url)
 
 # ? Modifier photo de profil du parent
 # Route pour la modification du profil (y compris la mise à jour de la photo de profil)
@@ -554,7 +609,7 @@ def Succes_inscriptionPerso():
             return redirect(url_for('inscriptionPerso'))
         else:
 
-            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
             cursor.execute("SELECT SCOPE_IDENTITY()")
             listId = cursor.fetchone()
             cursor.execute(f"INSERT INTO Personnel_Eveil (NomPersoEveil, PrenomPersoEveil, Adresse, Telephone, IdUser) VALUES ('{NomPersoEveil}', '{PrenomPersoEveil}', '{Adresse}', '{Telephone}', '{listId[0]}')")
@@ -1876,22 +1931,56 @@ def réinitialiser_traitement(user_id):
 
 @app.route("/dashboard_admin")
 def dashboard_admin():
-    return render_template("PersonnelEveil+/accueil/dahs_acceuil.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    return render_template("PersonnelEveil+/accueil/dahs_acceuil.html", usersPersoEveil=usersPersoEveil)
+
+@app.route("/profil_persoEveil")
+@login_required
+def profil_persoEveil():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+
+
+    # Pas besoin de cursor.commit() ici car vous n'effectuez que des sélections
+
+    return render_template("Profil/profil_persoEveil.html", usersPersoEveil=usersPersoEveil)
 
 
 @app.route("/messagerie")
 def messagerie():
-    return render_template("PersonnelEveil+/messagerie/msg_dash.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    return render_template("PersonnelEveil+/messagerie/msg_dash.html", usersPersoEveil=usersPersoEveil)
 
 
 @app.route("/accueil_parent_dash")
 def accueil_parent_dash():
-    return render_template("PersonnelEveil+/parent/accueil_parent_dash.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    return render_template("PersonnelEveil+/parent/accueil_parent_dash.html", usersPersoEveil=usersPersoEveil)
 
 
 @app.route("/accueil_repetiteur_dash")
 def accueil_repetiteur_dash():
-    return render_template("PersonnelEveil+/repetiteur/accueil_repetiteur_dash.html")
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    return render_template("PersonnelEveil+/repetiteur/accueil_repetiteur_dash.html", usersPersoEveil=usersPersoEveil)
 
 
 if __name__ == "__main__":

@@ -3,16 +3,20 @@
     <head>
       <meta charset="UTF-8" />
       <title>dashboard Eveilplus</title> 
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/RemixIcon-master/fonts/remixicon.css')}}">
+    <link rel="shortcut icon" href="{{url_for('static', filename='/img/Logo_Eveil+1.jpeg')}}">
       <link rel="stylesheet" href="{{url_for('static', filename='/css/dash.css')}}">
       <!-- Font Awesome Cdn Link -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     </head>
 <body>
-    <div class="container">
+    <div class="content">
     {% include './Partials/nav_dash.html' %}
     {% block body %}
 
     {% endblock %}
     </div>
+    <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
    <script src="{{url_for('static', filename='./js/script.js')}}" ></script>
 </body>

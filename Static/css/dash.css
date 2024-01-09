@@ -18,21 +18,24 @@ nav{
   bottom: 0;
   height: 100vh;
   left: 0;
-  width: 90px;
+  width: 100px;
   /* width: 280px; */
   background: #fff;
   overflow: hidden;
   transition: 1s;
 }
+nav ul{
+  height: 100vh;
+}
 nav:hover{
-  width: 280px;
+  width: 295px;
   transition: 1s;
 }
 .logo{
   text-align: center;
   display: flex;
   margin: 10px 0 0 10px;
-  padding-bottom: 3rem;
+  /* padding-bottom: 3rem; */
 }
 
 .logo img{
@@ -52,7 +55,9 @@ a{
   font-size: 14px;
   color: rgb(85, 83, 83);
   display: table;
-  padding: 10px;
+  padding: 10px 0;
+  margin: 0 0 0 -4px !important;
+  text-decoration: none;
 }
 nav .fas{
   position: relative;
@@ -62,10 +67,14 @@ nav .fas{
   font-size: 20px;
   text-align: center;
 }
-.nav-item{
+.nav-items{
   position: relative;
   top: 12px;
-  margin-left: 10px;
+  margin-left: 0;
+  
+}
+li{
+  list-style: none;
 }
 a:hover{
   background: #eee;
@@ -74,12 +83,12 @@ a:hover i{
   color: #34AF6D;
   transition: 0.5s;
 }
-.logout{
+/* .logout{
   position: absolute;
   bottom: 0;
-}
+} */
 
-.container{
+.content{
   display: flex;
 }
 
@@ -208,4 +217,32 @@ table thead tr{
   background: #4AD489;
   color: #fff;
   transition: 0.5rem;
+}
+
+
+
+
+.uplaod{
+  width: 95%;
+  position: relative; 
+}
+.uplaod .round{
+  position: absolute;
+  bottom: -3%;
+  right: 25%;
+  background-color: #e2e2e29f;
+  padding: 20px;
+  /* line-height: 33px; */
+  text-align: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.uplaod .round input[type='file']{
+  position: absolute;
+  transform: scale(2);
+  opacity: 0;
+}
+.round input[type='file']::-webkit-file-upload-button{
+  cursor: pointer;
 }
