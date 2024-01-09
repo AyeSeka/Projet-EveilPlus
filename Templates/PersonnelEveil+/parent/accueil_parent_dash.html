@@ -1,16 +1,113 @@
 {% extends "Partials/Base_dash.html" %}
 {% block body %}    
-    <section class="dashboard">
-       <!--<div class="top">
-            <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-               
-                <input type="text" placeholder="Search here...">
+    <section class="main">
+          <section class="attendance">
+            <div class="attendance-list">
+              <div
+                style="
+                    height:50px;
+                    margin-top:20px;
+                    display:flex;
+                    justify-content:flex-end;
+                    padding-right:20px;
+                "
+              >
+               <button style="
+                    width: 10%;
+                    cursor: pointer;
+                    background: transparent;
+                    border: 1px solid #4AD489;
+                    border-radius: 5px;
+                    transition: background-color 0.3s ease; /* Ajout d'une transition pour une animation fluide */
+                "
+                    onmouseover="this.style.backgroundColor='#4AD489'; this.style.color='white'"
+                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='black'"
+              >
+                Ajouter</button>
+              </div>
+              <h1>Liste des Parents</h1>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nom et Prenom</th>
+                    <th>Email</th>
+                    <th>Lieu d'habitation</th>
+                    <th>Telephone 1</th>
+                    <th>Telephone 2</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>01</td>
+                    <td>Sam David</td>
+                    <td>Design</td>
+                    <td>03-24-22</td>
+                    <td>8:00AM</td>
+                    <td>3:00PM</td>
+                    <td>
+                        <button>Modifier</button>
+                        <button>Supprimer</button>
+                    </td>
+                  </tr>
+                  <tr class="active">
+                    <td>02</td>
+                    <td>Balbina Kherr</td>
+                    <td>Coding</td>
+                    <td>03-24-22</td>
+                    <td>9:00AM</td>
+                    <td>4:00PM</td>
+                    <td>
+                        <button>Modifier</button>
+                        <button>Supprimer</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>03</td>
+                    <td>Badan John</td>
+                    <td>testing</td>
+                    <td>03-24-22</td>
+                    <td>8:00AM</td>
+                    <td>3:00PM</td>
+                    <td>
+                        <button>Modifier</button>
+                        <button>Supprimer</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>04</td>
+                    <td>Sara David</td>
+                    <td>Design</td>
+                    <td>03-24-22</td>
+                    <td>8:00AM</td>
+                    <td>3:00PM</td>
+                    <td>
+                        <button>Modifier</button>
+                        <button>Supprimer</button>
+                    </td>
+                  </tr>
+                  <!-- <tr >
+                    <td>05</td>
+                    <td>Salina</td>
+                    <td>Coding</td>
+                    <td>03-24-22</td>
+                    <td>9:00AM</td>
+                    <td>4:00PM</td>
+                    <td><button>View</button></td>
+                  </tr>
+                  <tr >
+                    <td>06</td>
+                    <td>Tara Smith</td>
+                    <td>Testing</td>
+                    <td>03-24-22</td>
+                    <td>9:00AM</td>
+                    <td>4:00PM</td>
+                    <td><button>View</button></td>
+                  </tr> -->
+                </tbody>
+              </table>
             </div>
-            
-            <img src="../img/photo profil.jpg" alt="">
-        </div>-->
-        
+          </section>
+        </section>
 {% endblock body %}

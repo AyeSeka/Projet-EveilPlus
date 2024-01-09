@@ -585,8 +585,7 @@ def Succes_inscription_parent():
             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
             return redirect(url_for('inscriptionParent'))
 
-        mot_de_passe_hache = bcrypt.generate_password_hash(
-            mot_de_passe).decode('utf-8')
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
         cursor.execute(f"SELECT COUNT(*)  FROM users WHERE Email = '{Email}'")
         # Récupérer le résultat
