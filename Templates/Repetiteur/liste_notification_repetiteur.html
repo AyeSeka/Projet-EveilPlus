@@ -16,29 +16,32 @@
             console.log('Connexion établie avec le serveur Socket.IO');
         });
 
+        var tutor_id = "{{id_user}}";
+        console.log(typeof tutor_id);
 
-        <!-- ? Test avec room -->
-        var room = "{{id_user}}";
-        console.log(typeof room)
+        // Tableau pour stocker les notifications
+        var notifications = JSON.parse(localStorage.getItem('notifications')) || [];
 
         socket.on('notification_repetiteur', function (message) {
             // Traitez le message de notification ici
             console.log('Notification reçue :', message);
+
+            // Stockez la notification
+            notifications.push(message);
+
+            // Enregistrez les notifications dans le stockage local
+            localStorage.setItem('notifications', JSON.stringify(notifications));
 
             // Exemple : Afficher la notification dans une boîte d'alerte
             updateNotifications(message);
         });
 
         // Rejoindre la salle spécifique
-        socket.emit('join', { room: room });
-
-
-
-
+        socket.emit('join', { tutor_id: tutor_id });
 
         // Fonction pour mettre à jour la section des notifications
         function updateNotifications(notificationData) {
-            console.log('Mise à jour des notifications:', notificationData);
+            console.log('Mise à jour des notifications :', notificationData);
 
             const notificationsContainer = document.getElementById('notifications-container');
 

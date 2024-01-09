@@ -24,18 +24,18 @@ socketio = SocketIO(app)
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
 
-conn = pyodbc.connect(
-    'Driver={SQL Server};'
-    'Server=HP\\SQLEXPRESS;'
-    'Database=eveil_plus;'
-    'user=HP\\goliy;'
+# conn = pyodbc.connect(
+#     'Driver={SQL Server};'
+#     'Server=HP\\SQLEXPRESS;'
+#     'Database=eveil_plus;'
+#     'user=HP\\goliy;'
 
-)
+# )
 
 # connection_string = (
 #     "Driver={ODBC Driver 17 for SQL Server};"
@@ -84,13 +84,16 @@ def allowed_file(filename):
 # Route pour la modification du profil (y compris la mise à jour de la photo de profil)
 @app.route('/upload_profile_photo_parent', methods=['POST'])
 def upload_profile_photo_parent():
+    
     if 'photo' not in request.files:
-        return redirect(request.url)
+        return "Aucun fichier sélectionné"
+        # return redirect(request.url)
 
     file = request.files['photo']
 
     if file.filename == '':
-        return redirect(request.url)
+        return "Aucun fichier sélectionné"
+        # return redirect(request.url)
 
     if file and allowed_file(file.filename):
         # Assurez-vous que le dossier d'uploads existe, sinon, créez-le
@@ -136,13 +139,15 @@ def upload_profile_photo_parent():
 @app.route('/upload_profile_photo_repetiteur', methods=['POST'])
 def upload_profile_photo_repetiteur():
     if 'photo' not in request.files:
-        return redirect(request.url)
+        return "Aucun fichier sélectionné"
+        # return redirect(request.url)
 
     file = request.files['photo']
 
     if file.filename == '':
-        return redirect(request.url)
-
+        return "Aucun fichier sélectionné"
+        # return redirect(request.url)
+        
     if file and allowed_file(file.filename):
         # Assurez-vous que le dossier d'uploads existe, sinon, créez-le
         if not os.path.exists(UPLOAD_FOLDER_REPETITEUR):
@@ -200,11 +205,37 @@ def liste_notification_repetiteur():
 
 
 # ? Rejoindre la salle pour avoir la notification
+# Exemple générique pour stocker et récupérer les notifications
+stored_notifications = {}
+
+
+def get_stored_notifications(tutor_id):
+    return stored_notifications.get(tutor_id, [])
+
+
+def reset_stored_notifications(tutor_id):
+    stored_notifications[tutor_id] = []
+# @socketio.on('join')
+# def handle_join(data):
+#     room = data['room']
+#     join_room(room)
+#     print(f'Client a rejoint la salle : {room}')
+
+
 @socketio.on('join')
 def handle_join(data):
-    room = data['room']
+    tutor_id = data['tutor_id']
+    room = str(tutor_id)
     join_room(room)
     print(f'Client a rejoint la salle : {room}')
+
+    # Émettre les notifications enregistrées pour le répétiteur
+    stored_notifications = get_stored_notifications(tutor_id)
+    for notification in stored_notifications:
+        emit('notification_repetiteur', notification, room=room)
+
+    # Réinitialiser les notifications enregistrées après les avoir émises
+    reset_stored_notifications(tutor_id)
 
 
 # ? Envoie Notification
@@ -220,7 +251,6 @@ def handle_choose_tutor(message):
 
     # Émettre le message uniquement à cette salle spécifique
     socketio.emit('notification_repetiteur', notification, room=room)
-
 
 # @socketio.on('choose_tutor')
 # def handle_choose_tutor(message):
@@ -448,6 +478,9 @@ def success_connexion():
     usersParent = cursor.fetchone()
 
     cursor.execute(
+        "SELECT Pe.*, U.* FROM Personnel_Eveil Pe JOIN users U ON Pe.IdUser=U.IdUser")
+    usersPersonnel = cursor.fetchone()
+    cursor.execute(
         "SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence")
     usersRepetiteur = cursor.fetchone()
 
@@ -469,6 +502,12 @@ def success_connexion():
             session['user_id'] = users[0]
 
             return redirect(url_for('accueil_repetiteur'))
+        elif users and bcrypt.check_password_hash(users[2], mot_de_passe) and users[4] == 'Admin':
+
+            # flash(f"Succès! Bienvenue, nous somme heureux de vous revoit", 'success')
+            session['user_id'] = users[0]
+
+            return redirect(url_for('dashboard_admin'))
         else:
             flash(
                 'connexion échoué! Vous avez certainement entré un e-mail ou mot de passe incorrect', 'danger')
@@ -484,37 +523,46 @@ def success_connexion():
 ########### Inscription Parent ##############
 
 
-# @app.route("/inscriptionParent", methods=['GET', 'POST'])
-# def inscriptionParent():
-#     return render_template("Authentification/inscriptionParent.html")
+@app.route("/inscriptionPerso", methods=['GET', 'POST'])
+def inscriptionPerso():
+    return render_template("Authentification/inscriptionPerso.html")
 
-# @app.route("/Succes_inscription_parent", methods=['GET', 'POST'])
-# def Succes_inscription_parent():
-#     if request.method == 'POST':
-#         Email = request.form["Email"]
-#         mot_de_passe = request.form["mot_de_passe"]
-#         confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
-#         Roles = request.form["Roles"]
-#         NomParent = request.form["NomParent"]
-#         PrenomParent = request.form["PrenomParent"]
-#         LieuHabitation = request.form["LieuHabitation"]
-#         TelephoneParent1 = request.form["TelephoneParent1"]
-#         TelephonePparent2 = request.form["TelephonePparent2"]
-#         if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2]):
-#             flash('Veuillez remplir tous les champs du formulaire.', 'danger')
-#             return redirect(url_for('inscriptionParent'))
+@app.route("/Succes_inscriptionPerso", methods=['GET', 'POST'])
+def Succes_inscriptionPerso():
+    if request.method == 'POST':
+        Email = request.form["Email"]
+        mot_de_passe = request.form["mot_de_passe"]
+        # confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomPersoEveil = request.form["NomPersoEveil"]
+        PrenomPersoEveil = request.form["PrenomPersoEveil"]
+        Adresse = request.form["Adresse"]
+        Telephone = request.form["Telephone"]
+        if not all([Email, mot_de_passe, Roles, NomPersoEveil, PrenomPersoEveil, Adresse, Telephone,]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('inscriptionPerso'))
 
-#         mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
-#         cursor = conn.cursor()
-#         cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
-#         cursor.execute("SELECT SCOPE_IDENTITY()")
-#         listId = cursor.fetchone()
-#         cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{LieuHabitation}', '{TelephoneParent1}', '{TelephonePparent2}', '{listId[0]}')")
-#         # Commit des modifications
-#         conn.commit()
-#         flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-#         return redirect(url_for('connexion'))
-#     return render_template("Authentification/inscriptionParent.html")
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
+        cursor = conn.cursor()
+        # Exécuter une requête pour vérifier l'existence de l'utilisateur
+        cursor.execute(f"SELECT COUNT(*)  FROM users WHERE Email = '{Email}'")
+        # Récupérer le résultat
+        row_count = cursor.fetchone()[0]
+        if row_count != 0:
+            print()
+            flash(f"L'utilisateur {Email} existe déjà.", 'danger')
+            return redirect(url_for('inscriptionPerso'))
+        else:
+
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
+            cursor.execute(f"INSERT INTO Personnel_Eveil (NomPersoEveil, PrenomPersoEveil, Adresse, Telephone, IdUser) VALUES ('{NomPersoEveil}', '{PrenomPersoEveil}', '{Adresse}', '{Telephone}', '{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+            return redirect(url_for('connexion'))
+    return render_template("Authentification/inscriptionPerso.html")
 
 @app.route("/inscriptionParent", methods=['GET', 'POST'])
 def inscriptionParent():
@@ -540,16 +588,23 @@ def Succes_inscription_parent():
         mot_de_passe_hache = bcrypt.generate_password_hash(
             mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{
-                       Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
-        cursor.execute("SELECT SCOPE_IDENTITY()")
-        listId = cursor.fetchone()
-        cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{
-                       NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
-        # Commit des modifications
-        conn.commit()
-        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-        return redirect(url_for('connexion'))
+        cursor.execute(f"SELECT COUNT(*)  FROM users WHERE Email = '{Email}'")
+        # Récupérer le résultat
+        row_count = cursor.fetchone()[0]
+        if row_count != 0:
+            print()
+            flash(f"L'utilisateur {Email} existe déjà.", 'danger')
+            return redirect(url_for('inscriptionParent'))
+        else:
+
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
+            cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+            return redirect(url_for('connexion'))
     return render_template("Authentification/inscriptionParent.html")
 
 
@@ -586,33 +641,38 @@ def Succes_inscription_repetiteur():
         mot_de_passe_hache = bcrypt.generate_password_hash(
             mot_de_passe).decode('utf-8')
         cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{
-                       Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
-        cursor.execute("SELECT SCOPE_IDENTITY()")
-        listId = cursor.fetchone()
+        cursor.execute(f"SELECT COUNT(*)  FROM users WHERE Email = '{Email}'")
+        # Récupérer le résultat
+        row_count = cursor.fetchone()[0]
+        if row_count != 0:
+            print()
+            flash(f"L'utilisateur {Email} existe déjà.", 'danger')
+            return redirect(url_for('inscriptionRepetiteur'))
+        else:
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
 
-        # Définir le nom de l'image par défaut (à personnaliser selon votre structure de dossiers)
-        # default_image = 'default_profil.png'
+            # Définir le nom de l'image par défaut (à personnaliser selon votre structure de dossiers)
+            # default_image = 'default_profil.png'
 
-        cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{
-                       NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
-        # Commit des modifications
-        conn.commit()
-        flash('Inscription réussie! Connectez-vous maintenant.', 'success')
-        return redirect(url_for('connexion'))
+            cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie! Connectez-vous maintenant.', 'success')
+            return redirect(url_for('connexion'))
     return render_template("Authentification/inscriptionRepetiteur.html")
 # PARENT
 # DEBUT PARENT
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'IdUser' not in session:
-            return redirect(url_for('connexion'))
-        return f(*args, **kwargs)
-    return decorated_function
-
+# def login_required(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         if 'IdUser' not in session:
+#             return redirect(url_for('connexion'))
+#         return f(*args, **kwargs)
+#     return decorated_function
 
 @app.route("/accueil_parent")
 @login_required
@@ -640,8 +700,7 @@ def Accueil_parent():
         # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
         nom_parent = usersParent[2]
 
-        flash(f'Bienvenue, cher parent {
-              prenom_parent} {nom_parent}!', 'success')
+        flash(f'Bienvenue, cher parent {prenom_parent} {nom_parent}!', 'success')
         # Ajoutez cette ligne pour indiquer que l'utilisateur vient de se connecter
         session['just_logged_in'] = True
 
@@ -695,15 +754,21 @@ def poste():
 
     cursor.execute("SELECT lieu_hab_rep from Repetiteur")
     lieu_repetiteur = cursor.fetchall()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
+    
+    cursor.execute("SELECT * FROM ClassePrimaire")
+    ClassePrimaire = cursor.fetchall()
 
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
+    cursor.execute("SELECT * FROM ClasseCollege")
+    ClasseCollege = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseLycee")
+    ClasseLycee = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM MatiereSciences")
+    MatiereSciences = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM MatiereLitteraire")
+    MatiereLitteraire = cursor.fetchall()
 
     # for lieu in lieu_repetiteur:
     #     print(lieu[0])
@@ -711,7 +776,16 @@ def poste():
 
     # print(niveauEtudiant)
     conn.commit()
-    return render_template("Parents/Postes/poste.html", usersParent=usersParent, niveauEtudiant=niveauEtudiant, lieu_repetiteur=lieu_repetiteur, photo_path=photo_path)
+    return render_template("Parents/Postes/poste.html", 
+                           usersParent=usersParent,
+                           niveauEtudiant=niveauEtudiant, 
+                           lieu_repetiteur=lieu_repetiteur, 
+                           ClassePrimaire=ClassePrimaire, 
+                           ClasseCollege=ClasseCollege, 
+                           ClasseLycee=ClasseLycee,
+                           MatiereSciences=MatiereSciences,
+                           MatiereLitteraire=MatiereLitteraire
+                           )
 
 
 @app.route("/recapitulatif", methods=["GET", "POST"])
@@ -723,23 +797,27 @@ def recapitulatif():
         # Récupérer les données du formulaire
         habitation = request.form.get("habitation")
         niveau = ', '.join(request.form.getlist("niveau[]"))
+        Classe = ', '.join(request.form.getlist("Classe[]"))
+        Matiere = ', '.join(request.form.getlist("Matiere[]"))
         enfant = request.form.get("enfant")
         seance = request.form.get("seance")
         date_limite = request.form.get("date_limite")
 
         # Convertir la chaîne de date en objet de date
-        date_limite = datetime.strptime(date_limite, '%Y-%m-%d').date()
+        # date_limite = datetime.strptime(date_limite, '%Y-%m-%d').date()
 
-        # Comparer les dates
-        if date_limite <= datetime.now().date():
-            flash(f"Veuillez choisir une date limite valide", 'danger')
-            return redirect(url_for('poste'))
+        # # Comparer les dates
+        # if date_limite <= datetime.now().date():
+        #     flash(f"Veuillez choisir une date limite valide", 'danger')
+        #     return redirect(url_for('poste'))
 
         # Stocker les données dans la carte temporaire
         # Stocker les informations dans la session
         data_recap = {
             'habitation': habitation,
             'niveau': niveau,
+            'Classe' : Classe,
+            'Matiere' : Matiere,
             'enfant': enfant,
             'seance': seance,
             'date_limite': date_limite
@@ -747,6 +825,8 @@ def recapitulatif():
         session['data_recap'] = {
             "habitation": habitation,
             "niveau": niveau,
+            'Classe' : Classe,
+            'Matiere' : Matiere,
             "enfant": enfant,
             "seance": seance,
             "date_limite": date_limite,
@@ -760,18 +840,10 @@ def recapitulatif():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
+    
 
     cursor.commit()
-    return render_template("Parents/Postes/recapitulatif.html", usersParent=usersParent, data_recap=data_recap, photo_path=photo_path)
+    return render_template("Parents/Postes/recapitulatif.html", usersParent=usersParent, data_recap=data_recap)
 
 
 @app.route("/Modif_recap", methods=["GET", "POST"])
@@ -784,6 +856,8 @@ def Modif_recap():
         # Récupérer les données modifiées du formulaire
         habitation = request.form.get("habitation")
         niveau = ', '.join(request.form.getlist("niveau[]"))
+        Classe = ', '.join(request.form.getlist("Classe[]"))
+        Matiere = ', '.join(request.form.getlist("Matiere[]"))
         enfant = request.form.get("enfant")
         seance = request.form.get("seance")
         date_limite = request.form.get("date_limite")
@@ -792,6 +866,8 @@ def Modif_recap():
         data_recap.update({
             'habitation': habitation,
             'niveau': niveau,
+            'Classe' : Classe,
+            'Matiere' : Matiere,
             'enfant': enfant,
             'seance': seance,
             'date_limite': date_limite
@@ -804,19 +880,10 @@ def Modif_recap():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-
+    
     cursor.commit()
 
-    return render_template("Parents/Postes/Modif_recap.html", usersParent=usersParent, data_recap=data_recap, niveauEtudiant=niveauEtudiant, photo_path=photo_path)
+    return render_template("Parents/Postes/Modif_recap.html", usersParent=usersParent, data_recap=data_recap, niveauEtudiant=niveauEtudiant)
 
 
 # @app.route("/recapitulatif_validation", methods=["POST"])
@@ -852,26 +919,16 @@ def recapitulatif_validation():
     cursor.execute(
         "SELECT P.IdParent FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent) VALUES ('{data_recap['enfant']}','{
-                   data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{usersParent[0]}')")
+    cursor.execute(f"INSERT INTO Poste (NbreEnfant, NbresJours, lieu_habitation, NiveauEnfant, DateLimte, DatePublication, IdParent, Classe, Matiere) VALUES ('{data_recap['enfant']}','{data_recap['seance']}','{data_recap['habitation']}','{data_recap['niveau']}','{data_recap['date_limite']}','{date_publication}','{usersParent[0]}','{data_recap['Classe']}','{data_recap['Matiere']}')")
 
     cursor.execute("SELECT SCOPE_IDENTITY()")
     IdPoste = cursor.fetchone()
     cursor.execute(
         f"INSERT INTO HistoriquePoste (IdPoste) VALUES ('{IdPoste[0]}')")
 
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
     conn.commit()
     flash("Poste enrégistré avec succès ! Consultez l'historique de vos dans ""Mes Postes""", 'success')
-    return redirect(url_for("poste"), photo_path=photo_path)
+    return redirect(url_for("poste"))
 
 
 @app.route("/poste_sucess")
@@ -894,17 +951,8 @@ def poste_sucess():
     # print(poste_data[0])
     # print(poste_data[0][5])
     # print(date_seule)
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
 
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-
-    return render_template("Parents/Postes/poste_sucess.html", usersParent=usersParent, photo_path=photo_path)
+    return render_template("Parents/Postes/poste_sucess.html", usersParent=usersParent)
 
 # @app.route("/historique_des_postes")
 # @login_required
@@ -937,18 +985,9 @@ def Mes_postes():
     cursor.execute(
         "SELECT * FROM Poste PO JOIN Parent PA ON PO.IdParent=PA.IdParent join HistoriquePoste Hi ON Hi.IdPoste = PO.IdPoste  WHERE PA.IdParent = ?", usersParent[0])
     poste_data = cursor.fetchall()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
 
     cursor.commit()
-    return render_template("Parents/Postes/Mes_postes.html", usersParent=usersParent, poste_data=poste_data, photo_path=photo_path)
+    return render_template("Parents/Postes/Mes_postes.html", usersParent=usersParent, poste_data=poste_data)
 
 
 # @app.route("/poster_maintenant")
@@ -975,19 +1014,9 @@ def Supprimer_poste(IdHistPoste):
     cursor.execute(
         "DELETE FROM HistoriquePoste WHERE IdHistoriquePoste = ?", IdHistPoste)
 
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-
     cursor.commit()
 
-    return redirect(url_for("Mes_postes"), photo_path=photo_path)
+    return redirect(url_for("Mes_postes"))
     # return render_template("Parents/Postes/Mes_postes.html", usersParent=usersParent)
 
 # FIN POSTE
@@ -1010,8 +1039,7 @@ def get_options_from_db(column_name, table_name):
         # Si la table est specialite_matiere, on doit joindre avec la table Matiere pour obtenir le nom de la matière
         query = f"SELECT {table_name}.*, Competence.NomCompetence " \
             f"FROM {table_name} " \
-            f"JOIN Competence ON {
-                table_name}.IdCompetence = Competence.IdCompetence"
+            f"JOIN Competence ON {table_name}.IdCompetence = Competence.IdCompetence"
     else:
         # Pour les autres tables, la requête reste la même sans jointure avec la table Matiere
         query = f"SELECT * FROM {table_name}"
@@ -1040,27 +1068,8 @@ def recherche():
     datalist_competence = get_options_from_db(
         "*", "Competence")
 
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-
-    # print(datalist_habitation)
-    # print(datalist_niveau)
-    # print(datalist_experience)
-
-    # print(datalist_competence)
-
-    # for specialite in datalist_specialite:
-    #     print(specialite[3])
-
     # return render_template("Parents/Recherches/recherche.html", usersParent=usersParent)
-    return render_template("Parents/Recherches/recherche.html", datalist_habitation=datalist_habitation, datalist_niveau=datalist_niveau, datalist_experience=datalist_experience, datalist_competence=datalist_competence, usersParent=usersParent, photo_path=photo_path)
+    return render_template("Parents/Recherches/recherche.html", datalist_habitation=datalist_habitation, datalist_niveau=datalist_niveau, datalist_experience=datalist_experience, datalist_competence=datalist_competence, usersParent=usersParent)
 
 
 # ? Liste Recherche
@@ -1113,7 +1122,6 @@ def liste_recherche():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-
     cursor.execute("SELECT * FROM ClassePrimaire")
     ClassePrimaire = cursor.fetchall()
 
@@ -1147,7 +1155,7 @@ def liste_recherche():
     # print(experience)
     # print(specialite)
 
-    query = """SELECT  * FROM Repetiteur r JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence)
+    query = """SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence)
             
 
             WHERE
@@ -1170,20 +1178,10 @@ def liste_recherche():
     else:
         etat_repetiteur = None
 
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-
     cursor.commit()
 
     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-    return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur, photo_path=photo_path)
+    return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur)
 
 # @app.route("/liste_repetiteurchoix")
 # @login_required
@@ -1235,19 +1233,9 @@ def choose_repetiteur():
                         """
         cursor.execute(
             query_insert, (1, heure_actuelle, IdParent, IdRepetiteur))
-        cursor.execute(
-            "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-        result = cursor.fetchone()
-
-        if result and result[0]:
-            photo_path = result[0]
-        else:
-            photo_path = url_for(
-                'static', filename='/img/user_img/user_avatar.jpg')
-
         cursor.commit()
         # flash('Le répétiteur a été choisi avec succès.', 'success')
-        return jsonify(result='Success', IdRepetiteur=IdRepetiteur, contractExists=False, photo_path=photo_path)
+        return jsonify(result='Success', IdRepetiteur=IdRepetiteur, contractExists=False)
 
         # Perform any necessary operations with the chosen tutor (e.g., store in the database)
         # ...
@@ -1268,7 +1256,7 @@ def Mes_choix_rer():
 
     # Check if the parent has already selected this répétiteur
     cursor.execute(
-        "SELECT * FROM ContratTemporaire Co JOIN Parent P ON Co.IdParent=P.IdParent JOIN Repetiteur R ON Co.IdRepetiteur=R.IdRepetiteur")
+        "SELECT * FROM ContratTemporaire Co JOIN Parent P ON Co.IdParent=P.IdParent JOIN Repetiteur R ON Co.IdRepetiteur=R.IdRepetiteur JOIN users U ON R.IdUser=U.IdUser")
     listContratTemp = cursor.fetchall()
     cursor.execute(
         "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
@@ -1293,19 +1281,10 @@ def Supprimer_choix(IdContratTemporaire):
 
     cursor.execute(
         "DELETE FROM ContratTemporaire WHERE IdContratTemporaire = ?", IdContratTemporaire)
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
 
     cursor.commit()
     flash('Choix retiré avec succès.', 'danger')
-    return redirect(url_for("Mes_choix_rer"), photo_path=photo_path)
+    return redirect(url_for("Mes_choix_rer"))
 
 # Debut profil
 
@@ -1319,19 +1298,10 @@ def profil_parent():
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
     usersParent = cursor.fetchone()
 
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
 
     # Pas besoin de cursor.commit() ici car vous n'effectuez que des sélections
 
-    return render_template("Profil/profil_parent.html", usersParent=usersParent, photo_path=photo_path)
+    return render_template("Profil/profil_parent.html", usersParent=usersParent)
 
 
 @app.route("/ModifProfil_par")
@@ -1343,18 +1313,7 @@ def ModifProfil_par():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (user_id,))
     user_data = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-
-    cursor.close()
-    return render_template("Profil/ModifProfil_par.html", usersParent=user_data, photo_path=photo_path)
+    return render_template("Profil/ModifProfil_par.html", usersParent=user_data)
 
 
 @app.route("/SucessModifProfil_par", methods=['POST'])
@@ -1385,21 +1344,12 @@ def SucessModifProfil_par():
         # listId = cursor.fetchone()
         cursor.execute("UPDATE Parent SET NomParent=?, PrenomParent=?, LieuHabitation=?, TelephoneParent1=?, TelephonePparent2=? WHERE IdParent = ?",
                        (NomParent, PrenomParent, LieuHabitation, TelephoneParent1, TelephonePparent2, usersParent[0]))
-        cursor.execute(
-            "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-        result = cursor.fetchone()
-
-        if result and result[0]:
-            photo_path = result[0]
-        else:
-            photo_path = url_for(
-                'static', filename='/img/user_img/user_avatar.jpg')
 
         # Commit des modifications
         conn.commit()
         flash('Votre profil à été mis à jour', 'success')
         return redirect(url_for('profil_parent'))
-    return render_template("Profil/ModifProfil_par.html", usersParent=usersParent, photo_path=photo_path)
+    return render_template("Profil/ModifProfil_par.html", usersParent=usersParent)
 
 
 # @app.route('/upload', methods=['POST'])
@@ -1445,23 +1395,16 @@ def profil_repetiteur():
     cursor = conn.cursor()
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
+    cursor.execute("SELECT R.*, NomCompetence, U.*, D.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur WHERE U.IdUser = ?", IdUser)
+    userRepetiteur = cursor.fetchone()
     cursor.commit()
 
     cursor = conn.cursor()
     cursor.execute("SELECT R.EstActif FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     bouton_etat = cursor.fetchone()[0]
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
 
     conn.commit()
-    return render_template("Profil/profil_repetiteur.html", usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat, photo_path=photo_path)
+    return render_template("Profil/profil_repetiteur.html",userRepetiteur=userRepetiteur, usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat)
 
 
 @app.route("/ModifProfil_rep", methods=['GET', 'POST'])
@@ -1553,8 +1496,7 @@ def SuccesModifProfil_rep():
             "SELECT * FROM Dispense D join Repetiteur R on D.IdRepetiteur=R.IdRepetiteur WHERE R.IdRepetiteur = ?", usersRepetiteur[0])
         Dispense = cursor.fetchone()
         if Dispense is None:
-            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES ('{
-                           usersRepetiteur[0]}','{Matiere}','{Classe}')")
+            cursor.execute(f"INSERT INTO Dispense (IdRepetiteur, Matiere, Classe) VALUES ('{usersRepetiteur[0]}','{Matiere}','{Classe}')")
         # Commit des modifications
             conn.commit()
         else:
@@ -1705,15 +1647,6 @@ def librairie_parent():
 # DEBUT REPETITEUR
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'IdUser' not in session:
-            return redirect(url_for('connexion'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 @app.route("/accueil_repetiteur")
 @login_required
 def accueil_repetiteur():
@@ -1721,16 +1654,6 @@ def accueil_repetiteur():
     cursor = conn.cursor()
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
-    cursor.close()
 
     if usersRepetiteur:
         # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
@@ -1738,9 +1661,8 @@ def accueil_repetiteur():
         # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
         nom_repetiteur = usersRepetiteur[2]
 
-        flash(f'Bienvenue, cher répétiteur {
-              prenom_repetiteur} {nom_repetiteur}!', 'success')
-        return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur, photo_path=photo_path)
+        flash(f'Bienvenue, cher répétiteur {prenom_repetiteur} {nom_repetiteur}!', 'success')
+        return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur)
     else:
         flash('Répétiteur non trouvé.', 'danger')
         return redirect(url_for('connexion'))
@@ -1748,27 +1670,54 @@ def accueil_repetiteur():
 # DEBUT RECHERCHE_REPETITEUR
 
 
-@app.route("/recherche_repetiteur")
+@app.route("/recherche_repetiteur", methods=["GET"])
 @login_required
 def recherche_repetiteur():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
+    datalist_habitation = get_options_from_db(
+        "lieu_habitation", "Poste")
+    datalist_niveau = get_options_from_db("NiveauEnfant", "Poste")
+    datalist_NbreEnfant = get_options_from_db("NbreEnfant", "Poste")
+    datalist_NbresJours = get_options_from_db("NbresJours", "Poste")
+    datalist_Classe = get_options_from_db("Classe", "Poste")
+    datalist_Matiere = get_options_from_db("Matiere", "Poste")
     cursor.commit()
-    return render_template("Repetiteur/Recherche/recherche_repetiteur.html", usersRepetiteur=usersRepetiteur, photo_path=photo_path)
+    
+    cursor.execute("SELECT DISTINCT lieu_habitation from Poste")
+    Listelieu_habitation = cursor.fetchall()
+    
+    cursor.execute("SELECT DISTINCT NiveauEnfant from Poste")
+    ListeNiveauEnfant = cursor.fetchall()
+    
+    cursor.execute("SELECT DISTINCT NbreEnfant from Poste order by NbreEnfant")
+    ListeNbreEnfant = cursor.fetchall()
+    
+    cursor.execute("SELECT DISTINCT NbresJours from Poste order by NbresJours")
+    ListeNbresJours = cursor.fetchall()
+    
+    cursor.execute("SELECT DISTINCT Classe from Poste")
+    ListeClasse = cursor.fetchall()
+    
+    cursor.execute("SELECT DISTINCT Matiere from Poste")
+    ListeMatiere = cursor.fetchall()
+    return render_template("Repetiteur/Recherche/recherche_repetiteur.html",
+                           Listelieu_habitation=Listelieu_habitation,
+                           ListeNiveauEnfant=ListeNiveauEnfant, 
+                           ListeNbreEnfant=ListeNbreEnfant, ListeNbresJours=ListeNbresJours,
+                           ListeClasse=ListeClasse, ListeMatiere=ListeMatiere,
+                           usersRepetiteur=usersRepetiteur,
+                           datalist_habitation=datalist_habitation,
+                           datalist_niveau=datalist_niveau,
+                           datalist_NbreEnfant=datalist_NbreEnfant,
+                           datalist_NbresJours=datalist_NbresJours,
+                           datalist_Classe=datalist_Classe,
+                           datalist_Matiere=datalist_Matiere)
 
 
-@app.route("/liste_rech_rep")
+@app.route("/liste_rech_rep", methods=["GET", "POST"])
 @login_required
 def liste_rech_rep():
     IdUser = session.get('IdUser')
@@ -1776,7 +1725,32 @@ def liste_rech_rep():
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
     cursor.commit()
-    return render_template("Repetiteur/Recherche/liste_rech_rep.html", usersRepetiteur=usersRepetiteur)
+    # cursor = conn.cursor()
+    # Récupérez les données du formulaire
+    if request.method == "POST":
+        lieu_habitation = request.form.get("lieu_habitation")
+        NiveauEnfant = request.form.get("NiveauEnfant")
+        NbreEnfant = request.form.get("NbreEnfant")
+        NbresJours = request.form.get("NbresJours")
+        Classe = request.form.get("Classe")
+        Matiere = request.form.get("Matiere")
+        # cursor.execute("SELECT * FROM Repetiteur")
+        # usersRepetiteur = cursor.fetchall()
+
+        query = """SELECT  * FROM Poste WHERE lieu_habitation = ? and (NiveauEnfant = ? or NbreEnfant = ? or NbresJours = ? or Classe = ? or Matiere = ?)  """
+    # r.IdRepetiteur = c.IdRepetiteur AND
+    # cursor.execute("SELECT * FROM Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    # info_rep = cursor.fetchall()
+
+        cursor.execute(query, (lieu_habitation, NiveauEnfant,
+                    NbreEnfant, NbresJours, Classe, Matiere))
+        poste = cursor.fetchall()
+    
+
+    # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
+    # return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur)
+
+    return render_template("Repetiteur/Recherche/liste_rech_rep.html", usersRepetiteur=usersRepetiteur,poste=poste)
 
 
 @app.route("/candidature_rep")

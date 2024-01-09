@@ -203,7 +203,7 @@
           <div class="card col-lg-3 col-md-4 col-sm-6 mb-lg-5 mb-md-5 ms-md-4 mb-sm-4 ms-sm-4" id="cards"
             style="width: 18rem;">
             <a href="" data-bs-target="#staticBackdrop{{repetiteur.IdRepetiteur}}" data-bs-toggle="modal" class="tab-a">
-              <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
+              <img src="{{ url_for('static', filename='uploads/images_profil_repetiteur/' + repetiteur.path_PhotoProfil) }}"
                 class="card-img-top img-thumbnail " alt="...">
             </a>
             <marquee behavior="scroll" direction="left" scrollamount="5">
@@ -223,7 +223,7 @@
                   <div class="modal-body">
                     <div class="container-fluid row">
                       <div class="col-md-4">
-                        <img src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
+                        <img src="{{ url_for('static', filename='uploads/images_profil_repetiteur/' + repetiteur.path_PhotoProfil) }}"
                           class="card-img-top img-thumbnail " alt="...">
                       </div>
                       <div class="col-md-8">

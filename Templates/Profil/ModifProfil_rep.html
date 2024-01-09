@@ -53,7 +53,7 @@
                         </div>
                         <div class="inscriptionParent_login1">
                             <select class="form-control input" name="lieu_hab_rep"  list="1" id="habitation" placeholder="Votre lieu d'habitation">
-                                <option value="" disabled selected style="display:none;">Votre lieu d'habitation</option>
+                                <option value="{{ usersRepetiteur.lieu_hab_rep if usersRepetiteur.lieu_hab_rep else '#' }}">{{ usersRepetiteur.lieu_hab_rep if usersRepetiteur.lieu_hab_rep else ''"Votre lieu d'habitation" }}</option>
                                 <option value="Adzopé">Adzopé</option>
                                 <option value="Adiaké">Adiaké</option>
                                 <option value="Agboville">Agboville</option>
@@ -235,7 +235,7 @@
         </script>
 
         
-        <script>
+        <!-- <script>
             // Sélectionnez l'élément contenant le message flash
             const flashMessage = document.getElementById('flash-message');
             
@@ -246,7 +246,7 @@
             setTimeout(function() {
                 flashMessage.style.display = 'none';
             }, delay);
-       </script>
+       </script> -->
 
 
         <script>
@@ -260,7 +260,7 @@
             setTimeout(function() {
                 flashMessage.style.display = 'none';
             }, delay);
-        </script> 
+        </script>  
         <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
         <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
     </body>

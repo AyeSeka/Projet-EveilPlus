@@ -7,42 +7,70 @@
               <h2>Rechercher une offre</h2>
           </div>
           <div class="">
-            <form action="/liste_rech_rep" method="">
+            <form action="/liste_rech_rep" method="post">
               <div class="row bg-color">
                 <div class="col-md-7 py-4">
                   <div class="row mb-4">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label for="habitation" class="form-label">Lieu d'habitation:</label>
                     </div>
                     <div class="col-md-8">
-                        <input class="form-control" list="datalistOptions" id="habitation" placeholder="Selectionnez le lieu d'habitation...">
+                        <!-- <input class="form-control" list="datalistOptions" id="habitation" name="lieu_habitation" placeholder="">
                         <datalist id="datalistOptions">
                           <option value="San Francisco">
                           <option value="New York">
                           <option value="Seattle">
                           <option value="Los Angeles">
                           <option value="Chicago">
-                        </datalist>
+                        </datalist> -->
+                        <select class="form-select" id="habitation" name="lieu_habitation" aria-label="Default select example">
+                          <option selected>---Selectionnez le lieu d'habitation---</option>
+                          {% for Listelieu_habitation in Listelieu_habitation %}
+                            <option value="{{Listelieu_habitation.0}}">{{Listelieu_habitation.0}}</option>
+                          {% endfor %}
+                      </select>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-4">
-                      <label class="form-label">Niveau:</label>
-                    </div>
+                  <div class="row mb-4">
+                      <div class="col-md-3">
+                        <label class="form-label" for="NiveauEnfant">Niveau:</label>
+                      </div>
                     <div class="col-md-8">
+                      <select class="form-select" id="NiveauEnfant" name="NiveauEnfant" aria-label="Default select example">
+                          <option selected>---Selectionnez le/les niveau(x) à enseigner---</option>
+                          {% for ListeNiveauEnfant in ListeNiveauEnfant %}
+                            <option value="{{ListeNiveauEnfant.0}}">{{ListeNiveauEnfant.0}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                    <!-- <div class="col-md-8">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                            <input class="form-check-input" type="checkbox" name="NiveauEnfant[]" id="inlineCheckbox1" value="option1">
                             <label class="form-check-label" for="inlineCheckbox1">Primaire</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                            <input class="form-check-input" type="checkbox" name="NiveauEnfant[]" id="inlineCheckbox2" value="option2">
                             <label class="form-check-label" for="inlineCheckbox2">Collège</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                            <input class="form-check-input" type="checkbox" name="NiveauEnfant[]" id="inlineCheckbox3" value="option3">
                             <label class="form-check-label" for="inlineCheckbox3">Lycée</label>
                           </div>
-                        </div>
+                    </div> -->
+                    
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label for="Classe" class="form-label">Classe:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-select" id="Classe" name="Classe" aria-label="Default select example">
+                            <option selected>---Selectionnez la/les Classe(s)---</option>
+                              {% for ListeClasse in ListeClasse %}
+                                    <option value="{{ListeClasse.0}}">{{ListeClasse.0}}</option>
+                              {% endfor %}
+                        </select>
+                    </div>
                   </div>
                 </div>
 
@@ -52,11 +80,11 @@
                         <label for="Seance" class="form-label">Séance(s):</label>
                         </div>
                         <div class="col-md-8">
-                            <select class="form-select" id="Seance" aria-label="Default select example">
+                            <select class="form-select" id="Seance" name="NbresJours" aria-label="Default select example">
                                 <option selected>---Selectionnez le nombre de séance---</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                                {% for ListeNbresJours in ListeNbresJours %}
+                                  <option value="{{ListeNbresJours.0}}">{{ListeNbresJours.0}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -65,11 +93,25 @@
                       <label for="nombres" class="form-label">Nombre enfant:</label>
                     </div>
                     <div class="col-md-8">
-                        <select class="form-select" id="nombres" aria-label="Default select example">
+                        <select class="form-select" id="nombres" name="NbreEnfant" aria-label="Default select example">
                             <option selected>---Selectionnez le nombre d'enfant---</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+                              {% for ListeNbreEnfant in ListeNbreEnfant %}
+                                    <option value="{{ListeNbreEnfant.0}}">{{ListeNbreEnfant.0}}</option>
+                              {% endfor %}
+                        </select>
+                    </div>
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="col-md-4">
+                      <label for="Matiere" class="form-label">Matière:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-select" id="Matiere" name="Matiere" aria-label="Default select example">
+                            <option selected>---Selectionnez la/les matière(s)---</option>
+                              {% for ListeMatiere in ListeMatiere %}
+                                    <option value="{{ListeMatiere.0}}">{{ListeMatiere.0}}</option>
+                              {% endfor %}
                         </select>
                     </div>
                   </div>
