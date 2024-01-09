@@ -92,6 +92,89 @@
                 <input type="date" class="form-control" value="{{data_recap['date_limite']}}" id="Date" name="date_limite">
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-2">
+                <label class="form-label">Classe:</label>
+              </div>
+              <div class="col-md-9 mb-3">
+                <fieldset class="table-responsive border rounded px-4" style="height: 70px; background-color: #f0f0f0; ">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="Classe[]" value="{{data_recap['Classe']}}" id="Classe" checked>
+                      <label class="form-check-label" for="Classe">
+                        {{data_recap['Classe']}}
+                      </label>
+                  </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="Classe[]" value="Primaire" id="ClassePrimaire">
+                          <label class="form-check-label" for="ClassePrimaire">
+                            Primaire
+                          </label>
+                      </div>
+                  
+                  <legend> <small>College:</small> </legend>
+                  {% for ClasseCollege in ClasseCollege %}
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="Classe[]" value="{{ ClasseCollege[1] }}" id="ClasseCollege{{ loop.index }}">
+                      <label class="form-check-label" for="ClasseCollege{{ loop.index }}">
+                          {{ ClasseCollege[1] }}
+                      </label>
+                  </div>
+              {% endfor %}
+              <legend> <small>Lycée:</small> </legend>
+                  {% for ClasseLycee in ClasseLycee %}
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="Classe[]" value="{{ ClasseLycee[1] }}" id="ClasseLycee{{ loop.index }}">
+                      <label class="form-check-label" for="ClasseLycee{{ loop.index }}">
+                          {{ ClasseLycee[1] }}
+                      </label>
+                  </div>
+              {% endfor %}
+              </fieldset>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2">
+                <label class="form-label">Matière:</label>
+              </div>
+              <div class="col-md-9 mb-3">
+                <fieldset class="table-responsive border rounded px-4" style="height: 70px; background-color: #f0f0f0; ">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="Matiere[]" value="{{data_recap['Matiere']}}" id="Matiere" checked>
+                    <label class="form-check-label" for="Matiere">
+                      {{data_recap['Matiere']}}
+                    </label>
+                </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="Matiere[]" value="Toutes Matieres du Primaire" id="MatierePrimaire">
+                    <label class="form-check-label" for="MatierePrimaire">
+                      Toutes Matieres du Primaire
+                    </label>
+                </div>
+                  <legend> <small>Sciences:</small> </legend>
+                  {% for MatiereSciences in MatiereSciences %}
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="Matiere[]" value="{{ MatiereSciences[1] }}" id="MatiereSciences{{ loop.index }}">
+                          <label class="form-check-label" for="MatiereSciences{{ loop.index }}">
+                              {{ MatiereSciences[1] }}
+                          </label>
+                      </div>
+                  {% endfor %}
+                  <legend> <small>Litteraire:</small> </legend>
+                  {% for MatiereLitteraire in MatiereLitteraire %}
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="Matiere[]" value="{{ MatiereLitteraire[1] }}" id="MatiereLitteraire{{ loop.index }}">
+                          <label class="form-check-label" for="MatiereLitteraire{{ loop.index }}">
+                              {{ MatiereLitteraire[1] }}
+                          </label>
+                      </div>
+                  {% endfor %}
+              </fieldset>
+
+              </div>
+            </div>
           </div>
 
         </div>

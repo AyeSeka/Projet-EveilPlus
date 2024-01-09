@@ -6,6 +6,13 @@
           <div class="main_rech1_titre1 mb-4">
               <h2>Rechercher une offre</h2>
           </div>
+          {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                {%endfor%}
+            {%endif%}
+        {% endwith %}
           <div class="">
             <form action="/liste_rech_rep" method="post">
               <div class="row bg-color">
@@ -23,8 +30,8 @@
                           <option value="Los Angeles">
                           <option value="Chicago">
                         </datalist> -->
-                        <select class="form-select" id="habitation" name="lieu_habitation" aria-label="Default select example">
-                          <option selected>---Selectionnez le lieu d'habitation---</option>
+                        <select class="form-select" id="habitation" name="lieu_habitation" required aria-label="Default select example">
+                          <option disabled selected style="display:none;">---Selectionnez le lieu d'habitation---</option>
                           {% for Listelieu_habitation in Listelieu_habitation %}
                             <option value="{{Listelieu_habitation.0}}">{{Listelieu_habitation.0}}</option>
                           {% endfor %}
@@ -36,8 +43,8 @@
                         <label class="form-label" for="NiveauEnfant">Niveau:</label>
                       </div>
                     <div class="col-md-8">
-                      <select class="form-select" id="NiveauEnfant" name="NiveauEnfant" aria-label="Default select example">
-                          <option selected>---Selectionnez le/les niveau(x) à enseigner---</option>
+                      <select class="form-select" id="NiveauEnfant" name="NiveauEnfant" required aria-label="Default select example">
+                          <option disabled selected style="display:none;">---Selectionnez le/les niveau(x) à enseigner---</option>
                           {% for ListeNiveauEnfant in ListeNiveauEnfant %}
                             <option value="{{ListeNiveauEnfant.0}}">{{ListeNiveauEnfant.0}}</option>
                           {% endfor %}
@@ -64,8 +71,8 @@
                       <label for="Classe" class="form-label">Classe:</label>
                     </div>
                     <div class="col-md-8">
-                        <select class="form-select" id="Classe" name="Classe" aria-label="Default select example">
-                            <option selected>---Selectionnez la/les Classe(s)---</option>
+                        <select class="form-select" id="Classe" name="Classe" required aria-label="Default select example">
+                            <option disabled selected style="display:none;">---Selectionnez la/les Classe(s)---</option>
                               {% for ListeClasse in ListeClasse %}
                                     <option value="{{ListeClasse.0}}">{{ListeClasse.0}}</option>
                               {% endfor %}
@@ -80,8 +87,8 @@
                         <label for="Seance" class="form-label">Séance(s):</label>
                         </div>
                         <div class="col-md-8">
-                            <select class="form-select" id="Seance" name="NbresJours" aria-label="Default select example">
-                                <option selected>---Selectionnez le nombre de séance---</option>
+                            <select class="form-select" id="Seance" name="NbresJours" required aria-label="Default select example">
+                                <option disabled selected style="display:none;">---Selectionnez le nombre de séance---</option>
                                 {% for ListeNbresJours in ListeNbresJours %}
                                   <option value="{{ListeNbresJours.0}}">{{ListeNbresJours.0}}</option>
                                 {% endfor %}
@@ -93,8 +100,8 @@
                       <label for="nombres" class="form-label">Nombre enfant:</label>
                     </div>
                     <div class="col-md-8">
-                        <select class="form-select" id="nombres" name="NbreEnfant" aria-label="Default select example">
-                            <option selected>---Selectionnez le nombre d'enfant---</option>
+                        <select class="form-select" id="nombres" name="NbreEnfant" required aria-label="Default select example">
+                            <option disabled selected style="display:none;">---Selectionnez le nombre d'enfant---</option>
                               {% for ListeNbreEnfant in ListeNbreEnfant %}
                                     <option value="{{ListeNbreEnfant.0}}">{{ListeNbreEnfant.0}}</option>
                               {% endfor %}
@@ -107,8 +114,8 @@
                       <label for="Matiere" class="form-label">Matière:</label>
                     </div>
                     <div class="col-md-8">
-                        <select class="form-select" id="Matiere" name="Matiere" aria-label="Default select example">
-                            <option selected>---Selectionnez la/les matière(s)---</option>
+                        <select class="form-select" id="Matiere" name="Matiere" required raria-label="Default select example">
+                            <option disabled selected style="display:none;">---Selectionnez la/les matière(s)---</option>
                               {% for ListeMatiere in ListeMatiere %}
                                     <option value="{{ListeMatiere.0}}">{{ListeMatiere.0}}</option>
                               {% endfor %}
@@ -130,4 +137,17 @@
           </div>
         </div>  
       </section>
+      <!-- Ajoutez le script JavaScript pour gérer la disparition du message -->
+    <script>
+      // Sélectionnez l'élément contenant le message flash
+      const flashMessage = document.getElementById('flash-message');
+      
+      // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+      const delay = 7000; // 3 secondes
+      
+      // Utilisez setTimeout pour masquer le message après le délai
+      setTimeout(function() {
+          flashMessage.style.display = 'none';
+      }, delay);
+  </script>
 {% endblock %}

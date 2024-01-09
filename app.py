@@ -712,6 +712,8 @@ def Accueil_parent():
 @app.route("/poste", methods=["GET", "POST"])
 @login_required
 def poste():
+    # Vérifier si tous les champs sont remplis
+    
     # if request.method == "POST":
     # Récupérer les données du formulaire
     # habitation = request.form.get("habitation")
@@ -801,7 +803,9 @@ def recapitulatif():
         enfant = request.form.get("enfant")
         seance = request.form.get("seance")
         date_limite = request.form.get("date_limite")
-
+        if not all([habitation, niveau, Classe, Matiere, enfant, seance, date_limite]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('poste'))
         # Convertir la chaîne de date en objet de date
         # date_limite = datetime.strptime(date_limite, '%Y-%m-%d').date()
 
@@ -880,9 +884,31 @@ def Modif_recap():
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
     
+    cursor.execute("SELECT * FROM ClassePrimaire")
+    ClassePrimaire = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseCollege")
+    ClasseCollege = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseLycee")
+    ClasseLycee = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM MatiereSciences")
+    MatiereSciences = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM MatiereLitteraire")
+    MatiereLitteraire = cursor.fetchall()
     cursor.commit()
 
-    return render_template("Parents/Postes/Modif_recap.html", usersParent=usersParent, data_recap=data_recap, niveauEtudiant=niveauEtudiant)
+    return render_template("Parents/Postes/Modif_recap.html",
+                           usersParent=usersParent,
+                           data_recap=data_recap,
+                           niveauEtudiant=niveauEtudiant, 
+                           ClassePrimaire=ClassePrimaire, 
+                           ClasseCollege=ClasseCollege, 
+                           ClasseLycee=ClasseLycee,
+                           MatiereSciences=MatiereSciences,
+                           MatiereLitteraire=MatiereLitteraire)
 
 
 # @app.route("/recapitulatif_validation", methods=["POST"])
@@ -1733,6 +1759,9 @@ def liste_rech_rep():
         NbresJours = request.form.get("NbresJours")
         Classe = request.form.get("Classe")
         Matiere = request.form.get("Matiere")
+        if not all([lieu_habitation, NiveauEnfant, NbreEnfant, NbresJours, Classe, Matiere]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('recherche_repetiteur'))
         # cursor.execute("SELECT * FROM Repetiteur")
         # usersRepetiteur = cursor.fetchall()
 
