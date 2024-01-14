@@ -29,8 +29,14 @@ CREATE TABLE Dispense (
 	Classe VARCHAR(255) NULL
 );
 
---select * from users
+--select * from ContratTemporaire
 
+--select * from HistoriquePoste H JOIN Poste P ON H.IdPoste=P.IdPoste
+--SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1
+
+--select * from Parent P JOIN users u ON P.IdUser=u.IdUser
+
+--SELECT * FROM Candidature C JOIN HistoriquePoste H on C.IdHistoriquePoste = H.IdHistoriquePoste JOIN Poste P ON H.IdPoste=P.IdPoste JOIN Repetiteur R ON C.IdRepetiteur=R.IdRepetiteur join Competence Cpt ON (R.IdCompetence = Cpt.IdCompetence) JOIN users U ON R.IdUser=U.IdUser
 --SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence)
 
 --SELECT * FROM Dispense D join Repetiteur R on D.IdRepetiteur=R.IdRepetiteur
@@ -191,21 +197,27 @@ CREATE TABLE Poste (
 	NiveauEnfant varchar(90) NOT NULL,
 	DateLimte Date NOT NULL,
 	DatePublication varchar(35) NOT NULL
+	Classe varchar(200),
+	Matiere varchar(200)
 );
 
 ALTER TABLE Poste
 ADD IdParent int FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
 
+select * from HistoriquePoste
+SELECT  * FROM HistoriquePoste H join Poste P on H.IdPoste=P.IdPoste
+CREATE TABLE HistoriquePoste(
+	IdHistoriquePoste int IDENTITY(1,1) NOT NULL,
+	IdPoste int NULL,
+	FOREIGN KEY(IdPoste) REFERENCES Poste(IdPoste)
+ )
 
 --debut nouveau script
 
 UPDATE users
 SET path_PhotoProfil = 'default_profil.png'
 WHERE path_PhotoProfil is null;
-
-ALTER TABLE Poste
-ADD Classe varchar(200),
-	Matiere varchar(200)
+ 
 
 	UPDATE Poste
 SET Classe = '3ième, 4ième', Matiere= 'Maths, P-Chemie, Français'
@@ -227,6 +239,16 @@ UPDATE Poste
 SET Classe = 'Primaire', Matiere= 'Toutes les Matière '
 WHERE Classe is null and Matiere is null and NiveauEnfant= 'Primaire';
 
+
+CREATE TABLE Candidature(
+	IdCandidature int PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	DateCandidature VARCHAR(55) NOT NULL, 
+	IdRepetiteur int,
+	FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur),
+	IdHistoriquePoste int,
+	FOREIGN KEY(IdHistoriquePoste) REFERENCES HistoriquePoste(IdHistoriquePoste)
+
+);
 --Fin nouveau script
 
 CREATE TABLE ContratPar_Rep (
@@ -246,6 +268,18 @@ CREATE TABLE ContratTemporaire(
 	FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur)
 
 );
+
+
+ALTER TABLE Candidature
+DROP CONSTRAINT FK__Candidatu__IdPos__17F790F9;
+
+
+
+DBCC CHECKIDENT('Candidature', RESEED, 0);
+select * from Candidature
+
+
+
 ALTER TABLE ContratPar_Rep 
 ADD IdParent int,
 FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
@@ -273,5 +307,28 @@ FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
 insert into NiveauEtudeEleve (NomNiveauEtude) values ('Primaire'),
 												('Collège'),
 												('Lycée')
+
 DBCC CHECKIDENT('ContratTemporaire', RESEED, 0);
 select * from ContratTemporaire
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+    name
+FROM
+    sys.foreign_keys
+WHERE
+    parent_object_id = OBJECT_ID('Candidature') AND 
+    referenced_object_id = OBJECT_ID('Poste');

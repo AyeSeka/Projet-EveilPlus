@@ -1,338 +1,108 @@
 {% extends "Partials/Base_repetiteut.html" %}
 {% block body %}
-<section class="my-5 py-5 section-rech">
+{% if listCandidature %}
+    <section class="my-5 py-5 section-rech">
     <div class="container colunm">
         <div class="mb-4 row container-fluid">
-            <div class="col-md-11 col-sm-10"><h2>Liste des recherches</h2></div>
-            <div class="col-md-1 col-sm-2"><a href="/liste_rech_rep" class="btn btn-danger">RETOUR</a></div>
+            {% with messages=get_flashed_messages(with_categories=true) %}
+                              {% if messages %}
+                                  {% for category, message in messages %}
+                                      <div class="alert alert-{{category}}" id="flash-message"> {{message}} </div>
+                                  {%endfor%}
+                              {%endif%}
+                          {% endwith %}
+            <div class="col-md-12 col-sm-12"><h2>Liste des recherches</h2></div>
+            
         </div> 
         <div class="row d-flex justify-content-between table-responsive" style="height: 450px;">
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
+            {% for listCandidature in listCandidature %}
+                <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
+                    </div>
+                    <ul class="list-group list-group-flush liste-cards">
+                        <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b> {{listCandidature.NbreEnfant}} </b></i></li>
+                        <li class="list-group-item"><i>Lieu d'habitation : <b>{{listCandidature.lieu_habitation}}</b></i></li>
+                        <li class="list-group-item"><i>Nombre de séance : <b>{{listCandidature.NbresJours}}</b></i>/semaine</li>
+                        <li class="list-group-item"><i>Classe à enseigner: <b>{{listCandidature.Classe}}</b></i></li>
+                        <li class="list-group-item"><i>Matiere à enseigner: <b>{{listCandidature.Matiere}}</b></i></li>
+                        <li class="list-group-item"><i>Niveau : <b>{{listCandidature.NiveauEnfant}}</b></i></li>
+                        <li class="list-group-item"><i>Date limite : <b>{{listCandidature.DateLimte}}</b></i></li>
+                        
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{listCandidature.0}}">
+                            <b>Annuler</b>
+                        </a>
+                        <div class="modal fade" id="staticBackdrop{{listCandidature.0}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{listCandidature.0}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel{{listCandidature.0}}">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                         Êtes-vous sûr de vouloir annuler ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                                        <a href="{{url_for('Supprimer_Candidature', IdCandidature= listCandidature.0)}}" class="btn btn-danger" >
+                                            <b>Confirmer</b>
+                                          </a>
+                                    </div>
+                                </div>
+                            </div>   
+                        </div> 
+                    </div>
                 </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Annuler</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/liste_rech_rep" class="btn btn-danger">Annuler</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
-                </div>
-                <ul class="list-group list-group-flush liste-cards">
-                    <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b>3</b></i></li>
-                    <li class="list-group-item"><i>Nombre de séance : <b>3</b></i>/semaine</li>
-                    <li class="list-group-item"><i>Niveau : <b>Primaire, Collège, Lycée</b></i></li>
-                    <li class="list-group-item"><i>Date limite : <b>15/12/2023</b></i></li>
-                    <li class="list-group-item"><i>Date de publication : <b>05/12/2023</b></i></li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <b>Candidater</b>
-                    </a>
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous êtes sur le point de choisir le répétiteur Hugues Codeur. Voulez-vous confirmez ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                    <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div> 
-                </div>
-            </div>
-
-            
+            {% endfor %}
         </div>
     </div>  
-  </section>
+    </section>
+{% else %} 
+    <section class="my-5 py-5 section-rech">
+      <div class="poste2">
+        <div class="mb-4 row container-fluid">
+          <div class="col-md-12 col-sm-10">
+            <h2>Liste de mes Candidatures</h2>
+          </div>
+          <!--<div class="col-md-1 col-sm-2"><a href="{{ url_for('poste') }}" class="btn btn-danger">RETOUR</a></div>-->
+        </div>
+          <div class="main_poste_main">
+              <div class="note_poste_main">
+              
+      
+                <div class="maintenant">
+                  <h2>Vous avez candidaté à aucune offre</h2>
+                </div>
+                <div class="maintenant_2">
+                  <p>L'historique de votre liste de Candidature est vide cliquez sur le bouton <br>
+                    ci-dessous pour rechercher une offre et candidater </p>
+                </div>
+                <div class="maintenant_but">
+                <a href="{{ url_for('recherche_repetiteur') }} " class="btn btn-success">Rechercher maintenant</a>
+                </div>
+              
+              
+              </div>
+          </div>
+      </div>
+
+    </section>
+
+
+{% endif %}
+    <script>
+        // Sélectionnez l'élément contenant le message flash
+        const flashMessage = document.getElementById('flash-message');
+        
+        // Définissez un délai (en millisecondes) avant que le message ne disparaisse
+        const delay = 5000; // 5 secondes
+        
+        // Utilisez setTimeout pour masquer le message après le délai
+        setTimeout(function() {
+            flashMessage.style.display = 'none';
+        }, delay);
+      </script>
 {% endblock %}

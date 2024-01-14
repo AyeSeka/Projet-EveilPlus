@@ -26,23 +26,24 @@
                         
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{poste.0}}">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{poste.IdHistoriquePoste}}">
                             <b>Candidater</b>
                         </a>
-                        <div class="modal fade" id="staticBackdrop{{poste.0}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{poste.0}}" aria-hidden="true">
+                        <div class="modal fade" id="staticBackdrop{{poste.IdHistoriquePoste}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{poste.IdHistoriquePoste}}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel{{poste.0}}">Modal title</h5>
+                                        <h5 class="modal-title" id="staticBackdropLabel{{poste.IdHistoriquePoste}}">Modal title</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                         Êtes-vous sûr de vouloir candidater ?
+                                         Êtes-vous sûr de vouloir candidater à ce poste ?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-                                        <a href="/candidature_rep" class="btn btn-primary">Confirmer</a>
+                                        <button id="chooseTutorBtn" class="btn btn-primary choose-btn"
+                                            data-poste-id="{{ poste.IdHistoriquePoste }}" data-user-id="{{ poste.IdParent }}">Confirmer</button>
                                     </div>
                                 </div>
                             </div>   

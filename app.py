@@ -7,6 +7,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 # from flask_sse import sse
+import json
 from flask_socketio import SocketIO, emit, join_room
 
 # from flask_login import current_user, login_required
@@ -1034,6 +1035,25 @@ def poste_sucess():
 
     return render_template("Parents/Postes/poste_sucess.html", usersParent=usersParent)
 
+
+@app.route("/liste_cadidature")
+@login_required
+def liste_cadidature():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    cursor.execute(
+        "SELECT * FROM Candidature C JOIN HistoriquePoste H on C.IdHistoriquePoste = H.IdHistoriquePoste JOIN Poste P ON H.IdPoste=P.IdPoste JOIN Repetiteur R ON C.IdRepetiteur=R.IdRepetiteur join Competence Cpt ON (R.IdCompetence = Cpt.IdCompetence) JOIN users U ON R.IdUser=U.IdUser WHERE P.IdParent= ?", usersParent[0])
+    ListeCandidature = cursor.fetchall()
+    # cursor.execute(
+    #     "SELECT * FROM Candidature C JOIN Poste P ON C.IdPoste=P.IdPoste ")
+    # ListeCandidature = cursor.fetchall()
+    
+    return render_template("Parents/Postes/liste_cadidature.html", usersParent=usersParent, ListeCandidature=ListeCandidature)
+
 # @app.route("/historique_des_postes")
 # @login_required
 # def historique_des_postes():
@@ -1263,16 +1283,105 @@ def liste_recherche():
     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
     return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur)
 
-# @app.route("/liste_repetiteurchoix")
-# @login_required
-# def liste_repetiteurchoix():
-#     IdUser = session.get('IdUser')
+
+
+
+# @app.route('/filtered_results', methods=['GET', 'POST'])
+# def filtered_results():
+#     # Connexion à la base de données
 #     cursor = conn.cursor()
-#     cursor.execute(
-#         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
-#     usersParent = cursor.fetchone()
-#     cursor.commit()
-#     return render_template("Parents/Recherches/liste_repetiteurchoix.html", usersParent=usersParent)
+#     if request.method == "POST":
+    
+#         Classe = ', '.join(request.form.getlist("Classe[]"))
+#         Matiere = ', '.join(request.form.getlist("Matiere[]"))
+#         print(Classe)
+#         print(Matiere)
+#     # Construction de la requête SQL en fonction des filtres
+#         query_count = "SELECT COUNT(*) FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1"
+#         params_count = []
+
+#         if Classe:
+#             query_count += " AND Classe = ?"
+#             params_count.append(Classe)
+#         if Matiere:
+#             query_count += " AND Matiere = ?"
+#             params_count.append(Matiere)
+
+#     # Exécution de la requête pour obtenir le nombre total d'éléments
+#         cursor.execute(query_count, params_count)
+#         total_count = cursor.fetchone()[0]
+
+#     # Construction de la requête SQL pour récupérer les éléments à afficher
+#         query_select = "SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1"
+#         params_select = []
+
+#         if Classe:
+#             query_count += " AND Classe = ?"
+#             params_count.append(Classe)
+#         if Matiere:
+#             query_count += " AND Matiere = ?"
+#             params_count.append(Matiere)
+
+#     # Exécution de la requête pour obtenir les éléments à afficher
+#     cursor.execute(query_select, params_select)
+#     loc_afi = cursor.fetchall()
+    
+#     # Fermeture du curseur et de la connexion
+#     return redirect(url_for("liste_recherche"))
+#     # Rendu du template avec les données récupérées et la pagination
+#     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
+
+# @app.route('/filtered_results', methods=['POST'])
+# def filtered_results():
+#     try:
+#         # Récupérer les filtres sélectionnés depuis les données de formulaire
+#         filters = request.form.get('filters')
+#         print(filters)
+#         filters = json.loads(filters) if filters else []
+#         print(filters)
+#         # Construire la requête SQL dynamiquement en fonction des filtres sélectionnés
+#         query = "SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE "
+#         conditions = []
+        
+#         if filters:
+#             conditions.append(f"NomCompetence IN ({', '.join(['?'] * len(filters))})")
+#         print(conditions)
+#         # Ajouter d'autres conditions en fonction de vos besoins
+
+#         if conditions:
+#             query += " AND ".join(conditions)
+
+#         # Exécuter la requête avec les valeurs des filtres
+#         cursor = conn.cursor()
+#         cursor.execute(query, filters)
+#         repetiteurs = cursor.fetchall()
+#         print(repetiteurs)
+#         # Convertir les résultats en format JSON et les renvoyer
+#         result_data = [
+#             {
+#                 'IdRepetiteur': repetiteur[0],
+#                 'PrenomRepetiteur': repetiteur[1],
+#                 # Ajouter d'autres champs selon votre structure de données
+#             }
+#             for repetiteur in repetiteurs
+#         ]
+#         print(result_data)
+#         return jsonify(result_data)
+
+#     except Exception as e:
+#         return jsonify({'error': str(e)},repetiteurs=repetiteurs)
+
+# ... (other Flask routes and code) ...
+@app.route("/liste_repetiteurchoix")
+@login_required
+def liste_repetiteurchoix():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
+    cursor.commit()
+    return render_template("Parents/Recherches/liste_repetiteurchoix.html", usersParent=usersParent)
 
 
 @app.route('/choose_repetiteur', methods=['POST'])
@@ -1336,7 +1445,7 @@ def Mes_choix_rer():
 
     # Check if the parent has already selected this répétiteur
     cursor.execute(
-        "SELECT * FROM ContratTemporaire Co JOIN Parent P ON Co.IdParent=P.IdParent JOIN Repetiteur R ON Co.IdRepetiteur=R.IdRepetiteur JOIN users U ON R.IdUser=U.IdUser")
+        "SELECT * FROM ContratTemporaire Co JOIN Parent P ON Co.IdParent=P.IdParent JOIN Repetiteur R ON Co.IdRepetiteur=R.IdRepetiteur JOIN users U ON R.IdUser=U.IdUser WHERE Co.IdParent= ?",usersParent[0])
     listContratTemp = cursor.fetchall()
     cursor.execute(
         "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
@@ -1820,7 +1929,7 @@ def liste_rech_rep():
         # cursor.execute("SELECT * FROM Repetiteur")
         # usersRepetiteur = cursor.fetchall()
 
-        query = """SELECT  * FROM Poste WHERE lieu_habitation = ? and (NiveauEnfant = ? or NbreEnfant = ? or NbresJours = ? or Classe = ? or Matiere = ?)  """
+        query = """SELECT  * FROM HistoriquePoste H join Poste P on H.IdPoste=P.IdPoste WHERE lieu_habitation = ? AND (NiveauEnfant = ? or NbreEnfant = ? or NbresJours = ? or Classe = ? or Matiere = ?)  """
     # r.IdRepetiteur = c.IdRepetiteur AND
     # cursor.execute("SELECT * FROM Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON R.IdCompetence=C.IdCompetence")
     # info_rep = cursor.fetchall()
@@ -1836,16 +1945,84 @@ def liste_rech_rep():
     return render_template("Repetiteur/Recherche/liste_rech_rep.html", usersRepetiteur=usersRepetiteur,poste=poste)
 
 
-@app.route("/candidature_rep")
+
+@app.route('/candidature_rep', methods=['POST'])
 @login_required
 def candidature_rep():
     IdUser = session.get('IdUser')
     cursor = conn.cursor()
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
-    cursor.commit()
-    return render_template("Repetiteur/Recherche/candidature_rep.html", usersRepetiteur=usersRepetiteur)
+    try:
+        data = request.json
+        IdHistoriquePoste = data.get('HistoriquePosteId')
+        IdParent = data.get('ParentId')
+        IdRepetiteur = usersRepetiteur[0]
+        print(IdParent)
+        print(IdHistoriquePoste)
+        print(IdRepetiteur)
+        # Check if the parent has already selected this répétiteur
+        cursor.execute(
+            "SELECT * FROM Candidature C JOIN HistoriquePoste H on C.IdHistoriquePoste = H.IdHistoriquePoste WHERE C.IdRepetiteur= ? AND H.IdHistoriquePoste = ? AND C.IdParent = ?", (IdRepetiteur,IdHistoriquePoste,IdParent ))
+        existing_candidature = cursor.fetchone()
 
+        if existing_candidature:
+            # flash('Vous avez déjà sélectionné ce répétiteur.', 'warning')
+            return jsonify(result='AlreadySelected', IdHistoriquePoste=IdHistoriquePoste, contractExists=True)
+
+        # Obtenez la date actuelle au format YYYY-MM-DD HH:MM:SS
+
+        date_publication = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+        # Print the répétiteur's ID in the terminal
+
+        cursor = conn.cursor()
+        query_insert = """
+                        INSERT INTO Candidature 
+                        (DateCandidature,IdRepetiteur, IdHistoriquePoste, IdParent)
+                        VALUES (?, ?, ?,?)
+                        """
+        cursor.execute(
+            query_insert, (date_publication,IdRepetiteur, IdHistoriquePoste, IdParent ))
+        cursor.commit()
+        # flash('Le répétiteur a été choisi avec succès.', 'success')
+        return jsonify(result='Success', IdHistoriquePoste=IdHistoriquePoste, contractExists=False)
+
+        # Perform any necessary operations with the chosen tutor (e.g., store in the database)
+        # ...
+
+        # return jsonify(result='Success', IdRepetiteur=IdRepetiteur)
+    except Exception as e:
+        return jsonify(result='Error', message=str(e))
+
+@app.route("/Mes_candidature")
+@login_required
+def Mes_candidature():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    
+    cursor.execute(
+        "SELECT * FROM Candidature C JOIN HistoriquePoste H on C.IdHistoriquePoste = H.IdHistoriquePoste JOIN Poste P ON H.IdPoste=P.IdPoste WHERE C.IdRepetiteur= ?",usersRepetiteur[0])
+    listCandidature = cursor.fetchall()
+    cursor.commit()
+    return render_template("Repetiteur/Recherche/candidature_rep.html", usersRepetiteur=usersRepetiteur, listCandidature=listCandidature)
+
+@app.route("/Supprimer_Candidature/<int:IdCandidature>", methods=['GET', 'POST'])
+@login_required
+def Supprimer_Candidature(IdCandidature):
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    cursor.execute(
+        "DELETE FROM Candidature WHERE IdCandidature = ?", IdCandidature)
+
+    cursor.commit()
+
+    return redirect(url_for("Mes_candidature"))
 
 @app.route("/info_repetiteur")
 @login_required
@@ -1970,8 +2147,26 @@ def accueil_parent_dash():
     cursor.execute(
         "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
     usersPersoEveil = cursor.fetchone()
-    return render_template("PersonnelEveil+/parent/accueil_parent_dash.html", usersPersoEveil=usersPersoEveil)
+    
+    cursor.execute("SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser")
+    data = cursor.fetchall()
+    return render_template("PersonnelEveil+/parent/accueil_parent_dash.html",data=data, usersPersoEveil=usersPersoEveil)
 
+@app.route("/Supprimer_parent/<int:IdParent>", methods=['GET', 'POST'])
+@login_required
+def Supprimer_parent(IdParent):
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    
+    cursor.execute(
+        "DELETE P FROM Parent P JOIN users U ON P.IdUser=U.IdUser join  WHERE P.IdParent = ?", IdParent)
+
+    cursor.commit()
+    flash('Suppression éffectuée avec succès', 'success')
+    return redirect(url_for("accueil_parent_dash"))
 
 @app.route("/accueil_repetiteur_dash")
 def accueil_repetiteur_dash():
@@ -1980,8 +2175,26 @@ def accueil_repetiteur_dash():
     cursor.execute(
         "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
     usersPersoEveil = cursor.fetchone()
-    return render_template("PersonnelEveil+/repetiteur/accueil_repetiteur_dash.html", usersPersoEveil=usersPersoEveil)
+    
+    cursor.execute("SELECT R.*, NomCompetence, U.*, D.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur")
+    data = cursor.fetchall()
+    return render_template("PersonnelEveil+/repetiteur/accueil_repetiteur_dash.html", usersPersoEveil=usersPersoEveil, data=data)
 
+@app.route("/Supprimer_repetiteur/<int:IdRepetiteur>", methods=['GET', 'POST'])
+@login_required
+def Supprimer_repetiteur(IdRepetiteur):
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    
+    cursor.execute(
+        "DELETE R FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur WHERE R.IdRepetiteur = ?", IdRepetiteur)
+
+    cursor.commit()
+    flash('Suppression éffectuée avec succès', 'success')
+    return redirect(url_for("accueil_repetiteur_dash"))
 
 if __name__ == "__main__":
     app.secret_key = 'admin123'

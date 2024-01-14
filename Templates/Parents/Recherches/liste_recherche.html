@@ -23,7 +23,7 @@
     <section class="field-search container-fluid row" id="itemperpage">
       <nav class="filtre col-md-2">
         <ul>
-          <form action="">
+          <form id="filterForm" action="/filtered_results" method="post">
             <li>
               <h3 class="text-center">Filtre</h3>
               <small><i>Optimiser votre recherche</i></small>
@@ -59,7 +59,7 @@
 
                               {% for ClassePrimaire in ClassePrimaire %}
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="ClassePrimaire[]"
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="ClassePrimaire[]"
                                   value="{{ ClassePrimaire[1] }}" id="ClassePrimaire{{ loop.index }}">
                                 <label class="form-check-label" for="ClassePrimaire{{ loop.index }}">
                                   {{ ClassePrimaire[1] }}
@@ -83,7 +83,7 @@
                             <div class="accordion-body">
                               {% for ClasseCollege in ClasseCollege %}
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="ClasseCollege[]"
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="ClasseCollege[]"
                                   value="{{ ClasseCollege[1] }}" id="ClasseCollege{{ loop.index }}">
                                 <label class="form-check-label" for="ClasseCollege{{ loop.index }}">
                                   {{ ClasseCollege[1] }}
@@ -108,7 +108,7 @@
 
                               {% for ClasseLycee in ClasseLycee %}
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="ClasseLycee[]"
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="ClasseLycee[]"
                                   value="{{ ClasseLycee[1] }}" id="ClasseLycee{{ loop.index }}">
                                 <label class="form-check-label" for="ClasseLycee{{ loop.index }}">
                                   {{ ClasseLycee[1] }}
@@ -148,7 +148,7 @@
 
                               {% for MatiereSciences in MatiereSciences %}
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="MatiereSciences[]"
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="MatiereSciences[]"
                                   value="{{ MatiereSciences[1] }}" id="MatiereSciences{{ loop.index }}">
                                 <label class="form-check-label" for="MatiereSciences{{ loop.index }}">
                                   {{ MatiereSciences[1] }}
@@ -173,7 +173,7 @@
 
                               {% for MatiereLitteraire in MatiereLitteraire %}
                               <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="MatiereLitteraire[]"
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="MatiereLitteraire[]"
                                   value="{{ MatiereLitteraire[1] }}" id="MatiereLitteraire{{ loop.index }}">
                                 <label class="form-check-label" for="MatiereLitteraire{{ loop.index }}">
                                   {{ MatiereLitteraire[1] }}
@@ -200,9 +200,9 @@
         <div class="row d-flex justify-content-between table-responsive" style="height: 490px;">
 
           {% for repetiteur in repetiteurs %}
-          <div class="card col-lg-3 col-md-4 col-sm-6 mb-lg-5 mb-md-5 ms-md-4 mb-sm-4 ms-sm-4" id="cards"
-            style="width: 18rem;">
-            <a href="" data-bs-target="#staticBackdrop{{repetiteur.IdRepetiteur}}" data-bs-toggle="modal" class="tab-a">
+          <div class="card col-lg-3 col-md-4 col-sm-6 mb-lg-5 mb-md-5 ms-md-4 mb-sm-4 ms-sm-4" id="cards"style="width: 18rem;">
+
+            <a href="#" data-bs-target="#staticBackdrop{{repetiteur.IdRepetiteur}}" data-bs-toggle="modal" class="tab-a">
               <img src="{{ url_for('static', filename='uploads/images_profil_repetiteur/' + repetiteur.path_PhotoProfil) }}"
                 class="card-img-top img-thumbnail " alt="...">
             </a>
@@ -212,11 +212,11 @@
                 }}</b>
             </marquee>
             <div class="modal fade" id="staticBackdrop{{repetiteur.IdRepetiteur}}" data-bs-backdrop="static"
-              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{repetiteur.IdRepetiteur}}" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h4 class="modal-title" id="staticBackdropLabel">{{repetiteur.PrenomRepetiteur }}
+                    <h4 class="modal-title" id="staticBackdropLabel{{repetiteur.IdRepetiteur}}">{{repetiteur.PrenomRepetiteur }}
                       {{repetiteur.NomRepetiteur }}</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
@@ -341,6 +341,9 @@
     flashMessage.style.display = 'none';
   }, delay);
 </script>
+
+
+
 
 
 {% endblock %}

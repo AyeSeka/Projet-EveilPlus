@@ -20,5 +20,40 @@
     <!-- <script src="/js/bootstrap.bundle.min.js"></script> -->
     <script src="{{url_for('static', filename='/js/bootstrap.bundle.min.js')}}" ></script>
     <script src="{{url_for('static', filename='/js/index.js')}}" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.choose-btn').click(function() {
+                var HistoriquePosteId = $(this).data('poste-id');
+                var ParentId = $(this).data('user-id');
+    
+                // Make an AJAX POST request
+                $.ajax({    
+                    type: 'POST',
+                    url: '/candidature_rep',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({ HistoriquePosteId: HistoriquePosteId, ParentId: ParentId}),
+                    success: function(response) {
+                         // Check if the contract already exists
+                    if (response.contractExists) {
+                    alert('Vous avez déjà candidaté à ce poste. Veuillez vérifier la liste de vos candidature dans "Mes candidature " ');
+                } else if (!response.contractExists){
+                     // Handle the response from the server
+                     alert('Vous avez candidaté à ce poste. Veuillez vérifier la liste de vos candidature dans "Mes candidature "');
+                     console.log(response);
+
+                     // Update the content dynamically if needed
+                     // ...
+                }
+                       
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
