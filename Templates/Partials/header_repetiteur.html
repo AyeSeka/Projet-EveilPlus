@@ -19,16 +19,15 @@
             data-bs-toggle="dropdown" aria-expanded="false">
             <span class="logoGene">
               <img
-              src="{{ url_for('static', filename='uploads/images_profil_repetiteur/' + usersRepetiteur.path_PhotoProfil) }}"
-              />
-            {{usersRepetiteur.PrenomRepetiteur}} {{usersRepetiteur.NomRepetiteur}}
+                src="{{ url_for('static', filename='uploads/images_profil_repetiteur/' + usersRepetiteur.path_PhotoProfil) }}" />
+              {{usersRepetiteur.PrenomRepetiteur}} {{usersRepetiteur.NomRepetiteur}}
             </span>
-            
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/profil_repetiteur">Mon profil</a></li>
-            <li><a class="dropdown-item" href="/liste_notification_repetiteur">Notification</a></li>
-            <li><a class="dropdown-item" href="/Mes_candidature">Mes candidatures</a></li>
+            <li><a class="dropdown-item" href="/liste_notification_repetiteur">Notification <span
+                  id="unread-notifications-count" class="badge badge-danger"></span></a></li>
+            <li><a class="dropdown-item" href="#">Mes candidatures</a></li>
             <li><a class="dropdown-item" href="#">Parents</a></li>
             <li>
               <hr class="dropdown-divider">

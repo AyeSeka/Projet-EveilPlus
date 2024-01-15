@@ -12,10 +12,18 @@
   height: 35px;
   border-radius: 50%;
 }
+
 /* ? Liste des Notifications Répétiteurs */
-#notifications-container {
-  height: 80px;
-  width: 280px;
+.badge-danger {
+    background-color: red;
+    color: white;
+    margin-right: 5px; /* Ajustez la marge selon vos besoins */
+}
+
+#notifications-container{
+  height: 80px ;
+  width: 300px;
+  cursor: pointer;
 }
 
 .notification-item {
@@ -23,6 +31,12 @@
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
+
+}
+
+.notification-item-read {
+  background-color: #cfb3a9cf;
+
 }
 
 /****Page Index******/

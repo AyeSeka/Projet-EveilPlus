@@ -12,6 +12,35 @@
 body{
   background: rgb(226, 226, 226);
 }
+
+/* ? Liste des Notifications Répétiteurs */
+.notif-div{
+  padding-left: 2%;
+  overflow-y: scroll;
+}
+
+
+#notifications-container{
+  height: 80px ;
+  width: 300px;
+  cursor: pointer;
+
+}
+
+
+.notification-item {
+  background-color: #f0f0f0 ;
+  padding: 10px ;
+  margin-bottom: 5px ;
+  border-radius: 5px ;
+}
+
+.notification-item-read {
+  background-color: #cfb3a9cf;
+
+}
+
+
 nav{
   position: sticky;
   top: 0;
