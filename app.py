@@ -26,7 +26,7 @@ socketio = SocketIO(app)
 #                        "Trusted_Connection=yes")
 
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+                       "Server=MTN_ACADEMY\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
 
@@ -38,12 +38,12 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 
 # )
 
-# connection_string = (
-#     "Driver={ODBC Driver 17 for SQL Server};"
-#     "Server=DESKTOP-K074SIS\SQLEXPRESS;"
-#     "Database=ivoryExplore;"
-#     "Trusted_Connection=yes"
-# )
+connection_string = (
+    "Driver={ODBC Driver 17 for SQL Server};"
+    "Server=MTN_ACADEMY\SQLEXPRESS"
+    "Database=eveil_plus;"
+    "Trusted_Connection=yes"
+)
 # # Fonction pour se connecter à la base de données SQL Server
 # def connect_db():
 #     return pyodbc.connect(connection_string)
@@ -1285,93 +1285,113 @@ def liste_recherche():
 
 
 
+@app.route('/filtre', methods=['GET', 'POST'])
+def filtre():
+    cursor = conn.cursor()
+    IdUser = session.get('IdUser')
+    cursor.execute(
+        "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
+    usersParent = cursor.fetchone()
 
-# @app.route('/filtered_results', methods=['GET', 'POST'])
-# def filtered_results():
-#     # Connexion à la base de données
-#     cursor = conn.cursor()
-#     if request.method == "POST":
+    if request.method == 'POST':
+        classe_primaire = request.form.getlist('classe_primaire')
+        classe_college = request.form.getlist('classe_college')
+        classe_lycee = request.form.getlist('classe_lycee')
+        matiere_sciences = request.form.getlist('matiere_sciences')
+        matiere_litterature = request.form.getlist('matiere_litterature')
+
+        print("Classes sélectionnées (primaire):", classe_primaire)
+        print("Classes sélectionnées (collège):", classe_college)
+        print("Classes sélectionnées (lycée):", classe_lycee)
+        print("Matieres Sciences sélectionnées:", matiere_sciences)
+        print("Matieres Littérature sélectionnées:", matiere_litterature)
+
+        # Nettoyer les valeurs en enlevant les guillemets
+        cleaned_classes_primaire = [classe.strip("'") for classe in classe_primaire]
+        cleaned_classes_college = [classe.strip("'") for classe in classe_college]
+        cleaned_classes_lycee = [classe.strip("'") for classe in classe_lycee]
+        cleaned_matieres_sciences = [matiere.strip("'") for matiere in matiere_sciences]
+        cleaned_matieres_litterature = [matiere.strip("'") for matiere in matiere_litterature]
+
+        # Initialiser un ensemble pour stocker les IdRepetiteur correspondants (un ensemble ne permet pas de doublons)
+        id_repetiteurs_set = set()
+
+        for classe in cleaned_classes_primaire:
+            # Requête pour récupérer les IdRepetiteur correspondants à chaque classe du primaire
+            query_get_id_repetiteur = "SELECT IdRepetiteur FROM Dispense WHERE Classe LIKE ?"
+            cursor.execute(query_get_id_repetiteur, '%' + classe + '%')
+
+            # Ajouter les IdRepetiteur à l'ensemble
+            id_repetiteurs_set.update([row[0] for row in cursor.fetchall()])
+
+        for classe in cleaned_classes_college:
+            # Requête pour récupérer les IdRepetiteur correspondants à chaque classe du collège
+            query_get_id_repetiteur_college = "SELECT IdRepetiteur FROM Dispense WHERE Classe LIKE ?"
+            cursor.execute(query_get_id_repetiteur_college, '%' + classe + '%')
+
+            # Ajouter les IdRepetiteur à l'ensemble
+            id_repetiteurs_set.update([row[0] for row in cursor.fetchall()])
+
+        for classe in cleaned_classes_lycee:
+            # Requête pour récupérer les IdRepetiteur correspondants à chaque classe du lycée
+            query_get_id_repetiteur_lycee = "SELECT IdRepetiteur FROM Dispense WHERE Classe LIKE ?"
+            cursor.execute(query_get_id_repetiteur_lycee, '%' + classe + '%')
+
+            # Ajouter les IdRepetiteur à l'ensemble
+            id_repetiteurs_set.update([row[0] for row in cursor.fetchall()])
+
+        for matiere in cleaned_matieres_sciences:
+            # Requête pour récupérer les IdRepetiteur correspondants à la matière Sciences
+            query_get_id_repetiteur_sciences = "SELECT IdRepetiteur FROM Dispense WHERE Matiere LIKE ?"
+            cursor.execute(query_get_id_repetiteur_sciences, '%' + matiere + '%')
+
+            # Ajouter les IdRepetiteur à l'ensemble
+            id_repetiteurs_set.update([row[0] for row in cursor.fetchall()])
+
+        for matiere in cleaned_matieres_litterature:
+            # Requête pour récupérer les IdRepetiteur correspondants à la matière Littérature
+            query_get_id_repetiteur_litterature = "SELECT IdRepetiteur FROM Dispense WHERE Matiere LIKE ?"
+            cursor.execute(query_get_id_repetiteur_litterature, '%' + matiere + '%')
+
+            # Ajouter les IdRepetiteur à l'ensemble
+            id_repetiteurs_set.update([row[0] for row in cursor.fetchall()])
+
+        # Convertir l'ensemble en liste
+        id_repetiteurs = list(id_repetiteurs_set)
+
+        # Liste pour stocker les informations des répétiteurs
+        repetiteurs_info = []
+
+        # Parcourir la liste des IdRepetiteur
+        for id_repetiteur in id_repetiteurs:
+            # Requête pour récupérer les informations du répétiteur
+            query_get_repetiteur_info = "SELECT * FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur join Competence C ON (R.IdCompetence = C.IdCompetence) WHERE D.IdRepetiteur = ?"
+            cursor.execute(query_get_repetiteur_info, id_repetiteur)
+            
+            # Récupérer les informations du répétiteur
+            repetiteur = cursor.fetchone()
+
+            # Ajouter les informations du répétiteur à la liste
+            repetiteurs_info.append(repetiteur)
+            print(repetiteur)
+        if repetiteurs_info:
+            etat_repetiteur = repetiteurs_info[0][7]
+        else:
+            etat_repetiteur = None
+        # Vérifier si des répétiteurs ont été trouvés
+        if repetiteurs_info:
+            # Utiliser la fonction flash pour afficher le message
+            flash(f"Félicitations ! Vous avez trouvé {len(repetiteurs_info)} répétiteur(s).", 'success')
+            return render_template("Parents/Recherches/liste_recherche.html", repetiteurs=repetiteurs_info, usersParent=usersParent, etat_repetiteur=etat_repetiteur)
+        else:
+            flash("Aucun répétiteur trouvé pour les classes et matières sélectionnées.", 'warning')
+            return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
+
     
-#         Classe = ', '.join(request.form.getlist("Classe[]"))
-#         Matiere = ', '.join(request.form.getlist("Matiere[]"))
-#         print(Classe)
-#         print(Matiere)
-#     # Construction de la requête SQL en fonction des filtres
-#         query_count = "SELECT COUNT(*) FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1"
-#         params_count = []
+    # Ajoutez une instruction return pour les requêtes de type GET
+    return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
 
-#         if Classe:
-#             query_count += " AND Classe = ?"
-#             params_count.append(Classe)
-#         if Matiere:
-#             query_count += " AND Matiere = ?"
-#             params_count.append(Matiere)
 
-#     # Exécution de la requête pour obtenir le nombre total d'éléments
-#         cursor.execute(query_count, params_count)
-#         total_count = cursor.fetchone()[0]
-
-#     # Construction de la requête SQL pour récupérer les éléments à afficher
-#         query_select = "SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1"
-#         params_select = []
-
-#         if Classe:
-#             query_count += " AND Classe = ?"
-#             params_count.append(Classe)
-#         if Matiere:
-#             query_count += " AND Matiere = ?"
-#             params_count.append(Matiere)
-
-#     # Exécution de la requête pour obtenir les éléments à afficher
-#     cursor.execute(query_select, params_select)
-#     loc_afi = cursor.fetchall()
-    
-#     # Fermeture du curseur et de la connexion
-#     return redirect(url_for("liste_recherche"))
-#     # Rendu du template avec les données récupérées et la pagination
-#     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-
-# @app.route('/filtered_results', methods=['POST'])
-# def filtered_results():
-#     try:
-#         # Récupérer les filtres sélectionnés depuis les données de formulaire
-#         filters = request.form.get('filters')
-#         print(filters)
-#         filters = json.loads(filters) if filters else []
-#         print(filters)
-#         # Construire la requête SQL dynamiquement en fonction des filtres sélectionnés
-#         query = "SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE "
-#         conditions = []
-        
-#         if filters:
-#             conditions.append(f"NomCompetence IN ({', '.join(['?'] * len(filters))})")
-#         print(conditions)
-#         # Ajouter d'autres conditions en fonction de vos besoins
-
-#         if conditions:
-#             query += " AND ".join(conditions)
-
-#         # Exécuter la requête avec les valeurs des filtres
-#         cursor = conn.cursor()
-#         cursor.execute(query, filters)
-#         repetiteurs = cursor.fetchall()
-#         print(repetiteurs)
-#         # Convertir les résultats en format JSON et les renvoyer
-#         result_data = [
-#             {
-#                 'IdRepetiteur': repetiteur[0],
-#                 'PrenomRepetiteur': repetiteur[1],
-#                 # Ajouter d'autres champs selon votre structure de données
-#             }
-#             for repetiteur in repetiteurs
-#         ]
-#         print(result_data)
-#         return jsonify(result_data)
-
-#     except Exception as e:
-#         return jsonify({'error': str(e)},repetiteurs=repetiteurs)
-
-# ... (other Flask routes and code) ...
 @app.route("/liste_repetiteurchoix")
 @login_required
 def liste_repetiteurchoix():
