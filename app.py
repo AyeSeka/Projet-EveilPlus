@@ -20,19 +20,19 @@ socketio = SocketIO(app)
 # app.register_blueprint(sse, url_prefix='/sse')
 
 
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                      "Server=Geek_Machine\SQLEXPRESS;"
-                       "Database=eveil_plus;"
-                       "Trusted_Connection=yes")
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+#                       "Server=Geek_Machine\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 #                        "Server=MTN_ACADEMY\SQLEXPRESS;"
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
 #     'Server=HP\\SQLEXPRESS;'
