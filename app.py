@@ -2165,7 +2165,40 @@ def dashboard_admin():
     cursor.execute(
         "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
     usersPersoEveil = cursor.fetchone()
-    return render_template("PersonnelEveil+/accueil/dahs_acceuil.html", usersPersoEveil=usersPersoEveil)
+    
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT COUNT(*) FROM users')
+    TotalUsers = cursor.fetchone()[0]
+    # Remplacez 'nom_table_utilisateurs' par le nom réel de votre table d'utilisateurs
+    cursor.execute('SELECT COUNT(*) FROM Parent P join users U on U.IdUser=P.IdUser')
+    TotalParent = cursor.fetchone()[0]
+    poucentageParent=(TotalParent*100)/TotalUsers
+    
+    cursor.execute('SELECT COUNT(*) FROM Repetiteur R join users U on U.IdUser=R.IdUser')
+    TotalRepetiteur = cursor.fetchone()[0]
+    poucentageRepetiteur=(TotalRepetiteur*100)/TotalUsers
+    
+    cursor.execute('SELECT COUNT(*) FROM Personnel_Eveil Pe join users U on U.IdUser=Pe.IdUser')
+    TotalPersonnel = cursor.fetchone()[0]
+    poucentagePersonnel=(TotalPersonnel*100)/TotalUsers
+    
+    cursor.execute('SELECT COUNT(*) FROM ContratPar_Rep')
+    TotalContrat = cursor.fetchone()[0]
+    
+    
+
+    
+    return render_template("PersonnelEveil+/accueil/dahs_acceuil.html",
+                           usersPersoEveil=usersPersoEveil,
+                           TotalParent=TotalParent,
+                           TotalRepetiteur=TotalRepetiteur,
+                           TotalContrat=TotalContrat,
+                           TotalPersonnel=TotalPersonnel,
+                           poucentagePersonnel=poucentagePersonnel,
+                           poucentageRepetiteur=poucentageRepetiteur,
+                           poucentageParent=poucentageParent,
+                           TotalUsers=TotalUsers)
 
 @app.route("/profil_persoEveil")
 @login_required
