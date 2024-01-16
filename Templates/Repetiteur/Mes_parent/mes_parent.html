@@ -1,0 +1,63 @@
+{% extends "Partials/Base_repetiteut.html" %}
+{% block body %}
+{% if ContractPar_Rep %}
+<section class="mes-repetiteurs">
+  <div class="mb-4 row container-fluid">
+    <div class="col-md-12 col-sm-10">
+      <h2>Mes Contracts</h2>
+    </div>
+  </div>
+  {% for ContractPar_Rep in ContractPar_Rep %}
+  <div class="div-repetiteur">
+    <div class="div-repetiteur-profil">
+      <a href="">
+        <div>
+          <img
+            src="{{ url_for('static', filename='uploads/images_profil_parent/' + ContractPar_Rep.path_PhotoProfil) }}"
+            alt=""
+            class="circle"
+          />
+          <!-- <div class="txt">TEXT</div> -->
+        </div>
+        <h4 class="div-repetiteur-profil-name">{{ContractPar_Rep.PrenomParent}} {{ContractPar_Rep.NomParent}}</h4>
+      </a>
+    </div>
+    <!-- <div class="div-repetiteur-button">
+      
+      <a href="/attribuer_note"
+        ><button class="div-repetiteur-button-button">NOTER</button></a
+      >
+      <a href="/form_paiement"
+        ><button class="div-repetiteur-button-button">PAYER</button></a
+      >
+    </div> -->
+  </div>
+  {% endfor %}
+</section>
+{% else %} 
+      <section class="my-5 py-5 section-rech">
+        <div class="poste2">
+          <div class="mb-4 row container-fluid">
+            <div class="col-md-12 col-sm-10">
+              <h2>Mes Contracts</h2>
+            </div>
+          </div>
+            <div class="main_poste_main">
+                <div class="note_poste_main">
+                
+        
+                  <div class="maintenant">
+                    <h2>Aucun Contracts</h2>
+                  </div><br>
+                  <div class="maintenant_2">
+                    <p>Il n'existe aucun contract entre vous et un ou plusieurs parent(s) </p>
+                  </div>
+                
+                </div>
+            </div>
+        </div>
+
+      </section>
+{% endif %}
+
+{% endblock %}

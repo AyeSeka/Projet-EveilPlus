@@ -9,6 +9,59 @@
         {% endif %}
     {% endwith %}
 
+
+    <section class="my-5 py-5 section-rech">
+        <div class="container colunm" >
+            <div class="mb-4 row container-fluid">
+                <div class="col-md-12 col-sm-12"><h2>Liste des offres disponibles</h2></div>
+                
+            </div> 
+            <div class="row d-flex justify-content-between table-responsive" style="height: 450px;">
+                {% for poste in poste %}
+                    <div class="card col-lg-4 col-md-3 col-sm-6 mb-lg-4 mb-md-4 mb-sm-4 " id="cards" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><b>Recherche de répétiteur</b></h5>
+                        </div>
+                        <ul class="list-group list-group-flush liste-cards">
+                            <li class="list-group-item"><i>Nombre d'enfant à enseigner : <b> {{poste.NbreEnfant}} </b></i></li>
+                            <li class="list-group-item"><i>Lieu d'habitation : <b>{{poste.lieu_habitation}}</b></i></li>
+                            <li class="list-group-item"><i>Nombre de séance : <b>{{poste.NbresJours}}</b></i>/semaine</li>
+                            <li class="list-group-item"><i>Classe à enseigner: <b>{{poste.Classe}}</b></i></li>
+                            <li class="list-group-item"><i>Matiere à enseigner: <b>{{poste.Matiere}}</b></i></li>
+                            <li class="list-group-item"><i>Niveau : <b>{{poste.NiveauEnfant}}</b></i></li>
+                            <li class="list-group-item"><i>Date limite : <b>{{poste.DateLimte}}</b></i></li>
+                            
+                        </ul>
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{poste.IdHistoriquePoste}}">
+                                <b>Candidater</b>
+                            </a>
+                            <div class="modal fade" id="staticBackdrop{{poste.IdHistoriquePoste}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{poste.IdHistoriquePoste}}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel{{poste.IdHistoriquePoste}}">Candidature</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                             Êtes-vous sûr de vouloir candidater à ce poste ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                                            <button id="chooseTutorBtn" class="btn btn-primary choose-btn"
+                                                data-poste-id="{{ poste.IdHistoriquePoste }}" data-user-id="{{ poste.IdParent }}">Confirmer</button>
+                                        </div>
+                                    </div>
+                                </div>   
+                            </div> 
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>  
+      </section>
+
     <script>
         // Sélectionnez l'élément contenant le message flash
         const flashMessage = document.getElementById('flash-message');

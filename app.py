@@ -25,11 +25,14 @@ socketio = SocketIO(app)
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
 
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+#                        "Server=MTN_ACADEMY\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=MTN_ACADEMY\SQLEXPRESS;"
+                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
                        "Database=eveil_plus;"
                        "Trusted_Connection=yes")
-
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
 #     'Server=HP\\SQLEXPRESS;'
@@ -38,12 +41,12 @@ conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 
 # )
 
-connection_string = (
-    "Driver={ODBC Driver 17 for SQL Server};"
-    "Server=MTN_ACADEMY\SQLEXPRESS"
-    "Database=eveil_plus;"
-    "Trusted_Connection=yes"
-)
+# connection_string = (
+#     "Driver={ODBC Driver 17 for SQL Server};"
+#     "Server=MTN_ACADEMY\SQLEXPRESS"
+#     "Database=eveil_plus;"
+#     "Trusted_Connection=yes"
+# )
 # # Fonction pour se connecter à la base de données SQL Server
 # def connect_db():
 #     return pyodbc.connect(connection_string)
@@ -717,6 +720,7 @@ def Succes_inscription_repetiteur():
             flash('Inscription réussie! Connectez-vous maintenant.', 'success')
             return redirect(url_for('connexion'))
     return render_template("Authentification/inscriptionRepetiteur.html")
+
 # PARENT
 # DEBUT PARENT
 
@@ -737,15 +741,18 @@ def Accueil_parent():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
+    query = """SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) order by AnneeExperience desc """
+    # r.IdRepetiteur = c.IdRepetiteur AND
+    # cursor.execute("SELECT * FROM Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    # info_rep = cursor.fetchall()
 
-    if result and result[0]:
-        photo_path = result[0]
+    cursor.execute(query)
+    repetiteurs = cursor.fetchall()
+    
+    if repetiteurs:
+        etat_repetiteur = repetiteurs[0][7]
     else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
+        etat_repetiteur = None
 
     cursor.commit()
 
@@ -759,7 +766,7 @@ def Accueil_parent():
         # Ajoutez cette ligne pour indiquer que l'utilisateur vient de se connecter
         session['just_logged_in'] = True
 
-        return render_template("Parents/accueil_parent.html", usersParent=usersParent, photo_path=photo_path)
+        return render_template("Parents/accueil_parent.html", usersParent=usersParent, repetiteurs=repetiteurs, etat_repetiteur=etat_repetiteur)
     else:
         flash('Répétiteur non trouvé.', 'danger')
         return redirect(url_for('connexion'))
@@ -1281,7 +1288,16 @@ def liste_recherche():
     cursor.commit()
 
     # return render_template("Parents/Recherches/liste_recherche.html", usersParent=usersParent)
-    return render_template("Parents/Recherches/liste_recherche.html", specialite=specialite, repetiteurs=repetiteurs, usersParent=usersParent, MatiereSciences=MatiereSciences, MatiereLitteraire=MatiereLitteraire, ClassePrimaire=ClassePrimaire, ClasseCollege=ClasseCollege, ClasseLycee=ClasseLycee, etat_repetiteur=etat_repetiteur)
+    return render_template("Parents/Recherches/liste_recherche.html",
+                           specialite=specialite, 
+                           repetiteurs=repetiteurs, 
+                           usersParent=usersParent, 
+                           MatiereSciences=MatiereSciences, 
+                           MatiereLitteraire=MatiereLitteraire, 
+                           ClassePrimaire=ClassePrimaire, 
+                           ClasseCollege=ClasseCollege, 
+                           ClasseLycee=ClasseLycee, 
+                           etat_repetiteur=etat_repetiteur)
 
 
 
@@ -1767,18 +1783,12 @@ def mes_repetiteurs():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    cursor.execute(
-        "SELECT path_PhotoProfil FROM users WHERE IdUser=?", (IdUser,))
-    result = cursor.fetchone()
-
-    if result and result[0]:
-        photo_path = result[0]
-    else:
-        photo_path = url_for(
-            'static', filename='/img/user_img/user_avatar.jpg')
+    
+    cursor.execute("SELECT * FROM ContratPar_Rep Co JOIN  Repetiteur R ON Co.IdRepetiteur= R.IdRepetiteur JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur WHERE Co.IdParent = ?", usersParent[0])
+    ContractPar_Rep = cursor.fetchall()
 
     cursor.commit()
-    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html", usersParent=usersParent, photo_path=photo_path)
+    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html", usersParent=usersParent, ContractPar_Rep=ContractPar_Rep)
 
 
 # ? Attribuer Note
@@ -1863,7 +1873,14 @@ def accueil_repetiteur():
     cursor = conn.cursor()
     cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
     usersRepetiteur = cursor.fetchone()
+    
+    query = """SELECT  * FROM HistoriquePoste H join Poste P on H.IdPoste=P.IdPoste order by DatePublication desc"""
+    # r.IdRepetiteur = c.IdRepetiteur AND
+    # cursor.execute("SELECT * FROM Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON R.IdCompetence=C.IdCompetence")
+    # info_rep = cursor.fetchall()
 
+    cursor.execute(query)
+    poste = cursor.fetchall()
     if usersRepetiteur:
         # Assurez-vous de remplacer l'indice par celui approprié dans votre résultat SQL
         prenom_repetiteur = usersRepetiteur[1]
@@ -1871,7 +1888,7 @@ def accueil_repetiteur():
         nom_repetiteur = usersRepetiteur[2]
 
         flash(f'Bienvenue, cher répétiteur {prenom_repetiteur} {nom_repetiteur}!', 'success')
-        return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur)
+        return render_template("Repetiteur/accueil_repetiteur.html", usersRepetiteur=usersRepetiteur, poste=poste)
     else:
         flash('Répétiteur non trouvé.', 'danger')
         return redirect(url_for('connexion'))
@@ -2044,6 +2061,21 @@ def Supprimer_Candidature(IdCandidature):
 
     return redirect(url_for("Mes_candidature"))
 
+
+@app.route("/mes_parent")
+@login_required
+def mes_parents():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute("SELECT R.*, NomCompetence, U.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence WHERE U.IdUser = ?", IdUser)
+    usersRepetiteur = cursor.fetchone()
+    
+    cursor.execute("SELECT * FROM ContratPar_Rep Co JOIN  Parent P ON Co.IdParent= P.IdParent JOIN users U ON P.IdUser=U.IdUser WHERE Co.IdRepetiteur = ?", usersRepetiteur[0])
+    ContractPar_Rep = cursor.fetchall()
+
+    cursor.commit()
+    return render_template("Repetiteur/Mes_parent/mes_parent.html", usersRepetiteur=usersRepetiteur, ContractPar_Rep=ContractPar_Rep)
+
 @app.route("/info_repetiteur")
 @login_required
 def info_repetiteur():
@@ -2172,6 +2204,54 @@ def accueil_parent_dash():
     data = cursor.fetchall()
     return render_template("PersonnelEveil+/parent/accueil_parent_dash.html",data=data, usersPersoEveil=usersPersoEveil)
 
+@app.route("/Ajout_parent", methods=['GET', 'POST'])
+def Ajout_parent():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    
+    return render_template("PersonnelEveil+/parent/Ajout_par.html", usersPersoEveil=usersPersoEveil)
+
+
+@app.route("/Succes_ajout_parent", methods=['GET', 'POST'])
+def Succes_ajout_parent():
+    if request.method == 'POST':
+        Email = request.form["Email"]
+        mot_de_passe = request.form["mot_de_passe"]
+        confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomParent = request.form["NomParent"]
+        PrenomParent = request.form["PrenomParent"]
+        # LieuHabitation = request.form["LieuHabitation"]
+        TelephoneParent1 = request.form["TelephoneParent1"]
+        # TelephonePparent2 = request.form["TelephonePparent2"]
+        if not all([Email, mot_de_passe, confirm_mot_de_passe, Roles, NomParent, PrenomParent, TelephoneParent1]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('Ajout_parent'))
+
+        mot_de_passe_hache = bcrypt.generate_password_hash(mot_de_passe).decode('utf-8')
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT COUNT(*)  FROM users WHERE Email = '{Email}'")
+        # Récupérer le résultat
+        row_count = cursor.fetchone()[0]
+        if row_count != 0:
+            print()
+            flash(f"L'utilisateur {Email} existe déjà.", 'danger')
+            return redirect(url_for('Ajout_parent'))
+        else:
+
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
+            cursor.execute(f"INSERT INTO Parent (NomParent, PrenomParent,TelephoneParent1, IdUser) VALUES ('{NomParent}', '{PrenomParent}', '{TelephoneParent1}', '{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie!', 'success')
+            return redirect(url_for('accueil_parent_dash'))
+    return render_template("PersonnelEveil+/parent/accueil_parent_dash.html")
+
 @app.route("/Supprimer_parent/<int:IdParent>", methods=['GET', 'POST'])
 @login_required
 def Supprimer_parent(IdParent):
@@ -2182,7 +2262,7 @@ def Supprimer_parent(IdParent):
     usersPersoEveil = cursor.fetchone()
     
     cursor.execute(
-        "DELETE P FROM Parent P JOIN users U ON P.IdUser=U.IdUser join  WHERE P.IdParent = ?", IdParent)
+        "DELETE P FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE P.IdParent = ?", IdParent)
 
     cursor.commit()
     flash('Suppression éffectuée avec succès', 'success')
@@ -2200,6 +2280,69 @@ def accueil_repetiteur_dash():
     data = cursor.fetchall()
     return render_template("PersonnelEveil+/repetiteur/accueil_repetiteur_dash.html", usersPersoEveil=usersPersoEveil, data=data)
 
+@app.route("/Ajout_repetiteur", methods=['GET', 'POST'])
+def Ajout_repetiteur():
+    cursor = conn.cursor()
+    IdUser = session.get('IdUser')
+    # cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    
+    cursor.execute("SELECT * from Competence")
+    Competence = cursor.fetchall()
+    conn.commit()
+    return render_template("PersonnelEveil+/repetiteur/Ajout_rep.html", usersPersoEveil=usersPersoEveil, Competence=Competence)
+
+
+
+@app.route("/Succes_ajout_repetiteur", methods=['GET', 'POST'])
+def Succes_ajout_repetiteur():
+    if request.method == 'POST':
+        Email = request.form["Email"]
+        mot_de_passe = request.form["mot_de_passe"]
+        # confirm_mot_de_passe = request.form["confirm_mot_de_passe"]
+        Roles = request.form["Roles"]
+        NomRepetiteur = request.form["NomRepetiteur"]
+        PrenomRepetiteur = request.form["PrenomRepetiteur"]
+        # lieu_hab_rep = request.form["lieu_hab_rep"]
+        # DateNaissance = request.form["DateNaissance"]
+        # AnneeExperience = request.form["AnneeExperience"]
+        # NiveauRepetiteur = request.form["NiveauRepetiteur"]
+        EstActif = request.form["EstActif"]
+        IdCompetence = request.form["IdCompetence"]
+        # Vérifier si tous les champs sont remplis
+        if not all([Email, mot_de_passe, Roles, NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence]):
+            flash('Veuillez remplir tous les champs du formulaire.', 'danger')
+            return redirect(url_for('Ajout_repetiteur'))
+
+        mot_de_passe_hache = bcrypt.generate_password_hash(
+            mot_de_passe).decode('utf-8')
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT COUNT(*)  FROM users WHERE Email = '{Email}'")
+        # Récupérer le résultat
+        row_count = cursor.fetchone()[0]
+        if row_count != 0:
+            print()
+            flash(f"L'utilisateur {Email} existe déjà.", 'danger')
+            return redirect(url_for('Ajout_repetiteur'))
+        else:
+            cursor.execute(f"INSERT INTO users (Email, mot_de_passe, Roles, path_PhotoProfil) VALUES ('{Email}','{mot_de_passe_hache}','{Roles}', 'default_profil.png')")
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            listId = cursor.fetchone()
+
+            # Définir le nom de l'image par défaut (à personnaliser selon votre structure de dossiers)
+            # default_image = 'default_profil.png'
+
+            cursor.execute(f"INSERT INTO Repetiteur (NomRepetiteur, PrenomRepetiteur, EstActif, IdCompetence, IdUser) VALUES ('{NomRepetiteur}','{PrenomRepetiteur}','{EstActif}','{IdCompetence}','{listId[0]}')")
+            # Commit des modifications
+            conn.commit()
+            flash('Inscription réussie!', 'success')
+            return redirect(url_for('accueil_repetiteur_dash'))
+    return render_template("PersonnelEveil+/repetiteur/Ajout_rep.html")
+
+
+#
 @app.route("/Supprimer_repetiteur/<int:IdRepetiteur>", methods=['GET', 'POST'])
 @login_required
 def Supprimer_repetiteur(IdRepetiteur):
@@ -2211,10 +2354,139 @@ def Supprimer_repetiteur(IdRepetiteur):
     
     cursor.execute(
         "DELETE R FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur WHERE R.IdRepetiteur = ?", IdRepetiteur)
-
     cursor.commit()
     flash('Suppression éffectuée avec succès', 'success')
     return redirect(url_for("accueil_repetiteur_dash"))
+
+
+@app.route("/List_contract")
+def List_contract():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    cursor.close()
+    
+    cursor = conn.cursor()
+    # cursor.execute(
+    #     "select * from ContratPar_Rep C join Parent P on C.IdParent= P.IdParent join Repetiteur R on C.IdRepetiteur= R.IdRepetiteur JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur join Competence Co ON R.IdCompetence = Co.IdCompetence")
+    # InfoUser = cursor.fetchall()
+    
+    cursor.execute(
+        "SELECT	* FROM ContratPar_Rep C  join Parent P on C.IdParent= P.IdParent join Repetiteur R on C.IdRepetiteur= R.IdRepetiteur")
+    ListContrats = cursor.fetchall()
+    cursor.execute(
+        "select * from Parent P join  users U on P.IdUser= U.IdUser")
+    ListParent = cursor.fetchall()
+    
+    cursor.execute(
+        "select distinct * from Repetiteur R JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur join Competence Co ON R.IdCompetence = Co.IdCompetence join users U on R.IdUser= U.IdUser")
+    ListRepetiteur = cursor.fetchall()
+    
+    cursor.execute("SELECT * FROM ClassePrimaire")
+    ClassePrimaire = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseCollege")
+    ClasseCollege = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM ClasseLycee")
+    ClasseLycee = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM MatiereSciences")
+    MatiereSciences = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM MatiereLitteraire")
+    MatiereLitteraire = cursor.fetchall()
+    # StatusContract = cursor.fetchall()[0][1]
+    # print(ListContracts)
+    # print(StatusContract)
+    cursor.close()
+    return render_template("PersonnelEveil+/Contract/List_contract.html",
+                           usersPersoEveil=usersPersoEveil,
+                           ListContrats=ListContrats, 
+                           ListParent=ListParent,
+                           ListRepetiteur=ListRepetiteur,
+                           MatiereSciences=MatiereSciences, 
+                           MatiereLitteraire=MatiereLitteraire, 
+                           ClassePrimaire=ClassePrimaire, 
+                           ClasseCollege=ClasseCollege, 
+                           ClasseLycee=ClasseLycee
+                           )
+
+@app.route("/Success_ajout_contract", methods=['GET','POST'])
+def Success_ajout_contract():
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    cursor.close()
+    if request.method == "POST":
+        # Récupérer les données modifiées du formulaire
+        IdParent = request.form.get("IdParent")
+        IdRepetiteur = request.form.get("IdRepetiteur")
+        StatutContrat = request.form.get("StatutContrat")
+        DateDebutContrat = request.form.get("DateDebutContrat")
+        DateFinContrat = request.form.get("DateFinContrat")
+        Classe = ', '.join(request.form.getlist("Classe[]"))
+        Matiere = ', '.join(request.form.getlist("Matiere[]"))
+        
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*)  FROM ContratPar_Rep C  join Parent P on C.IdParent= P.IdParent join Repetiteur R on C.IdRepetiteur= R.IdRepetiteur WHERE C.IdParent =? AND C.IdRepetiteur =?",(IdParent,IdRepetiteur))
+        # Récupérer le résultat
+        ContractExiste = cursor.fetchone()[0]
+        if ContractExiste != 0:
+            print()
+            flash(f"Il existe déjà un contract entre ce parent et ce répétiteur", 'danger')
+            return redirect(url_for('List_contract'))
+        else:
+            cursor.execute(f"INSERT INTO ContratPar_Rep (StatutContrat,DateDebutContrat, IdParent,IdRepetiteur, DateFinContrat,Classe,Matiere) VALUES ('{StatutContrat}','{DateDebutContrat}', '{IdParent}', '{IdRepetiteur}', '{DateFinContrat}','{Classe}','{Matiere}')")
+            # Commit des modifications
+            conn.commit()
+            flash(f'Le parent et le répétiteur ont été mis en relation.', 'success')
+            return redirect(url_for('List_contract'))   
+    return render_template("PersonnelEveil+/Contract/List_contract.html", usersPersoEveil=usersPersoEveil)
+
+@app.route("/Modif_contrat/<int:IdContrat>", methods=['GET', 'POST'])
+@login_required
+def Modif_contrat(IdContrat):
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    if request.method == "POST":
+        # Récupérer les données modifiées du formulaire
+        IdParent = request.form.get("IdParent")
+        IdRepetiteur = request.form.get("IdRepetiteur")
+        # StatutContrat = request.form.get("StatutContrat")
+        DateDebutContrat = request.form.get("DateDebutContrat")
+        DateFinContrat = request.form.get("DateFinContrat")
+        Classe = ', '.join(request.form.getlist("Classe[]"))
+        Matiere = ', '.join(request.form.getlist("Matiere[]"))
+        
+        cursor.execute(
+            "UPDATE ContratPar_Rep SET DateDebutContrat=?, IdParent=?, IdRepetiteur=?, DateFinContrat=?,Classe=?, Matiere=?  WHERE IdContrat = ?", 
+                (DateDebutContrat,IdParent,IdRepetiteur,DateFinContrat,Classe,Matiere,IdContrat))
+        cursor.commit()
+        flash('Modification éffectuée avec succès', 'success')
+        return redirect(url_for("List_contract"))
+
+@app.route("/Supprimer_contrat/<int:IdContrat>", methods=['GET', 'POST'])
+@login_required
+def Supprimer_contrat(IdContrat):
+    IdUser = session.get('IdUser')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT P.*, U.* FROM Personnel_Eveil P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", (IdUser,))
+    usersPersoEveil = cursor.fetchone()
+    
+    cursor.execute(
+        "DELETE FROM ContratPar_Rep WHERE IdContrat = ?", IdContrat)
+    cursor.commit()
+    flash('Suppression éffectuée avec succès', 'success')
+    return redirect(url_for("List_contract"))
 
 if __name__ == "__main__":
     app.secret_key = 'admin123'

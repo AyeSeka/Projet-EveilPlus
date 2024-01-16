@@ -1,18 +1,26 @@
-{% extends "Partials/Base_parent.html" %} {% block body %}
-
+{% extends "Partials/Base_parent.html" %}
+{% block body %}
+{% if ContractPar_Rep %}
 <section class="mes-repetiteurs">
+  <div class="mb-4 row container-fluid">
+    <div class="col-md-12 col-sm-10">
+      <h2>Mes Contracts</h2>
+    </div>
+  </div>
+  {% for ContractPar_Rep in ContractPar_Rep %}
   <div class="div-repetiteur">
     <div class="div-repetiteur-profil">
-      <!-- <div class="div-repetiteur-profil-picture"></div> -->
-      <div>
-        <img
-          src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
-          alt=""
-          class="circle"
-        />
-        <!-- <div class="txt">TEXT</div> -->
-      </div>
-      <h4 class="div-repetiteur-profil-name">Gnaba Charles</h4>
+      <a href="">
+        <div>
+          <img
+            src="{{ url_for('static', filename='uploads/images_profil_repetiteur/' + ContractPar_Rep.path_PhotoProfil) }}"
+            alt=""
+            class="circle"
+          />
+          <!-- <div class="txt">TEXT</div> -->
+        </div>
+        <h4 class="div-repetiteur-profil-name">{{ContractPar_Rep.PrenomRepetiteur}} {{ContractPar_Rep.NomRepetiteur}}</h4>
+      </a>
     </div>
     <div class="div-repetiteur-button">
       <!-- <button class="div-repetiteur-button-button">NOTER</button> -->
@@ -24,96 +32,32 @@
       >
     </div>
   </div>
-  <div class="div-repetiteur">
-    <div class="div-repetiteur-profil">
-      <!-- <div class="div-repetiteur-profil-picture"></div> -->
-      <div>
-        <img
-          src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
-          alt=""
-          class="circle"
-        />
-        <!-- <div class="txt">TEXT</div> -->
-      </div>
-      <h4 class="div-repetiteur-profil-name">Gnaba Charles</h4>
-    </div>
-    <div class="div-repetiteur-button">
-      <!-- <button class="div-repetiteur-button-button">NOTER</button> -->
-      <a href="/attribuer_note"
-        ><button class="div-repetiteur-button-button">NOTER</button></a
-      >
-      <a href="/form_paiement"
-        ><button class="div-repetiteur-button-button">PAYER</button></a
-      >
-    </div>
-  </div>
-  <div class="div-repetiteur">
-    <div class="div-repetiteur-profil">
-      <!-- <div class="div-repetiteur-profil-picture"></div> -->
-      <div>
-        <img
-          src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
-          alt=""
-          class="circle"
-        />
-        <!-- <div class="txt">TEXT</div> -->
-      </div>
-      <h4 class="div-repetiteur-profil-name">Gnaba Charles</h4>
-    </div>
-    <div class="div-repetiteur-button">
-      <a href="/attribuer_note"
-        ><button class="div-repetiteur-button-button">NOTER</button></a
-      >
-      <a href="/form_paiement"
-        ><button class="div-repetiteur-button-button">PAYER</button></a
-      >
-    </div>
-  </div>
-  <div class="div-repetiteur">
-    <div class="div-repetiteur-profil">
-      <!-- <div class="div-repetiteur-profil-picture"></div> -->
-      <div>
-        <img
-          src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
-          alt=""
-          class="circle"
-        />
-        <!-- <div class="txt">TEXT</div> -->
-      </div>
-      <h4 class="div-repetiteur-profil-name">Gnaba Charles</h4>
-    </div>
-    <div class="div-repetiteur-button">
-      <!-- <button class="div-repetiteur-button-button">NOTER</button> -->
-      <a href="/attribuer_note"
-        ><button class="div-repetiteur-button-button">NOTER</button></a
-      >
-      <a href="/form_paiement"
-        ><button class="div-repetiteur-button-button">PAYER</button></a
-      >
-    </div>
-  </div>
-  <div class="div-repetiteur">
-    <div class="div-repetiteur-profil">
-      <!-- <div class="div-repetiteur-profil-picture"></div> -->
-      <div>
-        <img
-          src="{{url_for('static', filename='/img/user_img/bruce_yapo.jpg')}}"
-          alt=""
-          class="circle"
-        />
-        <!-- <div class="txt">TEXT</div> -->
-      </div>
-      <h4 class="div-repetiteur-profil-name">Gnaba Charles</h4>
-    </div>
-    <div class="div-repetiteur-button">
-      <a href="/attribuer_note"
-        ><button class="div-repetiteur-button-button">NOTER</button></a
-      >
-      <a href="/form_paiement"
-        ><button class="div-repetiteur-button-button">PAYER</button></a
-      >
-      <!-- <button class="div-repetiteur-button-button">PAYER</button> -->
-    </div>
-  </div>
+  {% endfor %}
 </section>
+{% else %} 
+      <section class="my-5 py-5 section-rech">
+        <div class="poste2">
+          <div class="mb-4 row container-fluid">
+            <div class="col-md-12 col-sm-10">
+              <h2>Mes Contracts</h2>
+            </div>
+          </div>
+            <div class="main_poste_main">
+                <div class="note_poste_main">
+                
+        
+                  <div class="maintenant">
+                    <h2>Aucun Contracts</h2>
+                  </div><br>
+                  <div class="maintenant_2">
+                    <p>Il n'existe aucun contract entre vous et un ou plusieurs répétiteur(s) </p>
+                  </div>
+                
+                </div>
+            </div>
+        </div>
+
+      </section>
+{% endif %}
+
 {% endblock %}
