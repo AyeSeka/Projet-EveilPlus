@@ -20,10 +20,15 @@
     margin-right: 5px; /* Ajustez la marge selon vos besoins */
 }
 
+.notif-div > h1{
+  margin-left: 15px;
+}
+
 #notifications-container{
   height: 80px ;
   width: 300px;
   cursor: pointer;
+  margin-right: 15px;
 }
 
 .notification-item {

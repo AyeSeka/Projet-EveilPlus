@@ -83,7 +83,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-
 # ? Utiliser le décorateur @login_required
 def login_required(f):
     @wraps(f)
@@ -290,7 +289,6 @@ def messagerie():
     return render_template("PersonnelEveil+/messagerie/msg_dash.html", usersPersoEveil=usersPersoEveil)
 
 
-
 # ? Rejoindre la salle pour avoir la notification
 @socketio.on('join')
 def handle_join(data):
@@ -398,6 +396,58 @@ def notifications_non_lues():
     return jsonify(notifications_list)
 
 
+# ? Confirmation de la notification
+@app.route('/confirm_notification/<int:notification_id>', methods=['POST'])
+def confirm_notification(notification_id):
+    try:
+        # Récupérer les données du formulaire JSON
+        data = request.json
+        parent_id = data.get('parent_id')
+        repetiteur_id = data.get('repetiteur_id')
+
+        print(f"Data: {data}")
+        print(f"Parent: {parent_id}")
+        print(f"Repetiteur: {repetiteur_id}")
+        StatutContrat = 1
+        DateDebutContrat = datetime.now().strftime("%Y-%m-%d")
+        cursor = conn.cursor()
+
+        # cursor.execute("SELECT * FROM ClassePrimaire")
+        # ClassePrimaire = cursor.fetchall()
+
+        # cursor.execute("SELECT * FROM ClasseCollege")
+        # ClasseCollege = cursor.fetchall()
+
+        # cursor.execute("SELECT * FROM ClasseLycee")
+        # ClasseLycee = cursor.fetchall()
+
+        # cursor.execute("SELECT * FROM MatiereSciences")
+        # MatiereSciences = cursor.fetchall()
+
+        # cursor.execute("SELECT * FROM MatiereLitteraire")
+        # MatiereLitteraire = cursor.fetchall()
+        # Insérer les informations dans la table Contrat
+        cursor.execute(f"INSERT INTO ContratPar_Rep (StatutContrat,DateDebutContrat, IdParent,IdRepetiteur) VALUES ('{
+                       StatutContrat}','{DateDebutContrat}', '{parent_id}', '{repetiteur_id}')")
+        # Commit des modifications
+        conn.commit()
+        # flash(f'Le parent et le répétiteur ont été mis en relation.', 'success')
+        # cursor.execute(
+        #     "INSERT INTO ContratPar_Rep (parent_id, repetiteur_id, notification_id) VALUES (?, ?, ?)",
+        #     (parent_id, repetiteur_id, notification_id)
+        # )
+        conn.commit()
+
+        # Vous pouvez également récupérer les informations du parent et du répétiteur en utilisant les ID
+        # Ajoutez le code nécessaire ici pour récupérer les informations des utilisateurs
+        # parent_name = get_user_name_by_id(parent_id)
+        # repetiteur_name = get_user_name_by_id(repetiteur_id)
+
+        return jsonify({'success': True, 'message': 'Notification confirmée avec succès', 'parent_name': parent_name, 'repetiteur_name': repetiteur_name})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
 # ? Choose Repetiteur
 @app.route('/choose_repetiteur', methods=['POST'])
 @login_required
@@ -452,7 +502,6 @@ def choose_repetiteur():
         notification = f'Votre profil interesse un parent. </br> {date_notification.strftime(
             "%Y-%m-%d %H:%M:%S")}'
         print(notification)
-        print(type(IdRepetiteur))
 
         cursor.execute(
             "INSERT INTO Notifications (repetiteur_id_notification, parent_id_notification, notification, dejaLu, date_notification, destination) VALUES (?, ?, ?, ?, ?, ?)",
@@ -462,6 +511,7 @@ def choose_repetiteur():
 
         cursor.execute("SELECT @@IDENTITY")
         last_id_repetiteur = cursor.fetchone()[0]
+        IdRepetiteur = str(IdRepetiteur)
 
         print(f"Last id repetiteur: {last_id_repetiteur}")
 
@@ -504,7 +554,6 @@ def choose_repetiteur():
         return jsonify(result='Success', IdRepetiteur=IdRepetiteur, contractExists=False)
     except Exception as e:
         return jsonify(result='Error', message=str(e))
-
 
 
 @app.route("/")
@@ -1570,8 +1619,6 @@ def liste_repetiteurchoix():
     return render_template("Parents/Recherches/liste_repetiteurchoix.html", usersParent=usersParent)
 
 
-
-
 @app.route('/Mes_choix_rer')
 @login_required
 def Mes_choix_rer():
@@ -2267,8 +2314,6 @@ def profil_persoEveil():
     # Pas besoin de cursor.commit() ici car vous n'effectuez que des sélections
 
     return render_template("Profil/profil_persoEveil.html", usersPersoEveil=usersPersoEveil)
-
-
 
 
 @app.route("/accueil_parent_dash")

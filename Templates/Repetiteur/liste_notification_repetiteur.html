@@ -1,11 +1,14 @@
 {% extends "Partials/Base_repetiteut.html" %}
-
 {% block body %}
-<h1>Mes Notifications</h1>
+<div class="notif-div">
+    <h1>Mes Notifications</h1>
+    <div id="notifications-container">
+        <!-- Les notifications seront affichées ici -->
+    </div>
 
-<div id="notifications-container">
-    <!-- Les notifications seront affichées ici -->
 </div>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 <script>
@@ -19,6 +22,7 @@
 
         var tutor_id = "{{id_user}}";
         console.log(typeof tutor_id);
+        console.log(tutor_id)
 
         // Tableau pour stocker les notifications
         // var notifications = JSON.parse(localStorage.getItem('notifications')) || [];
@@ -40,11 +44,19 @@
             const message = notificationData.notification_message;
             const id_notification = parseInt(notificationData.id)
 
+            // Stocker les identifiants dans localStorage
+            localStorage.setItem('parent_id', notificationData.parent_id);
+            localStorage.setItem('repetiteur_id', notificationData.tutor_id);
+
             // Créez un élément de notification et ajoutez-le à la liste
             const notificationElement = document.createElement('div');
             notificationElement.classList.add('notification-item');
             notificationElement.innerHTML = `<p data-notification-id="${id_notification}>Message: ${message}</p>`;
-            notificationElement.innerHTML = `<p data-notification-id="${notificationData.id}">Message: ${message}</p>`;
+            //notificationElement.innerHTML = `<p data-notification-id="${notificationData.id}">Message: ${message}</p>`;
+
+
+            notificationElement.innerHTML = `<p data-notification-id="${notificationData.id}">Message: ${notificationData.notification_message}</p>`;
+
             notificationsContainer.appendChild(notificationElement);
 
             notificationsContainer.addEventListener('click', function (event) {
@@ -56,7 +68,32 @@
                     notificationElement.classList.add('notification-item-read');
                 }
             });
+
+
         }
+
+
+        function confirmNotification(notificationId, parent_id, repetiteur_id) {
+            const parentId = localStorage.getItem('parent_id');
+            const repetiteurId = localStorage.getItem('repetiteur_id');
+
+            fetch(`/confirm_notification/${notificationId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    parent_id: parentId,
+                    repetiteur_id: repetiteurId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Notification confirmée:', data);
+                })
+                .catch(error => console.error('Erreur lors de la requête au serveur:', error));
+        }
+
 
         function markNotificationAsRead(notificationId) {
             // Envoyez une requête au serveur pour marquer la notification comme lue
@@ -64,20 +101,10 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Notification marquée comme lue:', data);
-
-                    // Mise à jour du compteur
-                    updateUnreadCount(data.unreadCount);
-
                     // Supprimez la notification du DOM si nécessaire
                     // document.querySelector(`[data-notification-id="${notificationId}"]`).remove();
                 })
                 .catch(error => console.error('Erreur lors de la requête au serveur:', error));
-        }
-
-        // Fonction pour mettre à jour le compteur de notifications non lues
-        function updateUnreadCount(unreadCount) {
-            const unreadCountElement = document.getElementById('unread-notifications-count');
-            unreadCountElement.innerText = unreadCount;
         }
 
         // Fonction pour récupérer et afficher les notifications non lues
@@ -98,7 +125,5 @@
         }
     });
 
-
 </script>
-
-{% endblock %}
+{% endblock body %}
