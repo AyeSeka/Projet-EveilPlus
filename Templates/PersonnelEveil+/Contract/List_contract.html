@@ -225,7 +225,7 @@
                                             <label for="exampleDataListmodif1" class="form-label">Nom du Parent</label>
                                             <select class="form-select" name="IdParent" id="exampleDataListmodif1">
                                                 
-                                                <option value="{{ListParent.0}}">{{ListContrats.PrenomParent}} {{ListContrats.NomParent}}</option>
+                                                <option value="{{ListContrats.IdParent}}">{{ListContrats.PrenomParent}} {{ListContrats.NomParent}}</option>
                                                 {% for ListParent in ListParent %}
                                                     <option value="{{ListParent.0}}">{{ListParent.PrenomParent}} {{ListParent.NomParent}}</option>
                                                 {% endfor %}
@@ -234,7 +234,7 @@
                                           <div class="col-md-6">
                                             <label for="exampleDataListmodif2" class="form-label">Nom du Répétiteur</label>
                                             <select class="form-select" name="IdRepetiteur" id="exampleDataListmodif2">
-                                                <option value="{{ListContrats.0}}">{{ListContrats.PrenomRepetiteur}} {{ListContrats.NomRepetiteur}}</option>
+                                                <option value="{{ListContrats.IdRepetiteur}}">{{ListContrats.PrenomRepetiteur}} {{ListContrats.NomRepetiteur}}</option>
                                                 {% for ListRepetiteur in ListRepetiteur %}
                                                     <option value="{{ListRepetiteur.0}}">{{ListRepetiteur.PrenomRepetiteur}} {{ListRepetiteur.NomRepetiteur}}</option>
                                                 {% endfor %}
