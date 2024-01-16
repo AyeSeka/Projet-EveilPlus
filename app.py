@@ -20,19 +20,19 @@ socketio = SocketIO(app)
 # app.register_blueprint(sse, url_prefix='/sse')
 
 
-# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-#                       "Server=Geek_Machine\SQLEXPRESS;"
-#                        "Database=eveil_plus;"
-#                        "Trusted_Connection=yes")
+conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+                      "Server=Geek_Machine\SQLEXPRESS;"
+                       "Database=eveil_plus;"
+                       "Trusted_Connection=yes")
 
 # conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
 #                        "Server=MTN_ACADEMY\SQLEXPRESS;"
 #                        "Database=eveil_plus;"
 #                        "Trusted_Connection=yes")
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
-                       "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
-                       "Database=eveil_plus;"
-                       "Trusted_Connection=yes")
+# conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};"
+#                        "Server=DESKTOP-QQGKONI\SQLEXPRESS;"
+#                        "Database=eveil_plus;"
+#                        "Trusted_Connection=yes")
 # conn = pyodbc.connect(
 #     'Driver={SQL Server};'
 #     'Server=HP\\SQLEXPRESS;'
@@ -833,6 +833,8 @@ def poste():
 
     cursor.execute("SELECT * FROM MatiereLitteraire")
     MatiereLitteraire = cursor.fetchall()
+    # Ajoutez la date actuelle à votre contexte
+    today = datetime.today().strftime('%Y-%m-%d')
 
     # for lieu in lieu_repetiteur:
     #     print(lieu[0])
@@ -840,7 +842,8 @@ def poste():
 
     # print(niveauEtudiant)
     conn.commit()
-    return render_template("Parents/Postes/poste.html", 
+    return render_template("Parents/Postes/poste.html",
+                           today=today,
                            usersParent=usersParent,
                            niveauEtudiant=niveauEtudiant, 
                            lieu_repetiteur=lieu_repetiteur, 
@@ -850,7 +853,6 @@ def poste():
                            MatiereSciences=MatiereSciences,
                            MatiereLitteraire=MatiereLitteraire
                            )
-
 
 @app.route("/recapitulatif", methods=["GET", "POST"])
 @login_required
@@ -1783,12 +1785,26 @@ def mes_repetiteurs():
     cursor.execute(
         "SELECT P.*, U.* FROM Parent P JOIN users U ON P.IdUser=U.IdUser WHERE U.IdUser = ?", IdUser)
     usersParent = cursor.fetchone()
-    
-    cursor.execute("SELECT * FROM ContratPar_Rep Co JOIN  Repetiteur R ON Co.IdRepetiteur= R.IdRepetiteur JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur WHERE Co.IdParent = ?", usersParent[0])
+
+    cursor.execute(
+        "SELECT * FROM ContratPar_Rep Co JOIN Repetiteur R ON Co.IdRepetiteur= R.IdRepetiteur JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur WHERE Co.IdParent = ?", usersParent[0])
     ContractPar_Rep = cursor.fetchall()
 
-    cursor.commit()
-    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html", usersParent=usersParent, ContractPar_Rep=ContractPar_Rep)
+    # Récupérer les IdRepetiteur associés à l'utilisateur dans ContratPar_Rep
+    cursor.execute(
+        "SELECT IdRepetiteur FROM ContratPar_Rep WHERE IdParent = ?", IdUser)
+    id_repetiteurs = [row[0] for row in cursor.fetchall()]
+
+    # Utilisez les IdRepetiteur pour récupérer les informations des répétiteurs associés au parent
+    repetiteur_info = []
+    for id_repetiteur in id_repetiteurs:
+        cursor.execute(
+            "SELECT * FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur JOIN Competence C ON (R.IdCompetence = C.IdCompetence) WHERE D.IdRepetiteur = ?", id_repetiteur)
+        repetiteur_info.append(cursor.fetchone())
+        print(repetiteur_info)
+    
+    conn.commit()
+    return render_template("Parents/mes_repetiteurs/mes_repetiteurs.html", usersParent=usersParent, ContractPar_Rep=ContractPar_Rep, repetiteurs=repetiteur_info)
 
 
 # ? Attribuer Note
