@@ -409,3 +409,141 @@ def profil_repetiteur():
 
     conn.commit()
     return render_template("Profil/profil_repetiteur.html",userRepetiteur=userRepetiteur, usersRepetiteur=usersRepetiteur, bouton_etat=bouton_etat)
+
+
+
+
+<div class="mb-3 row">
+                                            <div class="col-md-6" >
+                                                <label for="exampleDataListmodif3" class="form-label">Classe</label>
+                                                <div class="table-responsive border rounded px-4" style="height: 70px; background-color: #ffffffd5;">
+                                                    <p><b>Primaire</b></p>
+                                                  <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="Classe[]" value="Primaire" id="ClassePrimairemodif{{ListContrats.0}}">
+                                                    <label class="form-check-label" for="ClassePrimairemodif{{ListContrats.0}}"> Primaire </label>
+                                                  </div>
+                                                  <p><b>College</b></p>
+                                                  
+                                                  
+                                                  {% for ClasseCollege in ClasseCollege %}
+                                                  <div class="form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox" name="Classe[]"
+                                                      value="{{ ClasseCollege[1] }}" id="ClasseCollegemodif{{ loop.index }}{{ListContrats.0}}">
+                                                    <label class="form-check-label" for="ClasseCollegemodif{{ loop.index }}{{ListContrats.0}}">
+                                                      {{ ClasseCollege[1] }}
+                                                    </label>
+                                                  </div>
+                                                  {% endfor %}
+                                                  <p><b>Lycée</b></p>
+                                                  {% for ClasseLycee in ClasseLycee %}
+                                                  <div class="form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox" name="Classe[]"
+                                                      value="{{ ClasseLycee[1] }}" id="ClasseLyceemodif{{ loop.index }}{{ListContrats.0}}">
+                                                    <label class="form-check-label" for="ClasseLyceemodif{{ loop.index }}{{ListContrats.0}}">
+                                                      {{ ClasseLycee[1] }}
+                                                    </label>
+                                                  </div>
+                                                  {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <label for="exampleDataList2" class="form-label">Matière</label>
+                                              <div class="table-responsive border rounded px-4" style="height: 70px; background-color: #ffffffd5;">
+                                                <p><b>Primaire</b></p>
+                                                  <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="Matiere[]" value="Tous matiere primaire" id="MatierePrimairemodif{{ListContrats.0}}">
+                                                    <label class="form-check-label" for="MatierePrimairemodif{{ListContrats.0}}"> Tous matiere primaire </label>
+                                                  </div>
+                                                  <p><b>Sciences</b></p>
+                                                {% for MatiereSciences in MatiereSciences %}
+                                                  <div class="form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox" name="Matiere[]"
+                                                      value="{{ MatiereSciences[1] }}" id="MatiereSciencesmodif{{ loop.index }}{{ListContrats.0}}">
+                                                    <label class="form-check-label" for="MatiereSciencesmodif{{ loop.index }}{{ListContrats.0}}">
+                                                      {{ MatiereSciences[1] }}
+                                                    </label>
+                                                  </div>
+                                                  {% endfor %}
+                                                  <p><b>Litteraire</b></p>
+                                                  {% for MatiereLitteraire in MatiereLitteraire %}
+                                                  <div class="form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox" name="Matiere[]"
+                                                      value="{{ MatiereLitteraire[1] }}" id="MatiereLitterairemodif{{ loop.index }}{{ListContrats.0}}">
+                                                    <label class="form-check-label" for="MatiereLitterairemodif{{ loop.index }}{{ListContrats.0}}">
+                                                      {{ MatiereLitteraire[1] }}
+                                                    </label>
+                                                  </div>
+                                                  {% endfor %}
+                    
+                                              </div>
+                                            </div>
+                                        </div><br>
+
+
+
+<div class="mb-3 row">
+                        <div class="col-md-6" >
+                            <label for="exampleDataList3" class="form-label">Classe</label>
+                            <div class="table-responsive border rounded px-4" style="height: 70px; background-color: #ffffffd5;">
+                                <p><b>Primaire</b></p>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Classe[]" value="Primaire" id="ClassePrimaire">
+                                <label class="form-check-label" for="ClassePrimaire"> Primaire </label>
+                              </div>
+                              <p><b>College</b></p>
+                              {% for ClasseCollege in ClasseCollege %}
+                              <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="Classe[]"
+                                  value="{{ ClasseCollege[1] }}" id="ClasseCollege{{ loop.index }}">
+                                <label class="form-check-label" for="ClasseCollege{{ loop.index }}">
+                                  {{ ClasseCollege[1] }}
+                                </label>
+                              </div>
+                              {% endfor %}
+                              <p><b>Lycée</b></p>
+                              {% for ClasseLycee in ClasseLycee %}
+                              <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="Classe[]"
+                                  value="{{ ClasseLycee[1] }}" id="ClasseLycee{{ loop.index }}">
+                                <label class="form-check-label" for="ClasseLycee{{ loop.index }}">
+                                  {{ ClasseLycee[1] }}
+                                </label>
+                              </div>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="exampleDataList2" class="form-label">Matière</label>
+                          <div class="table-responsive border rounded px-4" style="height: 70px; background-color: #ffffffd5;">
+                            <p><b>Primaire</b></p>
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Matiere[]" value="Tous matiere primaire" id="MatierePrimaire">
+                                <label class="form-check-label" for="MatierePrimaire"> Tous matiere primaire </label>
+                              </div>
+                              <p><b>Sciences</b></p>
+                            {% for MatiereSciences in MatiereSciences %}
+                              <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="Matiere[]"
+                                  value="{{ MatiereSciences[1] }}" id="MatiereSciences{{ loop.index }}">
+                                <label class="form-check-label" for="MatiereSciences{{ loop.index }}">
+                                  {{ MatiereSciences[1] }}
+                                </label>
+                              </div>
+                              {% endfor %}
+                              <p><b>Litteraire</b></p>
+                              {% for MatiereLitteraire in MatiereLitteraire %}
+                              <div class="form-check">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="Matiere[]"
+                                  value="{{ MatiereLitteraire[1] }}" id="MatiereLitteraire{{ loop.index }}">
+                                <label class="form-check-label" for="MatiereLitteraire{{ loop.index }}">
+                                  {{ MatiereLitteraire[1] }}
+                                </label>
+                              </div>
+                              {% endfor %}
+
+                          </div>
+                        </div>
+                    </div><br>
+
+                                        <td>{{ListContrats.Classe}}</td>
+                        <td>{{ListContrats.Matiere}}</td>

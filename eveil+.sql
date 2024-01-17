@@ -31,8 +31,8 @@ CREATE TABLE Dispense (
 
 --select * from ContratTemporaire
 
---select * from HistoriquePoste H JOIN Poste P ON H.IdPoste=P.IdPoste
---SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1
+select * from HistoriquePoste H JOIN Poste P ON H.IdPoste=P.IdPoste
+SELECT  * FROM Repetiteur r JOIN users u ON r.IdUser=u.IdUser JOIN Dispense d ON r.IdRepetiteur=d.IdRepetiteur join Competence c ON (r.IdCompetence = c.IdCompetence) WHERE  1=1
 
 --select * from Parent P JOIN users u ON P.IdUser=u.IdUser
 
@@ -41,6 +41,8 @@ CREATE TABLE Dispense (
 
 --SELECT * FROM Dispense D join Repetiteur R on D.IdRepetiteur=R.IdRepetiteur
 --SELECT R.*, NomCompetence, U.*, D.* FROM Repetiteur R JOIN users U ON R.IdUser=U.IdUser JOIN Competence C ON R.IdCompetence=C.IdCompetence JOIN Dispense D on D.IdRepetiteur=R.IdRepetiteur
+
+select * from ContratPar_Rep C join Parent P on C.IdParent= P.IdParent join Repetiteur R on C.IdRepetiteur= R.IdRepetiteur JOIN Dispense D ON R.IdRepetiteur=D.IdRepetiteur join Competence Co ON (R.IdCompetence = Co.IdCompetence)
 
 
 insert into MatiereSciences (NomMatiereSciences) values ('Maths'),
@@ -122,6 +124,8 @@ CREATE TABLE Parent(
 ALTER TABLE Parent   
 ADD IdUser int,
 FOREIGN KEY(IdUser) REFERENCES users(IdUser)
+
+SELECT	* FROM ContratPar_Rep C  join Parent P on C.IdParent= P.IdParent join Repetiteur R on C.IdRepetiteur= R.IdRepetiteur
 
 create table users(
 	IdUser INT PRIMARY KEY IDENTITY(1,1),
@@ -248,16 +252,37 @@ CREATE TABLE Candidature(
 	IdHistoriquePoste int,
 	FOREIGN KEY(IdHistoriquePoste) REFERENCES HistoriquePoste(IdHistoriquePoste)
 
+
 );
+alter table Candidature
+add IdParent int,
+	FOREIGN KEY(IdParent) REFERENCES Parent(IdParent);
+
+	alter table ContratPar_Rep
+alter column DateDebutContrat VARCHAR(55);
+
+alter table ContratPar_Rep
+add DateFinContrat VARCHAR(55),
+	Classe VARCHAR(255),
+	Matiere VARCHAR(255)
+;
+
 --Fin nouveau script
 
 CREATE TABLE ContratPar_Rep (
 	IdContrat int PRIMARY KEY IDENTITY(1,1) NOT NULL,
 	StatutContrat bit NULL,
 	DateDebutContrat date NULL,
-	
+	IdParent int,
+	FOREIGN KEY(IdParent) REFERENCES Parent(IdParent),
+	IdRepetiteur int,
+	FOREIGN KEY(IdRepetiteur) REFERENCES Repetiteur(IdRepetiteur)
+
 );
 
+
+
+select * from Parent P join users U on P.IdUser= U.IdUser
 CREATE TABLE ContratTemporaire(
 	IdContratTemporaire int PRIMARY KEY IDENTITY(1,1) NOT NULL,
 	StatutContratTemporaire bit NOT NULL,
